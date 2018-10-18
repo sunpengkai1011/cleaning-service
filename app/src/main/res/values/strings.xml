@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">CleaningService</string>
+    <string name="back">Back</string>
+    <string name="google_maps_key">AIzaSyA8eJEaPxmkqOSRBC-pNoCQzemiJfIjo5U</string>
+    <string name="title_addressAct">Addresses</string>
+    <string name="title_mapAct">Map</string>
+
+
+    <string name="btnMessage_depart">Depart</string>
+    <string name="btnMessage_arrive">Arrive</string>
+    <string name="btnMessage_cancel">Cancel</string>
+    <string name="btnMessage_sure">Sure</string>
+
+    <string name="btnMessage_depart_clicked">You already clicked the "Depart" button, do you want to click again?</string>
+    <string name="btnMessage_arrive_clicked">You already clicked the "Arrive" button, do you want to click again?</string>
+
+    <!--    Permissions    -->
+    <string name="permission_rationale_location">Access to the location service is required to demonstrate the \'my location\' feature, which shows your current location on the map.</string>
+    <string name="location_permission_denied">This sample requires location permission to enable the \'my location\' layer. Please try again and grant access to use the location.\nIf the permission has been permanently denied, it can be enabled from the System Settings &gt; Apps &gt; \'Google Maps API Demos\'.</string>
+    <string name="permission_required_toast">Location permission is required for this demo.</string>
 </resources>
