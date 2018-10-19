@@ -7,13 +7,13 @@ public class StepInfo implements Serializable {
     private Duration duration;
     private Location end_location;
     private Location start_location;
-    private PLine polyline;
+    private PolyLine polyline;
 
-    public PLine getPolyline() {
+    public PolyLine getPolyline() {
         return polyline;
     }
 
-    public void setPolyline(PLine polyline) {
+    public void setPolyline(PolyLine polyline) {
         this.polyline = polyline;
     }
 

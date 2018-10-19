@@ -109,10 +109,6 @@ public class MapActivity extends FragmentActivity implements
                     .addApi(LocationServices.API)
                     .build();
         }
-
-        tv_num_markers.setText("The total delivery locations are : " + response.getRoutes().get(0).getLegs().size());
-        tv_duration.setText("The total duration is : " + GeneralUtil.secondToMinutes(getTotalDistanceAndDuration()[1]));
-        tv_distance.setText("The total distance is : " + GeneralUtil.mToKm(getTotalDistanceAndDuration()[0]));
     }
 
     private void initListener(){
@@ -172,48 +168,6 @@ public class MapActivity extends FragmentActivity implements
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        final Marker currentMarker = marker;
-        GeneralUtil.mapMarkerDialog(this, marker.getSnippet(), getResources().getString(R.string.btnMessage_depart), new Dialog.OnClickListener(){
-
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(MapActivity.this, "depart", Toast.LENGTH_SHORT).show();
-                if (Constants.realTime_depart.containsKey(currentMarker.getId()) &&
-                        Constants.realTime_depart.get(currentMarker.getId()) != 0){
-                    GeneralUtil.twoBtnDialog(MapActivity.this, getResources().getString(R.string.btnMessage_depart_clicked),
-                            getResources().getString(R.string.btnMessage_sure),
-                            new Dialog.OnClickListener(){
-
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    Constants.realTime_depart.put(currentMarker.getId(), System.currentTimeMillis());
-                                }
-                            },
-                            getResources().getString(R.string.btnMessage_cancel),
-                            new Dialog.OnClickListener(){
-
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-
-                                }
-                            });
-                }else {
-                    Constants.realTime_depart.put(currentMarker.getId(), System.currentTimeMillis());
-                }
-            }
-        }, getResources().getString(R.string.btnMessage_arrive), new Dialog.OnClickListener(){
-
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(MapActivity.this, "arrive", Toast.LENGTH_SHORT).show();
-            }
-        }, getResources().getString(R.string.btnMessage_cancel), new Dialog.OnClickListener(){
-
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-            }
-        }).show();
         return false;
     }
 

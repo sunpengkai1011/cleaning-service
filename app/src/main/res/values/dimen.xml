@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Login -->
+    <dimen name="login_et_height">60dp</dimen>
+    <dimen name="et_margin_horizontal">20dp</dimen>
+
+    <!-- Text Size -->
     <dimen name="textSize_large">24sp</dimen>
     <dimen name="textSize_big">20sp</dimen>
     <dimen name="textSize_middle">18sp</dimen>
     <dimen name="textSize_standard">16sp</dimen>
     <dimen name="textSize_small">14sp</dimen>
-    <dimen name="image_photo">80dp</dimen>
 </resources>

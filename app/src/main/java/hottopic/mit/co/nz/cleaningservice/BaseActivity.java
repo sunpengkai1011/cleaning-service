@@ -1,4 +1,4 @@
-package hottopic.mit.co.nz.cleaningservice.activity;
+package hottopic.mit.co.nz.cleaningservice;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -19,7 +19,7 @@ public abstract class BaseActivity extends Activity implements View.OnClickListe
         super.onResume();
     }
 
-    abstract void initView();
-    abstract void initData();
-    abstract void initListener();
+    public abstract void initView();
+    public abstract void initData();
+    public abstract void initListener();
 }

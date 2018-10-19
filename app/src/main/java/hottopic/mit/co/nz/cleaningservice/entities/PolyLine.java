@@ -2,7 +2,7 @@ package hottopic.mit.co.nz.cleaningservice.entities;
 
 import java.io.Serializable;
 
-public class PLine implements Serializable {
+public class PolyLine implements Serializable {
     String points;
 
     public String getPoints() {

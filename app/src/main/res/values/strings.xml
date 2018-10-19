@@ -5,14 +5,14 @@
     <string name="title_addressAct">Addresses</string>
     <string name="title_mapAct">Map</string>
 
+    <!-- Login -->
+    <string name="hint_username">Please enter the username.</string>
+    <string name="hint_password">Please enter the password.</string>
+    <string name="btn_login">Login</string>
+    <string name="title_login">LOGIN</string>
+    <string name="toast_empty_username">The username is empty. Please enter the username.</string>
+    <string name="toast_empty_password">The password is empty. Please enter the password.</string>
 
-    <string name="btnMessage_depart">Depart</string>
-    <string name="btnMessage_arrive">Arrive</string>
-    <string name="btnMessage_cancel">Cancel</string>
-    <string name="btnMessage_sure">Sure</string>
-
-    <string name="btnMessage_depart_clicked">You already clicked the "Depart" button, do you want to click again?</string>
-    <string name="btnMessage_arrive_clicked">You already clicked the "Arrive" button, do you want to click again?</string>
 
     <!--    Permissions    -->
     <string name="permission_rationale_location">Access to the location service is required to demonstrate the \'my location\' feature, which shows your current location on the map.</string>

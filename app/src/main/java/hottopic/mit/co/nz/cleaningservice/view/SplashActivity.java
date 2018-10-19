@@ -1,4 +1,4 @@
-package hottopic.mit.co.nz.cleaningservice.activity;
+package hottopic.mit.co.nz.cleaningservice.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,9 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 
 import java.lang.ref.WeakReference;
+
+import hottopic.mit.co.nz.cleaningservice.view.login.LoginActivity;
+import hottopic.mit.co.nz.cleaningservice.view.user_info.UserInfoActivity;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -30,8 +33,8 @@ public class SplashActivity extends AppCompatActivity {
 
             if (activityWeakReference.get() != null) {
                 SplashActivity splashActivity = activityWeakReference.get();
-                // Start home activity
-                splashActivity.startActivity(new Intent(splashActivity, HomeActivity.class));
+                // Start login activity
+                splashActivity.startActivity(new Intent(splashActivity, LoginActivity.class));
                 // close splash activity
                 splashActivity.finish();
             }

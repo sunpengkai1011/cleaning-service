@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/view_title_bar"
+        layout="@layout/view_title_bar"/>
+
+    <EditText
+        android:id="@+id/et_username"
+        style="@style/et_login"
+        android:layout_below="@id/view_title_bar"
+        android:layout_marginTop="50dp"
+        android:hint="@string/hint_username"/>
+
+    <EditText
+        android:id="@+id/et_password"
+        style="@style/et_login"
+        android:layout_below="@id/et_username"
+        android:layout_marginTop="20dp"
+        android:hint="@string/hint_password"/>
+
+    <Button
+        android:id="@+id/btn_login"
+        style="@style/general_button"
+        android:layout_below="@+id/et_password"
+        android:layout_marginTop="30dp"
+        android:text="@string/btn_login"
+        />
+
+</RelativeLayout>

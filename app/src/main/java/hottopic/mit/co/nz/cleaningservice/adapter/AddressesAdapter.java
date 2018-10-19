@@ -9,7 +9,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import industryproject.mit.deliveryoptimise.R;
+import hottopic.mit.co.nz.cleaningservice.R;
+
 
 public class AddressesAdapter extends BaseAdapter {
     private List<String> infos;
