@@ -19,10 +19,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hottopic.mit.co.nz.cleaningservice.R;
-import hottopic.mit.co.nz.cleaningservice.entities.Bound;
-import hottopic.mit.co.nz.cleaningservice.entities.LegInfo;
-import hottopic.mit.co.nz.cleaningservice.entities.RouteInfo;
-import hottopic.mit.co.nz.cleaningservice.entities.StepInfo;
+import hottopic.mit.co.nz.cleaningservice.entities.map.Bound;
+import hottopic.mit.co.nz.cleaningservice.entities.map.LegInfo;
+import hottopic.mit.co.nz.cleaningservice.entities.map.RouteInfo;
+import hottopic.mit.co.nz.cleaningservice.entities.map.StepInfo;
 
 
 public class MapUtil {

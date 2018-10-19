@@ -1,7 +1,7 @@
 package hottopic.mit.co.nz.cleaningservice.presenter.login;
 
 import hottopic.mit.co.nz.cleaningservice.Constants;
-import hottopic.mit.co.nz.cleaningservice.entities.UserInfo;
+import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
 import hottopic.mit.co.nz.cleaningservice.model.login.IUserLogin;
 import hottopic.mit.co.nz.cleaningservice.model.login.UserLoginModel;
 import hottopic.mit.co.nz.cleaningservice.view.login.ILoginView;

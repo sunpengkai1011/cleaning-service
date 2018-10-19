@@ -10,7 +10,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import hottopic.mit.co.nz.cleaningservice.R;
-import hottopic.mit.co.nz.cleaningservice.entities.LegInfo;
+import hottopic.mit.co.nz.cleaningservice.entities.map.LegInfo;
 
 public class LegRouteAdapter extends RecyclerView.Adapter<LegRouteAdapter.LegRouteViewHolder>{
     private Context mContext;

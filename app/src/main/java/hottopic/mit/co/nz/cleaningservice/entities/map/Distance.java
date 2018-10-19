@@ -1,8 +1,9 @@
-package hottopic.mit.co.nz.cleaningservice.entities;
+package hottopic.mit.co.nz.cleaningservice.entities.map;
 
 import java.io.Serializable;
 
-public class Duration implements Serializable{
+public class Distance implements Serializable{
+
     private String text;
     private int value;
 

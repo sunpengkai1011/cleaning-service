@@ -1,8 +1,6 @@
 package hottopic.mit.co.nz.cleaningservice.activity;
 
 import android.Manifest;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -31,9 +29,8 @@ import com.lsjwzh.widget.recyclerviewpager.RecyclerViewPager;
 import hottopic.mit.co.nz.cleaningservice.Constants;
 import hottopic.mit.co.nz.cleaningservice.R;
 import hottopic.mit.co.nz.cleaningservice.adapter.LegRouteAdapter;
-import hottopic.mit.co.nz.cleaningservice.entities.LegInfo;
-import hottopic.mit.co.nz.cleaningservice.entities.RouteResponse;
-import hottopic.mit.co.nz.cleaningservice.utils.GeneralUtil;
+import hottopic.mit.co.nz.cleaningservice.entities.map.LegInfo;
+import hottopic.mit.co.nz.cleaningservice.entities.request.RouteResponse;
 import hottopic.mit.co.nz.cleaningservice.utils.MapUtil;
 import hottopic.mit.co.nz.cleaningservice.utils.PermissionUtil;
 

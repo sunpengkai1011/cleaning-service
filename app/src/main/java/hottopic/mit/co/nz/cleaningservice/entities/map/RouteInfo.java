@@ -1,7 +1,10 @@
-package hottopic.mit.co.nz.cleaningservice.entities;
+package hottopic.mit.co.nz.cleaningservice.entities.map;
 
 import java.io.Serializable;
 import java.util.List;
+
+import hottopic.mit.co.nz.cleaningservice.entities.map.Bound;
+import hottopic.mit.co.nz.cleaningservice.entities.map.LegInfo;
 
 public class RouteInfo implements Serializable{
     private Bound bounds;

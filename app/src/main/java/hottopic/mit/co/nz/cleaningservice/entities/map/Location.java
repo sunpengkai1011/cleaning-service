@@ -1,4 +1,4 @@
-package hottopic.mit.co.nz.cleaningservice.entities;
+package hottopic.mit.co.nz.cleaningservice.entities.map;
 
 import com.google.android.gms.maps.model.LatLng;
 

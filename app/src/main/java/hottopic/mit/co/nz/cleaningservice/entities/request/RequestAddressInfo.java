@@ -1,4 +1,4 @@
-package hottopic.mit.co.nz.cleaningservice.entities;
+package hottopic.mit.co.nz.cleaningservice.entities.request;
 
 import java.io.Serializable;
 import java.util.List;

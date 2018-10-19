@@ -10,7 +10,7 @@ import android.widget.Toast;
 import hottopic.mit.co.nz.cleaningservice.BaseActivity;
 import hottopic.mit.co.nz.cleaningservice.Constants;
 import hottopic.mit.co.nz.cleaningservice.R;
-import hottopic.mit.co.nz.cleaningservice.entities.UserInfo;
+import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
 import hottopic.mit.co.nz.cleaningservice.presenter.login.LoginPresenterCompl;
 
 public class LoginActivity extends BaseActivity implements ILoginView{
