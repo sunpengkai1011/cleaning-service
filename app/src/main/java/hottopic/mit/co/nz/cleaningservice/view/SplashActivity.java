@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import java.lang.ref.WeakReference;
 
 import hottopic.mit.co.nz.cleaningservice.view.login.LoginActivity;
-import hottopic.mit.co.nz.cleaningservice.view.user_info.UserInfoActivity;
 
 public class SplashActivity extends AppCompatActivity {
 

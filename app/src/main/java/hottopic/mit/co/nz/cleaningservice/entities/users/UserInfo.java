@@ -5,11 +5,24 @@ import java.io.Serializable;
 public class UserInfo implements Serializable{
     private String userId;
     private String userName;
+    private String password;
     private String phoneNumber;
     private String email;
-    private Address address;
+    private UAddress uAddress;
     private UserRole userRole;
     private float balance;
+
+    public UserInfo() {}
+
+    public UserInfo(String userName, String password, String phoneNumber, String email, UAddress uAddress) {
+        this.userName = userName;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.uAddress = uAddress;
+        userRole = new UserRole();
+        balance = 0;
+    }
 
     public String getUserId() {
         return userId;
@@ -25,6 +38,14 @@ public class UserInfo implements Serializable{
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getPhoneNumber() {
@@ -43,12 +64,12 @@ public class UserInfo implements Serializable{
         this.email = email;
     }
 
-    public Address getAddress() {
-        return address;
+    public UAddress getuAddress() {
+        return uAddress;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setuAddress(UAddress uAddress) {
+        this.uAddress = uAddress;
     }
 
     public UserRole getUserRole() {

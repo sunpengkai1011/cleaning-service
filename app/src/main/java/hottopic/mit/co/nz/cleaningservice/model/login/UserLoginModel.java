@@ -1,26 +1,27 @@
 package hottopic.mit.co.nz.cleaningservice.model.login;
 
+import android.content.Context;
+
+import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
+import hottopic.mit.co.nz.cleaningservice.utils.GeneralUtil;
+
 public class UserLoginModel implements IUserLogin {
-    private String username;
-    private String password;
+    private UserInfo userInfo;
+    private Context context;
 
-    public UserLoginModel(String username, String password){
-        this.username = username;
-        this.password = password;
-    }
-    @Override
-    public String getUsername() {
-        return username;
+    public UserLoginModel(Context context, String username){
+        this.context = context;
+        userInfo = (UserInfo) GeneralUtil.fromJson(GeneralUtil.getDataFromSP(context, username), UserInfo.class);
     }
 
     @Override
-    public String getPassword() {
-        return password;
+    public UserInfo getUserInfo() {
+        return userInfo;
     }
 
     @Override
-    public boolean checkLoginVisible(String username, String password) {
-        if (this.username.equals(username) && this.password.equals(password)){
+    public boolean login(String username, String password) {
+        if (username.equals(userInfo.getUserName()) && password.equals(userInfo.getPassword())){
             return true;
         }
         return false;

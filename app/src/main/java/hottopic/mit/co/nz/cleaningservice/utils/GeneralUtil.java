@@ -1,12 +1,18 @@
 package hottopic.mit.co.nz.cleaningservice.utils;
 
 import android.app.AlertDialog;
+import android.app.Application;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.android.tu.loadingdialog.LoadingDialog;
+import com.google.gson.Gson;
 
+import java.lang.reflect.Type;
 import java.text.DecimalFormat;
+
+import hottopic.mit.co.nz.cleaningservice.Constants;
 
 public class GeneralUtil {
 
@@ -73,5 +79,25 @@ public class GeneralUtil {
                 .setPositiveButton(posBtnMessage, posListener)
                 .setNegativeButton(negBtnMessage, negListener);
         return builder.create();
+    }
+
+    public static String toJson(Object src, Type typeOfSrc){
+        Gson gson = new Gson();
+        return gson.toJson(src, typeOfSrc);
+    }
+
+    public static<T> T fromJson(String json, Class<T> type){
+        Gson gson = new Gson();
+        return gson.fromJson(json, type);
+    }
+
+    public static void storDataBySP(Context context, String key, String data){
+        SharedPreferences preferences = context.getSharedPreferences(Constants.SP_KEY, Context.MODE_PRIVATE);
+        preferences.edit().putString(key, data).commit();
+    }
+
+    public static String getDataFromSP(Context context, String key){
+        SharedPreferences preferences = context.getSharedPreferences(Constants.SP_KEY, Context.MODE_PRIVATE);
+        return preferences.getString(key, "");
     }
 }

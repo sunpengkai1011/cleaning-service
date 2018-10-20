@@ -9,10 +9,43 @@
     <string name="hint_username">Please enter the username.</string>
     <string name="hint_password">Please enter the password.</string>
     <string name="btn_login">Login</string>
+    <string name="btn_to_login">Clicked Here to Register</string>
     <string name="title_login">LOGIN</string>
     <string name="toast_empty_username">The username is empty. Please enter the username.</string>
     <string name="toast_empty_password">The password is empty. Please enter the password.</string>
 
+    <!-- Register -->
+    <string name="hint_confirm_pwd">Please confirm the password.</string>
+    <string name="hint_phone_number">Please enter the phone number.</string>
+    <string name="hint_email">Please enter the email address.</string>
+    <string name="hint_city">Please enter the city.</string>
+    <string name="hint_suburb">Please enter the suburb.</string>
+    <string name="hint_street">Please enter the street.</string>
+    <string name="btn_register">Register</string>
+    <string name="title_register">REGISTER</string>
+    <string name="toast_confirm_pwd">Please confirm the password.</string>
+    <string name="toast_pwd_different">The passwords are different, please enter the password again.</string>
+    <string name="toast_phone_number">The phone number is empty. Please enter the phone number.</string>
+    <string name="toast_email">The email is empty. Please enter the email.</string>
+    <string name="toast_city">The city is empty. Please enter the city.</string>
+    <string name="toast_suburb">The suburb is empty. Please enter the suburb.</string>
+    <string name="toast_street">The street is empty. Please enter the street.</string>
+
+    <!--Order Status -->
+    <string name="status_order_booked">Booked</string>
+    <string name="status_order_start">Start Service</string>
+    <string name="status_order_end">End Service</string>
+    <string name="status_order_paid">Paid</string>
+
+    <!-- User Role -->
+    <string name="role_customer">Customer</string>
+    <string name="role_staff">Staff</string>
+
+    <!-- Home -->
+    <string name="tab_order">Order</string>
+    <string name="tab_me">Me</string>
+    <string name="title_order">ORDER</string>
+    <string name="title_me">ME</string>
 
     <!--    Permissions    -->
     <string name="permission_rationale_location">Access to the location service is required to demonstrate the \'my location\' feature, which shows your current location on the map.</string>

@@ -19,14 +19,24 @@
         style="@style/et_login"
         android:layout_below="@id/et_username"
         android:layout_marginTop="20dp"
-        android:hint="@string/hint_password"/>
+        android:hint="@string/hint_password"
+        android:inputType="textPassword"/>
 
     <Button
         android:id="@+id/btn_login"
         style="@style/general_button"
         android:layout_below="@+id/et_password"
         android:layout_marginTop="30dp"
-        android:text="@string/btn_login"
-        />
+        android:text="@string/btn_login" />
+
+    <TextView
+        android:id="@+id/tv_to_register"
+        style="@style/general_button"
+        android:gravity="center"
+        android:background="@color/transparent"
+        android:textColor="@color/register_blue"
+        android:layout_below="@+id/btn_login"
+        android:layout_marginTop="20dp"
+        android:text="@string/btn_to_login" />
 
 </RelativeLayout>

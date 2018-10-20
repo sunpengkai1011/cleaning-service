@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -52,7 +53,8 @@ public class MapActivity extends FragmentActivity implements
 
     private TextView tv_title, tv_num_markers, tv_distance, tv_duration;
     private CardView cv_route_info;
-    private RelativeLayout lyt_back, lyt_navigate;
+    private RelativeLayout lyt_back, lyt_right;
+    private ImageView iv_icon;
     private RecyclerViewPager rvp_routes;
     private RouteResponse response;
 
@@ -75,7 +77,8 @@ public class MapActivity extends FragmentActivity implements
     private void initView(){
         tv_title = findViewById(R.id.tv_title);
         lyt_back = findViewById(R.id.lyt_back);
-        lyt_navigate = findViewById(R.id.lyt_navigate);
+        lyt_right = findViewById(R.id.lyt_right);
+        iv_icon = findViewById(R.id.iv_icon);
         cv_route_info = findViewById(R.id.cv_route_info);
         tv_num_markers = findViewById(R.id.tv_num_markers);
         tv_distance = findViewById(R.id.tv_distance);
@@ -83,7 +86,8 @@ public class MapActivity extends FragmentActivity implements
     }
 
     private void initData(){
-        lyt_navigate.setVisibility(View.VISIBLE);
+        lyt_right.setVisibility(View.VISIBLE);
+        iv_icon.setImageResource(R.drawable.logo_navigation);
         tv_title.setText(R.string.title_mapAct);
         lyt_back.setVisibility(View.VISIBLE);
 
@@ -115,7 +119,7 @@ public class MapActivity extends FragmentActivity implements
                 MapActivity.this.finish();
             }
         });
-        lyt_navigate.setOnClickListener(new View.OnClickListener() {
+        lyt_right.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 MapUtil.intentToGoogleMap(MapActivity.this, response.getRoutes().get(0));

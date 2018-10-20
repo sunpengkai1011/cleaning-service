@@ -1,5 +1,7 @@
 package hottopic.mit.co.nz.cleaningservice.view.login;
 
+import android.content.Intent;
+import android.graphics.Paint;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -11,14 +13,16 @@ import hottopic.mit.co.nz.cleaningservice.BaseActivity;
 import hottopic.mit.co.nz.cleaningservice.Constants;
 import hottopic.mit.co.nz.cleaningservice.R;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
-import hottopic.mit.co.nz.cleaningservice.presenter.login.LoginPresenterCompl;
+import hottopic.mit.co.nz.cleaningservice.presenter.login.LoginPresenterImpl;
+import hottopic.mit.co.nz.cleaningservice.view.home.HomeActivity;
+import hottopic.mit.co.nz.cleaningservice.view.register.RegisterActivity;
 
 public class LoginActivity extends BaseActivity implements ILoginView{
-    private TextView tv_title;
+    private TextView tv_title, tv_to_register;
     private EditText et_username, et_password;
     private Button btn_login;
 
-    private LoginPresenterCompl loginPresenterCompl;
+    private LoginPresenterImpl loginPresenterImpl;
 
     @Override
     public void initView() {
@@ -27,18 +31,20 @@ public class LoginActivity extends BaseActivity implements ILoginView{
         et_username = findViewById(R.id.et_username);
         et_password = findViewById(R.id.et_password);
         btn_login = findViewById(R.id.btn_login);
+        tv_to_register = findViewById(R.id.tv_to_register);
     }
 
     @Override
     public void initData() {
         tv_title.setText(getResources().getString(R.string.title_login));
-
-        loginPresenterCompl = new LoginPresenterCompl(this);
+        tv_to_register.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        loginPresenterImpl = new LoginPresenterImpl(this, this);
     }
 
     @Override
     public void initListener() {
         btn_login.setOnClickListener(this);
+        tv_to_register.setOnClickListener(this);
     }
 
     @Override
@@ -49,7 +55,7 @@ public class LoginActivity extends BaseActivity implements ILoginView{
                 String password = et_password.getText().toString().trim();
                 if (!TextUtils.isEmpty(username) &&
                         !TextUtils.isEmpty(password)){
-                    loginPresenterCompl.doLogin(username, password);
+                    loginPresenterImpl.doLogin(username, password);
                 }else{
                     if (TextUtils.isEmpty(username)){
                         Toast.makeText(this, getResources().getString(R.string.toast_empty_username), Toast.LENGTH_SHORT).show();
@@ -57,6 +63,10 @@ public class LoginActivity extends BaseActivity implements ILoginView{
                         Toast.makeText(this, getResources().getString(R.string.toast_empty_password), Toast.LENGTH_SHORT).show();
                     }
                 }
+                break;
+            case R.id.tv_to_register:
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
                 break;
         }
     }
@@ -69,6 +79,9 @@ public class LoginActivity extends BaseActivity implements ILoginView{
                 break;
             case Constants.RESPONSE_CODE_SUCCESSFUL:
                 Toast.makeText(this, "Login Successful!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                startActivity(intent);
+                this.finish();
                 break;
         }
     }

@@ -8,6 +8,7 @@
     <color name="background_main">#CCCCCC</color>
     <color name="white">#FFFFFFFF</color>
     <color name="black">#FF000000</color>
+    <color name="register_blue">#0968EC</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="grey">#AA000000</color>
     <color name="click_grey">#696969</color>
