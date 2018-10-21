@@ -9,6 +9,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import javax.xml.transform.Result;
+
 import hottopic.mit.co.nz.cleaningservice.BaseActivity;
 import hottopic.mit.co.nz.cleaningservice.Constants;
 import hottopic.mit.co.nz.cleaningservice.R;
@@ -48,7 +50,7 @@ public class RegisterActivity extends BaseActivity implements IRegisterView {
     @Override
     public void initData() {
         tv_title.setText(R.string.title_register);
-
+        lyt_back.setVisibility(View.VISIBLE);
         registerPresenter = new RegisterPresenterImpl(this, this);
     }
 
@@ -62,49 +64,7 @@ public class RegisterActivity extends BaseActivity implements IRegisterView {
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_register:
-                String username = et_username.getText().toString().trim();
-                String password = et_password.getText().toString().trim();
-                String confirm_pwd = et_confirm_pwd.getText().toString().trim();
-                String phone_number = et_phone_number.getText().toString().trim();
-                String email = et_email.getText().toString().trim();
-                String city = et_city.getText().toString().trim();
-                String suburb = et_suburb.getText().toString().trim();
-                String street = et_street.getText().toString().trim();
-
-                if (!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password) && !TextUtils.isEmpty(confirm_pwd) &&
-                        !TextUtils.isEmpty(phone_number) && !TextUtils.isEmpty(email) && !TextUtils.isEmpty(city) &&
-                        !TextUtils.isEmpty(suburb) && !TextUtils.isEmpty(street)){
-                    if (!password.equals(confirm_pwd)){
-                        Toast.makeText(this, getResources().getString(R.string.toast_pwd_different), Toast.LENGTH_SHORT).show();
-                    }else{
-                        UAddress address = new UAddress(city, suburb, street);
-                        UserInfo userInfo = new UserInfo();
-                        userInfo.setUserName(username);
-                        userInfo.setPassword(password);
-                        userInfo.setPhoneNumber(phone_number);
-                        userInfo.setEmail(email);
-                        userInfo.setuAddress(address);
-                        registerPresenter.doRegister(userInfo);
-                    }
-                }else {
-                    if (TextUtils.isEmpty(username)){
-                        Toast.makeText(this, getResources().getString(R.string.toast_empty_username), Toast.LENGTH_SHORT).show();
-                    }else if (TextUtils.isEmpty(password)){
-                        Toast.makeText(this, getResources().getString(R.string.toast_empty_password), Toast.LENGTH_SHORT).show();
-                    }else if (TextUtils.isEmpty(confirm_pwd)){
-                        Toast.makeText(this, getResources().getString(R.string.toast_confirm_pwd), Toast.LENGTH_SHORT).show();
-                    }else if (TextUtils.isEmpty(phone_number)){
-                        Toast.makeText(this, getResources().getString(R.string.toast_phone_number), Toast.LENGTH_SHORT).show();
-                    }else if (TextUtils.isEmpty(email)){
-                        Toast.makeText(this, getResources().getString(R.string.toast_email), Toast.LENGTH_SHORT).show();
-                    }else if (TextUtils.isEmpty(city)){
-                        Toast.makeText(this, getResources().getString(R.string.toast_city), Toast.LENGTH_SHORT).show();
-                    }else if (TextUtils.isEmpty(suburb)){
-                        Toast.makeText(this, getResources().getString(R.string.toast_suburb), Toast.LENGTH_SHORT).show();
-                    }else if (TextUtils.isEmpty(street)){
-                        Toast.makeText(this, getResources().getString(R.string.toast_street), Toast.LENGTH_SHORT).show();
-                    }
-                }
+                registerUser();
                 break;
             case R.id.lyt_back:
                 this.finish();
@@ -121,9 +81,51 @@ public class RegisterActivity extends BaseActivity implements IRegisterView {
             case Constants.RESPONSE_CODE_SUCCESSFUL:
                 Toast.makeText(this, "Register Successful!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                startActivity(intent);
+                intent.putExtra(Constants.KEY_INTENT_USERINFO, userInfo);
+                RegisterActivity.this.setResult(RESULT_OK, intent);
                 this.finish();
                 break;
+        }
+    }
+
+    private void registerUser(){
+        String username = et_username.getText().toString().trim();
+        String password = et_password.getText().toString().trim();
+        String confirm_pwd = et_confirm_pwd.getText().toString().trim();
+        String phone_number = et_phone_number.getText().toString().trim();
+        String email = et_email.getText().toString().trim();
+        String city = et_city.getText().toString().trim();
+        String suburb = et_suburb.getText().toString().trim();
+        String street = et_street.getText().toString().trim();
+
+        if (!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password) && !TextUtils.isEmpty(confirm_pwd) &&
+                !TextUtils.isEmpty(phone_number) && !TextUtils.isEmpty(email) && !TextUtils.isEmpty(city) &&
+                !TextUtils.isEmpty(suburb) && !TextUtils.isEmpty(street)){
+            if (!password.equals(confirm_pwd)){
+                Toast.makeText(this, getResources().getString(R.string.toast_pwd_different), Toast.LENGTH_SHORT).show();
+            }else{
+                UAddress address = new UAddress(city, suburb, street);
+                UserInfo userInfo = new UserInfo(username, password, phone_number, email, address);
+                registerPresenter.doRegister(userInfo);
+            }
+        }else {
+            if (TextUtils.isEmpty(username)){
+                Toast.makeText(this, getResources().getString(R.string.toast_empty_username), Toast.LENGTH_SHORT).show();
+            }else if (TextUtils.isEmpty(password)){
+                Toast.makeText(this, getResources().getString(R.string.toast_empty_password), Toast.LENGTH_SHORT).show();
+            }else if (TextUtils.isEmpty(confirm_pwd)){
+                Toast.makeText(this, getResources().getString(R.string.toast_confirm_pwd), Toast.LENGTH_SHORT).show();
+            }else if (TextUtils.isEmpty(phone_number)){
+                Toast.makeText(this, getResources().getString(R.string.toast_phone_number), Toast.LENGTH_SHORT).show();
+            }else if (TextUtils.isEmpty(email)){
+                Toast.makeText(this, getResources().getString(R.string.toast_email), Toast.LENGTH_SHORT).show();
+            }else if (TextUtils.isEmpty(city)){
+                Toast.makeText(this, getResources().getString(R.string.toast_city), Toast.LENGTH_SHORT).show();
+            }else if (TextUtils.isEmpty(suburb)){
+                Toast.makeText(this, getResources().getString(R.string.toast_suburb), Toast.LENGTH_SHORT).show();
+            }else if (TextUtils.isEmpty(street)){
+                Toast.makeText(this, getResources().getString(R.string.toast_street), Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

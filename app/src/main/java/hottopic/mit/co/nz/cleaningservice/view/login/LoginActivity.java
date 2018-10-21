@@ -24,6 +24,8 @@ public class LoginActivity extends BaseActivity implements ILoginView{
 
     private LoginPresenterImpl loginPresenterImpl;
 
+    private UserInfo userInfo;
+
     @Override
     public void initView() {
         setContentView(R.layout.activity_login);
@@ -66,8 +68,19 @@ public class LoginActivity extends BaseActivity implements ILoginView{
                 break;
             case R.id.tv_to_register:
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, Constants.INTENT_REQUEST_LOGIN_TO_REGISTER);
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (RESULT_OK == resultCode) {
+            userInfo = (UserInfo) data.getSerializableExtra(Constants.KEY_INTENT_USERINFO);
+            if (!TextUtils.isEmpty(userInfo.getUserName())) {
+                et_username.setText(userInfo.getUserName());
+            }
         }
     }
 
@@ -80,6 +93,7 @@ public class LoginActivity extends BaseActivity implements ILoginView{
             case Constants.RESPONSE_CODE_SUCCESSFUL:
                 Toast.makeText(this, "Login Successful!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                intent.putExtra(Constants.KEY_INTENT_USERINFO, userInfo);
                 startActivity(intent);
                 this.finish();
                 break;

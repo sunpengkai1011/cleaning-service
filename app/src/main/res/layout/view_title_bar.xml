@@ -17,8 +17,8 @@
         android:visibility="invisible">
 
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:src="@drawable/logo_back"
             android:layout_centerInParent="true"
             android:clickable="false"/>
@@ -34,8 +34,8 @@
 
         <ImageView
             android:id="@+id/iv_icon"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:src="@drawable/logo_navigation"
             android:layout_centerInParent="true"
             android:scaleType="centerCrop"

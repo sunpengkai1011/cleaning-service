@@ -4,23 +4,27 @@
     <string name="google_maps_key">AIzaSyA8eJEaPxmkqOSRBC-pNoCQzemiJfIjo5U</string>
     <string name="title_addressAct">Addresses</string>
     <string name="title_mapAct">Map</string>
+    <string name="sure">Sure</string>
+    <string name="cancel">Cancel</string>
 
+    <!-- Dialog -->
+    <string name="dialog_message_wait">Waiting</string>
     <!-- Login -->
-    <string name="hint_username">Please enter the username.</string>
-    <string name="hint_password">Please enter the password.</string>
+    <string name="hint_username">Username.</string>
+    <string name="hint_password">Password.</string>
     <string name="btn_login">Login</string>
-    <string name="btn_to_login">Clicked Here to Register</string>
+    <string name="btn_to_login">Register</string>
     <string name="title_login">LOGIN</string>
     <string name="toast_empty_username">The username is empty. Please enter the username.</string>
     <string name="toast_empty_password">The password is empty. Please enter the password.</string>
 
     <!-- Register -->
-    <string name="hint_confirm_pwd">Please confirm the password.</string>
-    <string name="hint_phone_number">Please enter the phone number.</string>
-    <string name="hint_email">Please enter the email address.</string>
-    <string name="hint_city">Please enter the city.</string>
-    <string name="hint_suburb">Please enter the suburb.</string>
-    <string name="hint_street">Please enter the street.</string>
+    <string name="hint_confirm_pwd">Confirm the password.</string>
+    <string name="hint_phone_number">Phone number.</string>
+    <string name="hint_email">Email address.</string>
+    <string name="hint_city">City.</string>
+    <string name="hint_suburb">Suburb.</string>
+    <string name="hint_street">Street.</string>
     <string name="btn_register">Register</string>
     <string name="title_register">REGISTER</string>
     <string name="toast_confirm_pwd">Please confirm the password.</string>
@@ -46,6 +50,28 @@
     <string name="tab_me">Me</string>
     <string name="title_order">ORDER</string>
     <string name="title_me">ME</string>
+    <string name="title_edit">EDIT</string>
+
+    <!-- User Info -->
+    <string name="user_info_title_phone">Phone Number: </string>
+    <string name="user_info_title_email">Email: </string>
+    <string name="user_info_title_address">Address: </string>
+    <string name="user_info_title_balance">Balance: </string>
+    <string name="user_info_title_city">City: </string>
+    <string name="user_info_title_suburb">Suburb: </string>
+    <string name="user_info_title_street">Street: </string>
+    <string name="user_role_customer">Customer</string>
+    <string name="user_role_staff">Staff</string>
+    <string name="btn_logout">Logout</string>
+    <string name="btn_edit">Edit</string>
+
+    <!-- Discount -->
+    <string name="discount_balance">Balance: </string>
+    <string name="discount_price">Price: </string>
+    <string name="title_discount">DISCOUNT</string>
+    <string name="top_up_successful">Top Up Successful!</string>
+    <string name="top_up_fail">Top Up Fail!</string>
+    <string name="top_up_message">Do you want to top up?</string>
 
     <!--    Permissions    -->
     <string name="permission_rationale_location">Access to the location service is required to demonstrate the \'my location\' feature, which shows your current location on the map.</string>

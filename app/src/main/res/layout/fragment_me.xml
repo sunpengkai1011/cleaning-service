@@ -1,14 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <include android:id="@+id/view_title_bar"
-        layout="@layout/view_title_bar"/>
+    <include
+        android:id="@+id/view_title_bar"
+        layout="@layout/view_title_bar" />
 
-    <TextView
+    <RelativeLayout
+        android:id="@+id/lyt_user_info"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="ME"
-        android:gravity="center"/>
+        android:layout_below="@id/view_title_bar">
 
+        <RelativeLayout
+            android:id="@+id/lyt_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp">
+
+            <ImageView
+                android:id="@+id/iv_user_icon"
+                style="@style/user_icon"
+                android:layout_centerVertical="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/logo_user" />
+
+            <Button
+                android:id="@+id/btn_logout"
+                android:layout_width="70dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:background="@color/background_logout"
+                android:text="@string/btn_logout"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textSize_small"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:layout_toLeftOf="@id/btn_logout"
+                android:layout_toRightOf="@id/iv_user_icon"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/textSize_big"
+                    android:textStyle="bold|italic" />
+
+                <TextView
+                    android:id="@+id/tv_user_role"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/grey"
+                    android:textSize="@dimen/textSize_standard" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/view_divider"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@id/lyt_header"
+            android:background="@color/background_title_bar" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/view_divider"
+            android:layout_marginTop="20dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:paddingRight="10dp">
+
+                <TextView
+                    android:id="@+id/tv_title_phone_number"
+                    style="@style/user_info_title"
+                    android:text="@string/user_info_title_phone" />
+
+                <TextView
+                    android:id="@+id/tv_title_email"
+                    style="@style/user_info_title"
+                    android:layout_below="@id/tv_phone_number"
+                    android:text="@string/user_info_title_email" />
+
+                <TextView
+                    android:id="@+id/tv_title_address"
+                    style="@style/user_info_title"
+                    android:layout_below="@id/tv_email"
+                    android:text="@string/user_info_title_address" />
+
+                <TextView
+                    android:id="@+id/tv_phone_number"
+                    style="@style/user_info_text"
+                    android:layout_toRightOf="@id/tv_title_phone_number" />
+
+                <TextView
+                    android:id="@+id/tv_email"
+                    style="@style/user_info_text"
+                    android:layout_below="@id/tv_phone_number"
+                    android:layout_toRightOf="@id/tv_title_email" />
+
+                <TextView
+                    android:id="@+id/tv_address"
+                    style="@style/user_info_text"
+                    android:layout_below="@id/tv_email"
+                    android:layout_toRightOf="@id/tv_title_address" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_below="@id/tv_address">
+
+                    <TextView
+                        android:id="@+id/tv_title_balance"
+                        style="@style/user_info_title"
+                        android:layout_marginTop="0dp"
+                        android:layout_centerVertical="true"
+                        android:text="@string/user_info_title_balance" />
+
+                    <ImageView
+                        android:id="@+id/iv_top_up"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/logo_money" />
+
+                    <TextView
+                        android:id="@+id/tv_balance"
+                        style="@style/user_info_text"
+                        android:layout_marginTop="0dp"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@id/iv_top_up"
+                        android:layout_toRightOf="@id/tv_title_balance" />
+                </RelativeLayout>
+            </RelativeLayout>
+        </ScrollView>
+    </RelativeLayout>
 </RelativeLayout>

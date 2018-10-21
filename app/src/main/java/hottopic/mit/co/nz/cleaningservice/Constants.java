@@ -19,6 +19,13 @@ public class Constants {
     public static final String SP_KEY = "CLEANING_SERVICE";
     public static final String SP_KEY_USERINFO = "USER_INFO";
 
+    //Intent
+    public static final String KEY_INTENT_USERINFO = "userinfo";
+    public static final int INTENT_REQUEST_ME_TO_EDIT = 200;
+    public static final int INTENT_REQUEST_ME_TO_DISCOUNT = 203;
+    public static final int INTENT_REQUEST_ODER_TO_CREATE = 201;
+    public static final int INTENT_REQUEST_LOGIN_TO_REGISTER = 202;
+
     //Order Status
     public static final int STATUS_ORDER_BOOKED = 1;
     public static final int STATUS_ORDER_START = 2;

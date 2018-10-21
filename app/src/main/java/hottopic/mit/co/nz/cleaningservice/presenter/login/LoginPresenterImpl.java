@@ -21,10 +21,9 @@ public class LoginPresenterImpl implements ILoginPresenter {
 
     @Override
     public void doLogin(String username, String password) {
-        iUserLogin = new UserLoginModel(context, username);
+        iUserLogin = new UserLoginModel(context);
         if (iUserLogin.login(username, password)){
-            userInfo = new UserInfo();
-            userInfo.setUserName(username);
+            userInfo = iUserLogin.getUserInfo();
             iLoginView.loginResult(userInfo, Constants.RESPONSE_CODE_SUCCESSFUL);
         }else {
             iLoginView.loginResult(new UserInfo(), Constants.RESPONSE_CODE_FAIL);

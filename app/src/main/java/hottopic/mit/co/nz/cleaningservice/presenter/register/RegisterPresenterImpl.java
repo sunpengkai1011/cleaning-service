@@ -21,9 +21,9 @@ public class RegisterPresenterImpl implements IRegisterPresenter {
     @Override
     public void doRegister(UserInfo userInfo) {
         if (userInfo != null) {
-            iUserRegister = new UserRegisterModel(context, userInfo);
+            iUserRegister = new UserRegisterModel(context);
             if (iUserRegister.register(userInfo)) {
-                iRegisterView.registerResult(userInfo, Constants.RESPONSE_CODE_SUCCESSFUL);
+                iRegisterView.registerResult(iUserRegister.getUserInfo(), Constants.RESPONSE_CODE_SUCCESSFUL);
             } else {
                 iRegisterView.registerResult(userInfo, Constants.RESPONSE_CODE_FAIL);
             }

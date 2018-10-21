@@ -2,6 +2,8 @@ package hottopic.mit.co.nz.cleaningservice.entities.users;
 
 import java.io.Serializable;
 
+import hottopic.mit.co.nz.cleaningservice.Constants;
+
 public class UserInfo implements Serializable{
     private String userId;
     private String userName;
@@ -20,7 +22,7 @@ public class UserInfo implements Serializable{
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.uAddress = uAddress;
-        userRole = new UserRole();
+        userRole = new UserRole(Constants.ROLE_CUSTOMER);
         balance = 0;
     }
 

@@ -1,4 +1,4 @@
-package hottopic.mit.co.nz.cleaningservice.view.home;
+package hottopic.mit.co.nz.cleaningservice.view.home.order;
 
 import java.util.List;
 

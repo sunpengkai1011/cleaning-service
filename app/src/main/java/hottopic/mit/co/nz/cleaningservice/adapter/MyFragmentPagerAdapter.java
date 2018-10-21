@@ -6,9 +6,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import java.util.List;
 
-import hottopic.mit.co.nz.cleaningservice.view.home.MeFragment;
-import hottopic.mit.co.nz.cleaningservice.view.home.OrderFragment;
-
 public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
 
     private List<Fragment> fragments;

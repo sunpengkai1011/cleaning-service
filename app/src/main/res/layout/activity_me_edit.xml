@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/view_title_bar"
+        layout="@layout/view_title_bar" />
+
+    <RelativeLayout
+        android:id="@+id/lyt_user_info"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/view_title_bar">
+
+        <RelativeLayout
+            android:id="@+id/lyt_header"
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+
+            <ImageView
+                android:id="@+id/iv_user_icon"
+                style="@style/user_icon"
+                android:scaleType="centerCrop"
+                android:src="@drawable/logo_user"
+                android:layout_centerVertical="true"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/iv_user_icon"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/textSize_big"
+                    android:textStyle="bold|italic" />
+
+                <TextView
+                    android:id="@+id/tv_user_role"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/grey"
+                    android:textSize="@dimen/textSize_standard" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/view_divider"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@id/lyt_header"
+            android:background="@color/background_title_bar" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/view_divider"
+            android:layout_marginTop="20dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp">
+
+                <EditText
+                    android:id="@+id/et_phone_number"
+                    style="@style/user_info_edit"
+                    android:layout_toRightOf="@id/tv_title_phone_number"
+                    android:hint="@string/hint_phone_number" />
+
+                <EditText
+                    android:id="@+id/et_email"
+                    style="@style/user_info_edit"
+                    android:layout_below="@id/et_phone_number"
+                    android:layout_toRightOf="@id/tv_title_email"
+                    android:hint="@string/hint_email" />
+
+                <EditText
+                    android:id="@+id/et_city"
+                    style="@style/user_info_edit"
+                    android:layout_below="@id/et_email"
+                    android:hint="@string/hint_city" />
+
+                <EditText
+                    android:id="@+id/et_suburb"
+                    style="@style/user_info_edit"
+                    android:layout_below="@id/et_city"
+                    android:hint="@string/hint_suburb" />
+
+                <EditText
+                    android:id="@+id/et_street"
+                    style="@style/user_info_edit"
+                    android:layout_below="@id/et_suburb"
+                    android:hint="@string/hint_street" />
+
+                <Button
+                    android:id="@+id/btn_edit"
+                    style="@style/general_button"
+                    android:layout_below="@id/et_street"
+                    android:layout_marginTop="40dp"
+                    android:text="@string/btn_edit" />
+            </RelativeLayout>
+        </ScrollView>
+    </RelativeLayout>
+
+</RelativeLayout>

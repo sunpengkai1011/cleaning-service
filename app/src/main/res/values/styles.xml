@@ -9,15 +9,51 @@
     </style>
 
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:windowBackground">@color/colorPrimary</item>
+        <item name="android:windowBackground">@drawable/splash</item>
     </style>
 
+    <!-- TabLayout -->
     <style name="MyTabLayoutTextAppearance" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="android:textSize">@dimen/textSize_big</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:gravity">center</item>
     </style>
 
+    <!-- UserInfo -->
+    <style name="user_icon">
+        <item name="android:layout_width">@dimen/size_user_icon</item>
+        <item name="android:layout_height">@dimen/size_user_icon</item>
+        <item name="android:layout_marginLeft">@dimen/user_margin_left</item>
+    </style>
+
+    <style name="user_info_title">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/textSize_middle</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginTop">@dimen/user_margin_top</item>
+        <item name="android:layout_marginLeft">@dimen/user_margin_left</item>
+    </style>
+
+    <style name="user_info_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/textSize_middle</item>
+        <item name="android:layout_marginTop">@dimen/user_margin_top</item>
+        <item name="android:layout_marginLeft">@dimen/user_margin_left</item>
+    </style>
+
+    <style name="user_info_edit">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/textSize_middle</item>
+        <item name="android:layout_marginTop">@dimen/user_margin_top</item>
+        <item name="android:layout_marginLeft">@dimen/user_margin_left</item>
+        <item name="android:layout_marginRight">@dimen/user_margin_left</item>
+    </style>
 
     <!-- Login -->
     <style name="et_login">
@@ -38,6 +74,7 @@
         <item name="android:textSize">@dimen/textSize_big</item>
     </style>
 
+    <!-- Title Bar-->
     <style name="style_text_title">
         <item name="android:layout_width">200dp</item>
         <item name="android:layout_height">match_parent</item>

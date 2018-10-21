@@ -39,4 +39,9 @@ public class UAddress implements Serializable{
     public void setStreet(String street) {
         this.street = street;
     }
+
+    @Override
+    public String toString() {
+        return street + ", " + suburb + ", " + city;
+    }
 }

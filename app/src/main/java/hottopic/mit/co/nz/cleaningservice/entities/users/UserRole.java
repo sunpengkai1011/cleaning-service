@@ -9,6 +9,10 @@ public class UserRole implements Serializable{
     public UserRole() {
     }
 
+    public UserRole(int roleId) {
+        this.roleId = roleId;
+    }
+
     public UserRole(int roleId, String roleName) {
         this.roleId = roleId;
         this.roleName = roleName;
