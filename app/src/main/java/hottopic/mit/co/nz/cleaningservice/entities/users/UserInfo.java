@@ -5,7 +5,7 @@ import java.io.Serializable;
 import hottopic.mit.co.nz.cleaningservice.Constants;
 
 public class UserInfo implements Serializable{
-    private String userId;
+    private int userId;
     private String userName;
     private String password;
     private String phoneNumber;
@@ -26,11 +26,11 @@ public class UserInfo implements Serializable{
         balance = 0;
     }
 
-    public String getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 

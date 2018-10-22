@@ -89,4 +89,41 @@
         <item name="android:focusableInTouchMode">true</item>
     </style>
 
+    <!-- Order -->
+    <style name="orders_text">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/textSize_middle</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="order_booking_title">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/textSize_middle</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="order_booking_text">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/textSize_middle</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:gravity">right|center_vertical</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">20dp</item>
+    </style>
+
+    <!-- Date Picker -->
+    <style name="time_dialog" parent="android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@color/background</item>
+    </style>
+
 </resources>

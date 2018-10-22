@@ -1,13 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <include android:id="@+id/view_title_bar"
-        layout="@layout/view_title_bar"/>
+    <include
+        android:id="@+id/view_title_bar"
+        layout="@layout/view_title_bar" />
 
-    <TextView
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/srl_orders"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="ORDER"
-        android:gravity="center"/>
+        android:layout_height="wrap_content"
+        android:layout_below="@id/view_title_bar">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/lyt_title"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/orders_text"
+                    android:layout_weight="3"
+                    android:text="Date" />
+
+                <TextView
+                    style="@style/orders_text"
+                    android:layout_weight="6"
+                    android:text="Service Type" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/view_divider"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_below="@id/lyt_title"
+                android:background="@color/background_title_bar" />
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_orders"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/view_divider" />
+        </RelativeLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </RelativeLayout>

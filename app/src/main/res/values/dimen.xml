@@ -9,6 +9,9 @@
     <dimen name="user_margin_left">20dp</dimen>
     <dimen name="user_margin_top">20dp</dimen>
 
+    <!-- Spinner -->
+    <dimen name="spinner_height">60dp</dimen>
+
     <!-- Text Size -->
     <dimen name="textSize_large">24sp</dimen>
     <dimen name="textSize_big">20sp</dimen>

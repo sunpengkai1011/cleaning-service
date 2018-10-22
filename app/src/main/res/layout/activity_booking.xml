@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/view_title_bar"
+        layout="@layout/view_title_bar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/view_title_bar"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/textSize_big"
+                android:textStyle="bold|italic" />
+
+            <View
+                android:id="@+id/view_divider"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_below="@id/tv_username"
+                android:layout_marginTop="20dp"
+                android:background="@color/background_title_bar" />
+
+            <RelativeLayout
+                android:id="@+id/lyt_service_type"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="20dp"
+                android:layout_below="@id/view_divider">
+
+                <TextView
+                    android:id="@+id/tv_title_service_type"
+                    style="@style/order_booking_title"
+                    android:layout_centerVertical="true"
+                    android:text="@string/title_service_type" />
+
+                <Spinner
+                    android:id="@+id/sp_service_type"
+                    style="@style/order_booking_text"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:layout_toRightOf="@id/tv_title_service_type"/>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_title_price_per_hour"
+                style="@style/order_booking_title"
+                android:layout_below="@id/lyt_service_type"
+                android:layout_marginTop="20dp"
+                android:text="@string/title_price_per_hour" />
+
+            <TextView
+                android:id="@+id/tv_price_per_hour"
+                style="@style/order_booking_text"
+                android:layout_below="@id/lyt_service_type"
+                android:layout_marginTop="20dp"
+                android:layout_toRightOf="@id/tv_title_price_per_hour" />
+
+            <TextView
+                android:id="@+id/tv_title_date"
+                style="@style/order_booking_title"
+                android:layout_below="@id/tv_title_price_per_hour"
+                android:layout_marginTop="20dp"
+                android:text="@string/title_date" />
+
+            <TextView
+                android:id="@+id/tv_date"
+                style="@style/order_booking_text"
+                android:layout_below="@id/tv_price_per_hour"
+                android:layout_marginTop="20dp"
+                android:layout_toRightOf="@id/tv_title_date" />
+
+
+            <TextView
+                android:id="@+id/tv_title_city"
+                style="@style/order_booking_title"
+                android:layout_below="@id/tv_title_date"
+                android:layout_marginTop="20dp"
+                android:text="@string/user_info_title_city" />
+
+            <EditText
+                android:id="@+id/et_city"
+                style="@style/order_booking_text"
+                android:layout_alignBaseline="@id/tv_title_city"
+                android:layout_below="@id/tv_date"
+                android:layout_marginTop="20dp"
+                android:layout_toRightOf="@id/tv_title_city"
+                android:hint="@string/hint_city" />
+
+            <TextView
+                android:id="@+id/tv_title_suburb"
+                style="@style/order_booking_title"
+                android:layout_below="@id/et_city"
+                android:layout_marginTop="20dp"
+                android:text="@string/user_info_title_suburb" />
+
+            <EditText
+                android:id="@+id/et_suburb"
+                style="@style/order_booking_text"
+                android:layout_alignBaseline="@id/tv_title_suburb"
+                android:layout_below="@id/et_city"
+                android:layout_marginTop="20dp"
+                android:layout_toRightOf="@id/tv_title_suburb"
+                android:hint="@string/hint_suburb" />
+
+            <TextView
+                android:id="@+id/tv_title_street"
+                style="@style/order_booking_title"
+                android:layout_below="@id/et_suburb"
+                android:layout_marginTop="20dp"
+                android:text="@string/user_info_title_street" />
+
+            <EditText
+                android:id="@+id/et_street"
+                style="@style/order_booking_text"
+                android:layout_alignBaseline="@id/tv_title_street"
+                android:layout_below="@id/et_suburb"
+                android:layout_marginTop="20dp"
+                android:layout_toRightOf="@id/tv_title_street"
+                android:hint="@string/hint_street" />
+
+            <Button
+                android:id="@+id/btn_booking"
+                style="@style/general_button"
+                android:layout_below="@id/et_street"
+                android:layout_marginTop="40dp"
+                android:text="Booking" />
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

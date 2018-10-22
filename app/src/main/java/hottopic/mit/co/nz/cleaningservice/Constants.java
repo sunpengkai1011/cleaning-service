@@ -18,18 +18,23 @@ public class Constants {
     //SharedPreference
     public static final String SP_KEY = "CLEANING_SERVICE";
     public static final String SP_KEY_USERINFO = "USER_INFO";
+    public static final String SP_KEY_ORDERS = "ORDERS";
 
     //Intent
     public static final String KEY_INTENT_USERINFO = "userinfo";
+    public static final String KEY_INTENT_BOOKING = "booking";
+    public static final String KEY_INTENT_ORDER = "order";
+    public static final String KEY_INTENT_ORDER_POSITION = "order_position";
     public static final int INTENT_REQUEST_ME_TO_EDIT = 200;
     public static final int INTENT_REQUEST_ME_TO_DISCOUNT = 203;
     public static final int INTENT_REQUEST_ODER_TO_CREATE = 201;
     public static final int INTENT_REQUEST_LOGIN_TO_REGISTER = 202;
+    public static final int INTENT_REQUEST_ORDER_TO_DETAIL = 204;
 
     //Order Status
     public static final int STATUS_ORDER_BOOKED = 1;
-    public static final int STATUS_ORDER_START = 2;
-    public static final int STATUS_ORDER_END = 3;
+    public static final int STATUS_ORDER_STARTED = 2;
+    public static final int STATUS_ORDER_FINISHED = 3;
     public static final int STATUS_ORDER_PAID = 4;
 
     //User Role

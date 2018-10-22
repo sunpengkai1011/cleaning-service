@@ -11,6 +11,9 @@ import com.google.gson.Gson;
 
 import java.lang.reflect.Type;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import hottopic.mit.co.nz.cleaningservice.Constants;
 
@@ -91,6 +94,11 @@ public class GeneralUtil {
         return gson.fromJson(json, type);
     }
 
+    public static<T> T fromJson(String json, Type type){
+        Gson gson = new Gson();
+        return gson.fromJson(json, type);
+    }
+
     public static void storDataBySP(Context context, String key, String data){
         SharedPreferences preferences = context.getSharedPreferences(Constants.SP_KEY, Context.MODE_PRIVATE);
         preferences.edit().putString(key, data).commit();
@@ -99,5 +107,30 @@ public class GeneralUtil {
     public static String getDataFromSP(Context context, String key){
         SharedPreferences preferences = context.getSharedPreferences(Constants.SP_KEY, Context.MODE_PRIVATE);
         return preferences.getString(key, "");
+    }
+
+    public static String getCurrentTime(){
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.ENGLISH);
+        Date now = new Date();
+        return sdf.format(now);
+    }
+
+    public static int calculateDuration(String startTime, String endTime){
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.ENGLISH);
+        String[] startStr = startTime.split(" ");
+        String[] startHourStr = startStr[1].split(":");
+        String[] endStr = endTime.split(" ");
+        String[] endHourStr = endStr[1].split(":");
+        int endMin = Integer.valueOf(endHourStr[1]);
+        int startMin = Integer.valueOf(startHourStr[1]);
+        int endHour = Integer.valueOf(endHourStr[0]);
+        int startHour = Integer.valueOf(startHourStr[0]);
+        int duration = 0;
+        if (endMin > startMin && endMin - startMin > 30){
+            duration = endHour - startHour + 1;
+        }else{
+            duration = endHour - startHour;
+        }
+        return duration;
     }
 }

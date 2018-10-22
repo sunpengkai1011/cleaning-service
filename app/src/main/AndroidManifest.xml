@@ -39,6 +39,8 @@
         <activity android:name=".view.register.RegisterActivity" />
         <activity android:name=".view.home.me.MeEditActivity" />
         <activity android:name=".view.home.me.DiscountActivity" />
+        <activity android:name=".view.home.order.OrderBookingActivity" />
+        <activity android:name=".view.home.order.OrderDetailActivity" />
     </application>
 
 

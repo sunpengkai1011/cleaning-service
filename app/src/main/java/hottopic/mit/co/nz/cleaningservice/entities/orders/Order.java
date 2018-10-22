@@ -10,18 +10,18 @@ public class Order implements Serializable{
     private int userId;
     private ServiceType serviceType;
     private UAddress uAddress;
-    private int date;
+    private String date;
     private int orderStatus;
     private String feedback;
     private int duration;
     private float amount;
-    private int startTime;
-    private int endTime;
+    private String startTime;
+    private String endTime;
 
     public Order() {
     }
 
-    public Order(int userId, ServiceType serviceType, UAddress uAddress, int date) {
+    public Order(int userId, ServiceType serviceType, UAddress uAddress, String date) {
         this.userId = userId;
         this.serviceType = serviceType;
         this.uAddress = uAddress;
@@ -30,8 +30,8 @@ public class Order implements Serializable{
         orderStatus = Constants.STATUS_ORDER_BOOKED;
         duration = 0;
         amount = 0;
-        startTime = 0;
-        endTime = 0;
+        startTime = "";
+        endTime = "";
     }
 
     public int getOrderId() {
@@ -66,11 +66,11 @@ public class Order implements Serializable{
         this.uAddress = uAddress;
     }
 
-    public int getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(int date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -106,19 +106,19 @@ public class Order implements Serializable{
         this.amount = amount;
     }
 
-    public int getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(int startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
-    public int getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(int endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 }

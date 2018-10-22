@@ -34,12 +34,13 @@
     <string name="toast_city">The city is empty. Please enter the city.</string>
     <string name="toast_suburb">The suburb is empty. Please enter the suburb.</string>
     <string name="toast_street">The street is empty. Please enter the street.</string>
+    <string name="toast_feedback">The feedback is empty. Please enter the feedback.</string>
 
     <!--Order Status -->
-    <string name="status_order_booked">Booked</string>
-    <string name="status_order_start">Start Service</string>
-    <string name="status_order_end">End Service</string>
-    <string name="status_order_paid">Paid</string>
+    <string name="status_booked">Booked</string>
+    <string name="status_started">Started</string>
+    <string name="status_finished">Finished</string>
+    <string name="status_paid">Paid</string>
 
     <!-- User Role -->
     <string name="role_customer">Customer</string>
@@ -72,6 +73,31 @@
     <string name="top_up_successful">Top Up Successful!</string>
     <string name="top_up_fail">Top Up Fail!</string>
     <string name="top_up_message">Do you want to top up?</string>
+
+    <!-- Order -->
+    <string name="title_service_type">Service Type: </string>
+    <string name="title_price_per_hour">Price(Per Hour): </string>
+    <string name="title_date">Service Date: </string>
+    <string name="title_start_time">Start Time: </string>
+    <string name="title_finished_time">Finished Time: </string>
+    <string name="title_status">Order Status: </string>
+    <string name="title_duration">Duration: </string>
+    <string name="title_amount">Amount: </string>
+    <string name="title_feedback">Feedback: </string>
+    <string name="hint_feedback">Feedback.</string>
+    <string name="title_booking">BOOKING</string>
+    <string name="btn_booking">Booking</string>
+    <string name="btn_started">Started</string>
+    <string name="btn_finished">Finished</string>
+    <string name="btn_payment">Payment</string>
+    <string name="booking_fail">Booking Failed</string>
+    <string name="booking_success">Booking Successful</string>
+    <string name="title_date_picker">The Service Date</string>
+    <string name="title_order_detail">ORDER DETAIL</string>
+    <string name="toast_service_started_success">Service is starting</string>
+    <string name="toast_service_finished_success">Service has finished</string>
+    <string name="toast_service_started_failed">Service starts request is failed</string>
+    <string name="toast_service_finished_failed">Service finished request is failed</string>
 
     <!--    Permissions    -->
     <string name="permission_rationale_location">Access to the location service is required to demonstrate the \'my location\' feature, which shows your current location on the map.</string>
