@@ -25,11 +25,14 @@ public class Constants {
     public static final String KEY_INTENT_BOOKING = "booking";
     public static final String KEY_INTENT_ORDER = "order";
     public static final String KEY_INTENT_ORDER_POSITION = "order_position";
+    public static final String KEY_INTENT_FEEDBACK = "feedback";
     public static final int INTENT_REQUEST_ME_TO_EDIT = 200;
     public static final int INTENT_REQUEST_ME_TO_DISCOUNT = 203;
     public static final int INTENT_REQUEST_ODER_TO_CREATE = 201;
     public static final int INTENT_REQUEST_LOGIN_TO_REGISTER = 202;
     public static final int INTENT_REQUEST_ORDER_TO_DETAIL = 204;
+    public static final int INTENT_REQUEST_DETAIL_TO_PAYMENT = 205;
+    public static final int INTENT_REQUEST_DICOUNT_TO_PAYMENT = 206;
 
     //Order Status
     public static final int STATUS_ORDER_BOOKED = 1;
@@ -40,6 +43,10 @@ public class Constants {
     //User Role
     public static final int ROLE_CUSTOMER = 1;
     public static final int ROLE_STAFF = 2;
+
+    //Payment
+    public static final int TYPE_PAYMENT_CARD = 0;
+    public static final int TYPE_PAYMENT_BALANCE = 1;
 
     public static Map<String, Long> realTime_depart = new HashMap<>();
     public static Map<String, Long> realTime_arrive = new HashMap<>();

@@ -89,8 +89,11 @@ public class MeFragment extends Fragment implements View.OnClickListener{
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (getActivity().RESULT_OK == resultCode) {
-            if (Constants.INTENT_REQUEST_ME_TO_EDIT == requestCode|| Constants.INTENT_REQUEST_ME_TO_DISCOUNT == requestCode) {
-                userInfo = (UserInfo) data.getSerializableExtra(Constants.KEY_INTENT_USERINFO);
+            if (Constants.INTENT_REQUEST_ME_TO_EDIT == requestCode|| Constants.INTENT_REQUEST_ME_TO_DISCOUNT == requestCode ||
+                    Constants.INTENT_REQUEST_ORDER_TO_DETAIL == requestCode) {
+                if (data != null){
+                    userInfo = (UserInfo) data.getSerializableExtra(Constants.KEY_INTENT_USERINFO);
+                }
                 setData();
             }
         }
@@ -102,7 +105,7 @@ public class MeFragment extends Fragment implements View.OnClickListener{
             if (userInfo.getUserRole().getRoleId() == Constants.ROLE_CUSTOMER){
                 tv_user_role.setText(getActivity().getResources().getString(R.string.role_customer));
             }else {
-                tv_user_role.setText(getActivity().getResources().getString(R.string.role_customer));
+                tv_user_role.setText(getActivity().getResources().getString(R.string.role_staff));
             }
             tv_phone_number.setText(userInfo.getPhoneNumber());
             tv_email.setText(userInfo.getEmail());

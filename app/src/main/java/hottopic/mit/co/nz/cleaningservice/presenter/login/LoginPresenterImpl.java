@@ -4,8 +4,8 @@ import android.content.Context;
 
 import hottopic.mit.co.nz.cleaningservice.Constants;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
-import hottopic.mit.co.nz.cleaningservice.model.login.IUserLogin;
-import hottopic.mit.co.nz.cleaningservice.model.login.UserLoginModel;
+import hottopic.mit.co.nz.cleaningservice.model.user.IUserLogin;
+import hottopic.mit.co.nz.cleaningservice.model.user.UserLoginModel;
 import hottopic.mit.co.nz.cleaningservice.view.login.ILoginView;
 
 public class LoginPresenterImpl implements ILoginPresenter {
@@ -23,7 +23,7 @@ public class LoginPresenterImpl implements ILoginPresenter {
     public void doLogin(String username, String password) {
         iUserLogin = new UserLoginModel(context);
         if (iUserLogin.login(username, password)){
-            userInfo = iUserLogin.getUserInfo();
+            userInfo = iUserLogin.getUserInfo(username);
             iLoginView.loginResult(userInfo, Constants.RESPONSE_CODE_SUCCESSFUL);
         }else {
             iLoginView.loginResult(new UserInfo(), Constants.RESPONSE_CODE_FAIL);

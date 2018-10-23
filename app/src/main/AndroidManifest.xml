@@ -41,6 +41,7 @@
         <activity android:name=".view.home.me.DiscountActivity" />
         <activity android:name=".view.home.order.OrderBookingActivity" />
         <activity android:name=".view.home.order.OrderDetailActivity" />
+        <activity android:name=".view.payment.PaymentActivity" />
     </application>
 
 

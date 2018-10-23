@@ -4,8 +4,8 @@ import android.content.Context;
 
 import hottopic.mit.co.nz.cleaningservice.Constants;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
-import hottopic.mit.co.nz.cleaningservice.model.home.IUserInfoEdit;
-import hottopic.mit.co.nz.cleaningservice.model.home.UserInfoEditModel;
+import hottopic.mit.co.nz.cleaningservice.model.user.IUserInfoEdit;
+import hottopic.mit.co.nz.cleaningservice.model.user.UserInfoEditModel;
 import hottopic.mit.co.nz.cleaningservice.view.home.me.IMeEditView;
 
 public class MeEditPresenterImpl implements IMeEditPresenter {

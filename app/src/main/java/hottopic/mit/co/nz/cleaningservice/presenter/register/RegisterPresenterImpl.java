@@ -4,8 +4,8 @@ import android.content.Context;
 
 import hottopic.mit.co.nz.cleaningservice.Constants;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
-import hottopic.mit.co.nz.cleaningservice.model.register.IUserRegister;
-import hottopic.mit.co.nz.cleaningservice.model.register.UserRegisterModel;
+import hottopic.mit.co.nz.cleaningservice.model.user.IUserRegister;
+import hottopic.mit.co.nz.cleaningservice.model.user.UserRegisterModel;
 import hottopic.mit.co.nz.cleaningservice.view.register.IRegisterView;
 
 public class RegisterPresenterImpl implements IRegisterPresenter {
@@ -23,7 +23,7 @@ public class RegisterPresenterImpl implements IRegisterPresenter {
         if (userInfo != null) {
             iUserRegister = new UserRegisterModel(context);
             if (iUserRegister.register(userInfo)) {
-                iRegisterView.registerResult(iUserRegister.getUserInfo(), Constants.RESPONSE_CODE_SUCCESSFUL);
+                iRegisterView.registerResult(iUserRegister.getUserInfo(userInfo.getUserName()), Constants.RESPONSE_CODE_SUCCESSFUL);
             } else {
                 iRegisterView.registerResult(userInfo, Constants.RESPONSE_CODE_FAIL);
             }

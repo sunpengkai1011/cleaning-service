@@ -2,14 +2,13 @@ package hottopic.mit.co.nz.cleaningservice.presenter.home;
 
 import android.content.Context;
 
-import java.util.IdentityHashMap;
 import java.util.List;
 
 import hottopic.mit.co.nz.cleaningservice.Constants;
 import hottopic.mit.co.nz.cleaningservice.entities.discounts.Discount;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
-import hottopic.mit.co.nz.cleaningservice.model.home.DiscountModel;
-import hottopic.mit.co.nz.cleaningservice.model.home.IDiscount;
+import hottopic.mit.co.nz.cleaningservice.model.payment.DiscountModel;
+import hottopic.mit.co.nz.cleaningservice.model.payment.IDiscount;
 import hottopic.mit.co.nz.cleaningservice.view.home.me.IDiscountView;
 
 public class DiscountPresenterImpl implements IDiscountPresenter{

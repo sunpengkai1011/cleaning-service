@@ -22,6 +22,7 @@ import hottopic.mit.co.nz.cleaningservice.Constants;
 import hottopic.mit.co.nz.cleaningservice.R;
 import hottopic.mit.co.nz.cleaningservice.adapter.OrderAdapter;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.Order;
+import hottopic.mit.co.nz.cleaningservice.entities.orders.ServiceType;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
 import hottopic.mit.co.nz.cleaningservice.presenter.home.OrderPresenterImpl;
 
@@ -140,5 +141,25 @@ public class OrderFragment extends Fragment implements IOrderView, View.OnClickL
     private void listVisible(int visible){
         lyt_title.setVisibility(visible);
         rv_orders.setVisibility(visible);
+    }
+
+    @Override
+    public void getStartedResult(int code) {
+
+    }
+
+    @Override
+    public void getFinishedResult(int code) {
+
+    }
+
+    @Override
+    public void bookingResult(int code) {
+
+    }
+
+    @Override
+    public void getServiceTypeResult(List<ServiceType> types, int code) {
+
     }
 }

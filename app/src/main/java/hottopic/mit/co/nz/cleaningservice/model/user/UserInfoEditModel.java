@@ -1,18 +1,16 @@
-package hottopic.mit.co.nz.cleaningservice.model.register;
+package hottopic.mit.co.nz.cleaningservice.model.user;
 
 import android.content.Context;
-
-import com.google.gson.Gson;
 
 import hottopic.mit.co.nz.cleaningservice.Constants;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
 import hottopic.mit.co.nz.cleaningservice.utils.GeneralUtil;
 
-public class UserRegisterModel implements IUserRegister {
-    private UserInfo userInfo;
+public class UserInfoEditModel implements IUserInfoEdit {
     private Context context;
+    private UserInfo userInfo;
 
-    public UserRegisterModel(Context context){
+    public UserInfoEditModel(Context context) {
         this.context = context;
     }
 
@@ -23,16 +21,9 @@ public class UserRegisterModel implements IUserRegister {
     }
 
     @Override
-    public boolean register(UserInfo userInfo) {
-        if (fakeRegisterRequest(userInfo)){
-            return true;
-        }
-        return false;
-    }
-
-    private boolean fakeRegisterRequest(UserInfo userInfo){
+    public boolean editUserInfo(UserInfo userInfo) {
         if (userInfo != null){
-            GeneralUtil.storDataBySP(context, userInfo.getUserName(), GeneralUtil.toJson(userInfo, UserInfo.class));
+            GeneralUtil.storDataBySP(context, Constants.SP_KEY_USERINFO, GeneralUtil.toJson(userInfo, UserInfo.class));
             return true;
         }
         return false;

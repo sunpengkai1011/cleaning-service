@@ -1,4 +1,4 @@
-package hottopic.mit.co.nz.cleaningservice.model.home;
+package hottopic.mit.co.nz.cleaningservice.model.user;
 
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
 

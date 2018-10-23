@@ -1,4 +1,4 @@
-package hottopic.mit.co.nz.cleaningservice.model.home;
+package hottopic.mit.co.nz.cleaningservice.model.payment;
 
 import android.content.Context;
 

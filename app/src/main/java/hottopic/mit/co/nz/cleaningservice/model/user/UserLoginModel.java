@@ -1,4 +1,4 @@
-package hottopic.mit.co.nz.cleaningservice.model.login;
+package hottopic.mit.co.nz.cleaningservice.model.user;
 
 import android.content.Context;
 
@@ -15,8 +15,8 @@ public class UserLoginModel implements IUserLogin {
     }
 
     @Override
-    public UserInfo getUserInfo() {
-        userInfo = GeneralUtil.fromJson(GeneralUtil.getDataFromSP(context, Constants.SP_KEY_USERINFO), UserInfo.class);
+    public UserInfo getUserInfo(String username) {
+        userInfo = GeneralUtil.fromJson(GeneralUtil.getDataFromSP(context, username), UserInfo.class);
         return userInfo;
     }
 

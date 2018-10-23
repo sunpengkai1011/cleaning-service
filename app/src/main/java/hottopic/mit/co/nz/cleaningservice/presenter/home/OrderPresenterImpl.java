@@ -2,30 +2,23 @@ package hottopic.mit.co.nz.cleaningservice.presenter.home;
 
 import android.content.Context;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import hottopic.mit.co.nz.cleaningservice.Constants;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.Order;
+import hottopic.mit.co.nz.cleaningservice.entities.orders.ServiceType;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
-import hottopic.mit.co.nz.cleaningservice.model.home.IOrder;
-import hottopic.mit.co.nz.cleaningservice.model.home.OrderModel;
-import hottopic.mit.co.nz.cleaningservice.view.home.order.IOrderDetailView;
+import hottopic.mit.co.nz.cleaningservice.model.order.IOrder;
+import hottopic.mit.co.nz.cleaningservice.model.order.OrderModel;
 import hottopic.mit.co.nz.cleaningservice.view.home.order.IOrderView;
 
 public class OrderPresenterImpl implements IOrderPresenter{
     private IOrder iOrder;
     private IOrderView iOrderView;
-    private IOrderDetailView iOrderDetailView;
 
     public OrderPresenterImpl(Context context, IOrderView iOrderView) {
         this.iOrderView = iOrderView;
         iOrder = new OrderModel(context);
-    }
-
-    public OrderPresenterImpl(Context context, IOrderDetailView iOrderDetailView) {
-        this.iOrder = new OrderModel(context);
-        this.iOrderDetailView = iOrderDetailView;
     }
 
     @Override
@@ -41,18 +34,41 @@ public class OrderPresenterImpl implements IOrderPresenter{
     @Override
     public void startedOrder(int position, String started) {
         if (iOrder.startedOrder(position, started)){
-            iOrderDetailView.getStartedResult(Constants.RESPONSE_CODE_SUCCESSFUL);
+            iOrderView.getStartedResult(Constants.RESPONSE_CODE_SUCCESSFUL);
         }else{
-            iOrderDetailView.getStartedResult(Constants.RESPONSE_CODE_FAIL);
+            iOrderView.getStartedResult(Constants.RESPONSE_CODE_FAIL);
         }
     }
 
     @Override
     public void finishedOrder(int position, String finished) {
         if (iOrder.finishedOrder(position, finished)){
-            iOrderDetailView.getFinishedResult(Constants.RESPONSE_CODE_SUCCESSFUL);
+            iOrderView.getFinishedResult(Constants.RESPONSE_CODE_SUCCESSFUL);
         }else{
-            iOrderDetailView.getFinishedResult(Constants.RESPONSE_CODE_FAIL);
+            iOrderView.getFinishedResult(Constants.RESPONSE_CODE_FAIL);
+        }
+    }
+
+    @Override
+    public void getServiceType() {
+        List<ServiceType> types = iOrder.getServiceTypes();
+        if (types != null){
+            iOrderView.getServiceTypeResult(types, Constants.RESPONSE_CODE_SUCCESSFUL);
+        }else {
+            iOrderView.getServiceTypeResult(types, Constants.RESPONSE_CODE_FAIL);
+        }
+    }
+
+    @Override
+    public void bookingService(Order order, UserInfo userInfo) {
+        if (order != null){
+            if (iOrder.orderBooking(order, userInfo)){
+                iOrderView.bookingResult(Constants.RESPONSE_CODE_SUCCESSFUL);
+            }else {
+                iOrderView.bookingResult(Constants.RESPONSE_CODE_FAIL);
+            }
+        }else {
+            iOrderView.bookingResult(Constants.RESPONSE_CODE_FAIL);
         }
     }
 }

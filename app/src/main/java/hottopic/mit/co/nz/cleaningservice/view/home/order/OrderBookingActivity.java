@@ -27,12 +27,12 @@ import hottopic.mit.co.nz.cleaningservice.entities.orders.Order;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.ServiceType;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UAddress;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
-import hottopic.mit.co.nz.cleaningservice.presenter.home.OrderBookingPresenterImpl;
+import hottopic.mit.co.nz.cleaningservice.presenter.home.OrderPresenterImpl;
 import hottopic.mit.co.nz.cleaningservice.utils.GeneralUtil;
 import hottopic.mit.co.nz.cleaningservice.utils.mdatepicker.CustomDatePicker;
 import hottopic.mit.co.nz.cleaningservice.view.home.HomeActivity;
 
-public class OrderBookingActivity extends BaseActivity implements IOrderBookingView, AdapterView.OnItemSelectedListener {
+public class OrderBookingActivity extends BaseActivity implements IOrderView, AdapterView.OnItemSelectedListener {
     private TextView tv_title, tv_username, tv_price_per_hour, tv_date;
     private EditText et_city, et_suburb, et_street;
     private Spinner sp_service_type;
@@ -46,7 +46,7 @@ public class OrderBookingActivity extends BaseActivity implements IOrderBookingV
 
     private CustomDatePicker datePicker;
 
-    private OrderBookingPresenterImpl orderBookingPresenter;
+    private OrderPresenterImpl orderPresenter;
 
     @Override
     public void initView() {
@@ -68,8 +68,8 @@ public class OrderBookingActivity extends BaseActivity implements IOrderBookingV
         tv_title.setText(getResources().getString(R.string.title_booking));
         lyt_back.setVisibility(View.VISIBLE);
 
-        orderBookingPresenter = new OrderBookingPresenterImpl(this, this);
-        orderBookingPresenter.getServiceType();
+        orderPresenter = new OrderPresenterImpl(this, this);
+        orderPresenter.getServiceType();
 
         userInfo = (UserInfo) getIntent().getSerializableExtra(Constants.KEY_INTENT_USERINFO);
         if (userInfo != null && !TextUtils.isEmpty(userInfo.getUserName())){
@@ -194,7 +194,7 @@ public class OrderBookingActivity extends BaseActivity implements IOrderBookingV
         if (!TextUtils.isEmpty(city) && !TextUtils.isEmpty(suburb) && !TextUtils.isEmpty(street)){
             uAddress = new UAddress(city, suburb, street);
             Order order = new Order(userInfo.getUserId(), serviceType, uAddress, date);
-            orderBookingPresenter.bookingService(order, userInfo);
+            orderPresenter.bookingService(order, userInfo);
         }else {
             if (TextUtils.isEmpty(city)){
                 if (TextUtils.isEmpty(city)){
@@ -206,5 +206,20 @@ public class OrderBookingActivity extends BaseActivity implements IOrderBookingV
                 }
             }
         }
+    }
+
+    @Override
+    public void getOrdersResult(List<Order> orders, int code) {
+
+    }
+
+    @Override
+    public void getStartedResult(int code) {
+
+    }
+
+    @Override
+    public void getFinishedResult(int code) {
+
     }
 }

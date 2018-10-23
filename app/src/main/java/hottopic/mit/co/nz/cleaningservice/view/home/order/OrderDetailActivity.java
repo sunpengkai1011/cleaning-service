@@ -9,17 +9,20 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
+
 import hottopic.mit.co.nz.cleaningservice.BaseActivity;
 import hottopic.mit.co.nz.cleaningservice.Constants;
 import hottopic.mit.co.nz.cleaningservice.R;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.Order;
+import hottopic.mit.co.nz.cleaningservice.entities.orders.ServiceType;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
-import hottopic.mit.co.nz.cleaningservice.presenter.home.IOrderPresenter;
 import hottopic.mit.co.nz.cleaningservice.presenter.home.OrderPresenterImpl;
 import hottopic.mit.co.nz.cleaningservice.utils.GeneralUtil;
 import hottopic.mit.co.nz.cleaningservice.view.home.HomeActivity;
+import hottopic.mit.co.nz.cleaningservice.view.payment.PaymentActivity;
 
-public class OrderDetailActivity extends BaseActivity implements IOrderDetailView{
+public class OrderDetailActivity extends BaseActivity implements IOrderView{
     private TextView tv_title, tv_service_type, tv_price_per_hour, tv_date,
             tv_address, tv_status, tv_start_time, tv_finished_time,
             tv_duration, tv_amount, tv_feedback, tv_title_start_time,
@@ -105,9 +108,16 @@ public class OrderDetailActivity extends BaseActivity implements IOrderDetailVie
                 break;
             case R.id.btn_payment:
                 String feedback = et_feedback.getText().toString().trim();
+                Intent intent = new Intent(OrderDetailActivity.this, PaymentActivity.class);
                 if (!TextUtils.isEmpty(feedback)){
-
+                    intent.putExtra(Constants.KEY_INTENT_FEEDBACK, feedback);
+                }else{
+                    intent.putExtra(Constants.KEY_INTENT_FEEDBACK, "");
                 }
+                intent.putExtra(Constants.KEY_INTENT_ORDER_POSITION, position);
+                intent.putExtra(Constants.KEY_INTENT_USERINFO, userInfo);
+                intent.putExtra(Constants.KEY_INTENT_ORDER, order);
+                startActivityForResult(intent, Constants.INTENT_REQUEST_DETAIL_TO_PAYMENT);
                 break;
         }
     }
@@ -116,8 +126,7 @@ public class OrderDetailActivity extends BaseActivity implements IOrderDetailVie
     public void getStartedResult(int code) {
         if (Constants.RESPONSE_CODE_SUCCESSFUL == code){
             Toast.makeText(this, getResources().getString(R.string.toast_service_started_success), Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(OrderDetailActivity.this, HomeActivity.class);
-            this.setResult(RESULT_OK, intent);
+            this.setResult(RESULT_OK);
             finish();
         }else{
             Toast.makeText(this, getResources().getString(R.string.toast_service_started_failed), Toast.LENGTH_SHORT).show();
@@ -128,12 +137,21 @@ public class OrderDetailActivity extends BaseActivity implements IOrderDetailVie
     public void getFinishedResult(int code) {
         if (Constants.RESPONSE_CODE_SUCCESSFUL == code){
             Toast.makeText(this, getResources().getString(R.string.toast_service_finished_success), Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(OrderDetailActivity.this, HomeActivity.class);
-            this.setResult(RESULT_OK, intent);
+            this.setResult(RESULT_OK);
             finish();
         }else{
             Toast.makeText(this, getResources().getString(R.string.toast_service_finished_failed), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void bookingResult(int code) {
+
+    }
+
+    @Override
+    public void getServiceTypeResult(List<ServiceType> types, int code) {
+
     }
 
     private void viewVisibleByStatus(){
@@ -214,5 +232,21 @@ public class OrderDetailActivity extends BaseActivity implements IOrderDetailVie
 //            btn_payment.setVisibility(View.GONE);
 //            et_feedback.setVisibility(View.GONE);
 //        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (RESULT_OK == resultCode){
+            if (Constants.INTENT_REQUEST_DETAIL_TO_PAYMENT == requestCode){
+                this.setResult(RESULT_OK);
+                finish();
+            }
+        }
+    }
+
+    @Override
+    public void getOrdersResult(List<Order> orders, int code) {
+
     }
 }
