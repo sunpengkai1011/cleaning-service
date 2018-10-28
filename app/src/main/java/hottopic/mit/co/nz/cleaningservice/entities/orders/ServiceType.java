@@ -5,15 +5,15 @@ import java.io.Serializable;
 public class ServiceType implements Serializable{
     private int typeId;
     private String typeName;
-    private float pricePerHour;
+    private int icon;
 
     public ServiceType() {
     }
 
-    public ServiceType(int typeId, String typeName, float pricePerHour) {
+    public ServiceType(int typeId, String typeName, int icon) {
         this.typeId = typeId;
         this.typeName = typeName;
-        this.pricePerHour = pricePerHour;
+        this.icon = icon;
     }
 
     public int getTypeId() {
@@ -32,11 +32,11 @@ public class ServiceType implements Serializable{
         this.typeName = typeName;
     }
 
-    public float getPricePerHour() {
-        return pricePerHour;
+    public int getIcon() {
+        return icon;
     }
 
-    public void setPricePerHour(float pricePerHour) {
-        this.pricePerHour = pricePerHour;
+    public void setIcon(int icon) {
+        this.icon = icon;
     }
 }

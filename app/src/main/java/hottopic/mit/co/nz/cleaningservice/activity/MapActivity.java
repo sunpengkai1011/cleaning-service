@@ -87,7 +87,7 @@ public class MapActivity extends FragmentActivity implements
 
     private void initData(){
         lyt_right.setVisibility(View.VISIBLE);
-        iv_icon.setImageResource(R.drawable.logo_navigation);
+        iv_icon.setImageResource(R.drawable.icon_navigation);
         tv_title.setText(R.string.title_mapAct);
         lyt_back.setVisibility(View.VISIBLE);
 

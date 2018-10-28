@@ -10,5 +10,4 @@ public interface IOrderView {
    void getStartedResult(int code);
    void getFinishedResult(int code);
    void bookingResult(int code);
-   void getServiceTypeResult(List<ServiceType> types, int code);
 }

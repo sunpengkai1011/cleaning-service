@@ -37,11 +37,13 @@
         <activity android:name=".view.home.HomeActivity" />
         <activity android:name=".view.login.LoginActivity" />
         <activity android:name=".view.register.RegisterActivity" />
-        <activity android:name=".view.home.me.MeEditActivity" />
+        <activity android:name=".view.home.me.IUserEditActivity" />
         <activity android:name=".view.home.me.DiscountActivity" />
         <activity android:name=".view.home.order.OrderBookingActivity" />
         <activity android:name=".view.home.order.OrderDetailActivity" />
         <activity android:name=".view.payment.PaymentActivity" />
+        <activity android:name=".view.home.me.UserActivity"
+            />
     </application>
 
 

@@ -22,8 +22,8 @@ public class OrderPresenterImpl implements IOrderPresenter{
     }
 
     @Override
-    public void getOrder(UserInfo userInfo) {
-        List<Order> orders = iOrder.getOrder(userInfo);
+    public void getOrders(String userInfo) {
+        List<Order> orders = iOrder.getOrders(userInfo);
         if (orders != null && orders.size() > 0){
             iOrderView.getOrdersResult(orders, Constants.RESPONSE_CODE_SUCCESSFUL);
         }else{
@@ -32,8 +32,8 @@ public class OrderPresenterImpl implements IOrderPresenter{
     }
 
     @Override
-    public void startedOrder(int position, String started) {
-        if (iOrder.startedOrder(position, started)){
+    public void startedOrder(String userId, int position, String started) {
+        if (iOrder.startedOrder(userId, position, started)){
             iOrderView.getStartedResult(Constants.RESPONSE_CODE_SUCCESSFUL);
         }else{
             iOrderView.getStartedResult(Constants.RESPONSE_CODE_FAIL);
@@ -41,8 +41,8 @@ public class OrderPresenterImpl implements IOrderPresenter{
     }
 
     @Override
-    public void finishedOrder(int position, String finished) {
-        if (iOrder.finishedOrder(position, finished)){
+    public void finishedOrder(String userId, int position, String finished) {
+        if (iOrder.finishedOrder(userId, position, finished)){
             iOrderView.getFinishedResult(Constants.RESPONSE_CODE_SUCCESSFUL);
         }else{
             iOrderView.getFinishedResult(Constants.RESPONSE_CODE_FAIL);
@@ -50,19 +50,9 @@ public class OrderPresenterImpl implements IOrderPresenter{
     }
 
     @Override
-    public void getServiceType() {
-        List<ServiceType> types = iOrder.getServiceTypes();
-        if (types != null){
-            iOrderView.getServiceTypeResult(types, Constants.RESPONSE_CODE_SUCCESSFUL);
-        }else {
-            iOrderView.getServiceTypeResult(types, Constants.RESPONSE_CODE_FAIL);
-        }
-    }
-
-    @Override
-    public void bookingService(Order order, UserInfo userInfo) {
+    public void bookingService(Order order, String userId) {
         if (order != null){
-            if (iOrder.orderBooking(order, userInfo)){
+            if (iOrder.orderBooking(order, userId)){
                 iOrderView.bookingResult(Constants.RESPONSE_CODE_SUCCESSFUL);
             }else {
                 iOrderView.bookingResult(Constants.RESPONSE_CODE_FAIL);

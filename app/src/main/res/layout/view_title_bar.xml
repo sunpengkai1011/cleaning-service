@@ -19,7 +19,7 @@
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@drawable/logo_back"
+            android:src="@drawable/icon_back"
             android:layout_centerInParent="true"
             android:clickable="false"/>
     </RelativeLayout>
@@ -36,7 +36,7 @@
             android:id="@+id/iv_icon"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@drawable/logo_navigation"
+            android:src="@drawable/icon_navigation"
             android:layout_centerInParent="true"
             android:scaleType="centerCrop"
             android:clickable="false"/>

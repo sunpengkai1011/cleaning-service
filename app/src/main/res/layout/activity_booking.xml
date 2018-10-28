@@ -7,40 +7,54 @@
         android:id="@+id/view_title_bar"
         layout="@layout/view_title_bar" />
 
+    <Button
+        android:id="@+id/btn_booking"
+        style="@style/general_button"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:text="Booking" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@id/btn_booking"
         android:layout_below="@id/view_title_bar"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp">
+        android:paddingBottom="20dp">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/tv_username"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:textColor="@color/black"
-                android:textSize="@dimen/textSize_big"
-                android:textStyle="bold|italic" />
-
-            <View
-                android:id="@+id/view_divider"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_below="@id/tv_username"
-                android:layout_marginTop="20dp"
-                android:background="@color/background_title_bar" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/booking_padding_left">
 
             <RelativeLayout
-                android:id="@+id/lyt_service_type"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="52dp">
+
+                <TextView
+                    android:id="@+id/tv_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:paddingRight="@dimen/booking_padding_right"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/textSize_large"
+                    android:textStyle="bold|italic" />
+
+                <View
+                    android:id="@+id/view_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/background_title_bar" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
                 android:layout_marginTop="20dp"
-                android:layout_below="@id/view_divider">
+                android:paddingRight="@dimen/booking_padding_right">
 
                 <TextView
                     android:id="@+id/tv_title_service_type"
@@ -48,98 +62,175 @@
                     android:layout_centerVertical="true"
                     android:text="@string/title_service_type" />
 
-                <Spinner
-                    android:id="@+id/sp_service_type"
+                <TextView
+                    android:id="@+id/tv_service_type"
                     style="@style/order_booking_text"
-                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="5dp"
-                    android:layout_toRightOf="@id/tv_title_service_type"/>
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@id/tv_title_service_type" />
             </RelativeLayout>
 
-            <TextView
-                android:id="@+id/tv_title_price_per_hour"
-                style="@style/order_booking_title"
-                android:layout_below="@id/lyt_service_type"
+            <RelativeLayout
+                android:id="@+id/lyt_sub_option"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginRight="@dimen/booking_padding_right"
+                android:background="@drawable/background_spinner">
+                <Spinner
+                    android:id="@+id/sp_sub_option"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/lyt_unit_price"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:paddingRight="@dimen/booking_padding_right">
+
+                <TextView
+                    android:id="@+id/tv_title_unit_price"
+                    style="@style/order_booking_title"
+                    android:layout_centerVertical="true"
+                    android:text="@string/title_unit_price" />
+
+                <TextView
+                    android:id="@+id/tv_unit_price"
+                    style="@style/order_booking_text"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@id/tv_title_unit_price"
+                    android:paddingRight="20dp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/lyt_date"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:paddingRight="@dimen/booking_padding_right">
+
+                <TextView
+                    android:id="@+id/tv_title_date"
+                    style="@style/order_booking_title"
+                    android:layout_centerVertical="true"
+                    android:text="@string/title_date" />
+
+                <Button
+                    android:id="@+id/btn_date"
+                    style="@style/order_booking_text"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/tv_title_date"
+                    android:textColor="@color/register_blue"
+                    android:background="@color/transparent"
+                    android:layout_alignBaseline="@id/tv_title_date"
+                    android:layout_marginLeft="10dp"
+                    android:text="09/12/2018 18:00"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/lyt_area"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
                 android:layout_marginTop="20dp"
-                android:text="@string/title_price_per_hour" />
+                android:paddingRight="@dimen/booking_padding_right">
 
-            <TextView
-                android:id="@+id/tv_price_per_hour"
-                style="@style/order_booking_text"
-                android:layout_below="@id/lyt_service_type"
+                <TextView
+                    android:id="@+id/tv_title_area"
+                    style="@style/order_booking_title"
+                    android:text="Area: " />
+
+                <EditText
+                    android:id="@+id/et_area"
+                    style="@style/order_booking_text"
+                    android:layout_alignBaseline="@id/tv_title_area"
+                    android:layout_marginTop="20dp"
+                    android:hint="Square meter."
+                    android:layout_toRightOf="@id/tv_title_area" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/lyt_clothes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:layout_toRightOf="@id/tv_title_price_per_hour" />
+                android:paddingRight="@dimen/booking_padding_right">
 
-            <TextView
-                android:id="@+id/tv_title_date"
-                style="@style/order_booking_title"
-                android:layout_below="@id/tv_title_price_per_hour"
-                android:layout_marginTop="20dp"
-                android:text="@string/title_date" />
+                <TextView
+                    android:id="@+id/tv_bulk"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/textSize_standard"
+                    android:paddingLeft="@dimen/booking_padding_left"
+                    android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tv_date"
-                style="@style/order_booking_text"
-                android:layout_below="@id/tv_price_per_hour"
-                android:layout_marginTop="20dp"
-                android:layout_toRightOf="@id/tv_title_date" />
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_clothes"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_bulk"/>
+            </RelativeLayout>
 
+            <RelativeLayout
+                android:id="@+id/lyt_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/booking_padding_right"
+                android:paddingTop="10dp"
+                android:paddingBottom="20dp">
 
-            <TextView
-                android:id="@+id/tv_title_city"
-                style="@style/order_booking_title"
-                android:layout_below="@id/tv_title_date"
-                android:layout_marginTop="20dp"
-                android:text="@string/user_info_title_city" />
+                <CheckBox
+                    android:id="@+id/cb_user_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="20dp"
+                    android:text="Use default address"
+                    android:textSize="@dimen/textSize_middle"
+                    android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/et_city"
-                style="@style/order_booking_text"
-                android:layout_alignBaseline="@id/tv_title_city"
-                android:layout_below="@id/tv_date"
-                android:layout_marginTop="20dp"
-                android:layout_toRightOf="@id/tv_title_city"
-                android:hint="@string/hint_city" />
+                <TextView
+                    android:id="@+id/tv_title_city"
+                    style="@style/order_booking_title"
+                    android:layout_below="@id/cb_user_address"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/user_info_title_city" />
 
-            <TextView
-                android:id="@+id/tv_title_suburb"
-                style="@style/order_booking_title"
-                android:layout_below="@id/et_city"
-                android:layout_marginTop="20dp"
-                android:text="@string/user_info_title_suburb" />
+                <EditText
+                    android:id="@+id/et_city"
+                    style="@style/order_booking_text"
+                    android:layout_alignBaseline="@id/tv_title_city"
+                    android:layout_toRightOf="@id/tv_title_city"
+                    android:hint="@string/hint_city" />
 
-            <EditText
-                android:id="@+id/et_suburb"
-                style="@style/order_booking_text"
-                android:layout_alignBaseline="@id/tv_title_suburb"
-                android:layout_below="@id/et_city"
-                android:layout_marginTop="20dp"
-                android:layout_toRightOf="@id/tv_title_suburb"
-                android:hint="@string/hint_suburb" />
+                <TextView
+                    android:id="@+id/tv_title_suburb"
+                    style="@style/order_booking_title"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@id/et_city"
+                    android:text="@string/user_info_title_suburb" />
 
-            <TextView
-                android:id="@+id/tv_title_street"
-                style="@style/order_booking_title"
-                android:layout_below="@id/et_suburb"
-                android:layout_marginTop="20dp"
-                android:text="@string/user_info_title_street" />
+                <EditText
+                    android:id="@+id/et_suburb"
+                    style="@style/order_booking_text"
+                    android:layout_alignBaseline="@id/tv_title_suburb"
+                    android:layout_toRightOf="@id/tv_title_suburb"
+                    android:hint="@string/hint_suburb" />
 
-            <EditText
-                android:id="@+id/et_street"
-                style="@style/order_booking_text"
-                android:layout_alignBaseline="@id/tv_title_street"
-                android:layout_below="@id/et_suburb"
-                android:layout_marginTop="20dp"
-                android:layout_toRightOf="@id/tv_title_street"
-                android:hint="@string/hint_street" />
+                <TextView
+                    android:id="@+id/tv_title_street"
+                    style="@style/order_booking_title"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@id/et_suburb"
+                    android:text="@string/user_info_title_street" />
 
-            <Button
-                android:id="@+id/btn_booking"
-                style="@style/general_button"
-                android:layout_below="@id/et_street"
-                android:layout_marginTop="40dp"
-                android:text="Booking" />
-        </RelativeLayout>
+                <EditText
+                    android:id="@+id/et_street"
+                    style="@style/order_booking_text"
+                    android:layout_alignBaseline="@id/tv_title_street"
+                    android:layout_marginTop="20dp"
+                    android:layout_toRightOf="@id/tv_title_street"
+                    android:hint="@string/hint_street" />
+            </RelativeLayout>
+        </LinearLayout>
     </ScrollView>
 </RelativeLayout>

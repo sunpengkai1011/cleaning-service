@@ -6,14 +6,14 @@ import hottopic.mit.co.nz.cleaningservice.Constants;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
 import hottopic.mit.co.nz.cleaningservice.model.user.IUserInfoEdit;
 import hottopic.mit.co.nz.cleaningservice.model.user.UserInfoEditModel;
-import hottopic.mit.co.nz.cleaningservice.view.home.me.IMeEditView;
+import hottopic.mit.co.nz.cleaningservice.view.home.me.IUserEditView;
 
 public class MeEditPresenterImpl implements IMeEditPresenter {
-    private IMeEditView iMeEditView;
+    private IUserEditView iMeEditView;
     private IUserInfoEdit iUserInfoEdit;
     private Context context;
 
-    public MeEditPresenterImpl(IMeEditView iMeEditView, Context context) {
+    public MeEditPresenterImpl(IUserEditView iMeEditView, Context context) {
         this.iMeEditView = iMeEditView;
         this.context = context;
     }

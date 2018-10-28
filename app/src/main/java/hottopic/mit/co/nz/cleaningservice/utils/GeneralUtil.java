@@ -1,10 +1,12 @@
 package hottopic.mit.co.nz.cleaningservice.utils;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Application;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.DisplayMetrics;
 
 import com.android.tu.loadingdialog.LoadingDialog;
 import com.google.gson.Gson;
@@ -82,6 +84,17 @@ public class GeneralUtil {
                 .setPositiveButton(posBtnMessage, posListener)
                 .setNegativeButton(negBtnMessage, negListener);
         return builder.create();
+    }
+
+    /**
+     * Get the width of the device screen
+     * @param activity activity entity
+     * @return width of device screen
+     */
+    public static int getScreenWidth(Activity activity) {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        return displayMetrics.widthPixels;
     }
 
     public static String toJson(Object src, Type typeOfSrc){

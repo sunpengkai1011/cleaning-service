@@ -20,7 +20,6 @@ import hottopic.mit.co.nz.cleaningservice.entities.orders.Order;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
 import hottopic.mit.co.nz.cleaningservice.presenter.payment.PaymentPresenterImpl;
 import hottopic.mit.co.nz.cleaningservice.utils.GeneralUtil;
-import hottopic.mit.co.nz.cleaningservice.view.home.order.OrderBookingActivity;
 
 public class PaymentActivity extends BaseActivity implements IPaymentView, AdapterView.OnItemSelectedListener{
     private TextView tv_title, tv_title_balance, tv_balance, tv_amount;
@@ -35,6 +34,7 @@ public class PaymentActivity extends BaseActivity implements IPaymentView, Adapt
     private String feedback;
     private ArrayAdapter arrayAdapter;
     private int type_payment;
+    private int request;
 
     private PaymentPresenterImpl paymentPresenter;
     @Override
@@ -59,36 +59,46 @@ public class PaymentActivity extends BaseActivity implements IPaymentView, Adapt
         userInfo = (UserInfo) getIntent().getSerializableExtra(Constants.KEY_INTENT_USERINFO);
         feedback = getIntent().getStringExtra(Constants.KEY_INTENT_FEEDBACK);
         position = getIntent().getIntExtra(Constants.KEY_INTENT_ORDER_POSITION, 0);
+        request = getIntent().getIntExtra(Constants.KEY_INTENT_TO_PAYMENT, 0);
 
-        tv_amount.setText(String.valueOf(order.getAmount()));
+//        tv_amount.setText(String.valueOf(order.getAmount()));
         tv_balance.setText(String.valueOf(userInfo.getBalance()));
 
         paymentPresenter = new PaymentPresenterImpl(this, this);
 
-        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.payment_type))
-        {
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent)
-            {
-                return setCentered(super.getView(position, convertView, parent));
-            }
+        switch (request){
+            case Constants.INTENT_REQUEST_DETAIL_TO_PAYMENT:
+                arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.payment_type))
+                {
+                    @Override
+                    public View getView(int position, View convertView, ViewGroup parent)
+                    {
+                        return setCentered(super.getView(position, convertView, parent));
+                    }
 
-            @Override
-            public View getDropDownView(int position, View convertView, ViewGroup parent)
-            {
-                return setCentered(super.getDropDownView(position, convertView, parent));
-            }
+                    @Override
+                    public View getDropDownView(int position, View convertView, ViewGroup parent)
+                    {
+                        return setCentered(super.getDropDownView(position, convertView, parent));
+                    }
 
-            private View setCentered(View view)
-            {
-                TextView textView = view.findViewById(android.R.id.text1);
-                textView.setHeight(getResources().getDimensionPixelOffset(R.dimen.spinner_height));
-                textView.setTextSize(GeneralUtil.px2sp(PaymentActivity.this, getResources().getDimensionPixelOffset(R.dimen.textSize_middle)));
-                textView.setGravity(Gravity.CENTER_VERTICAL);
-                return view;
-            }
-        };
-        sp_payment_type.setAdapter(arrayAdapter);
+                    private View setCentered(View view)
+                    {
+                        TextView textView = view.findViewById(android.R.id.text1);
+                        textView.setHeight(getResources().getDimensionPixelOffset(R.dimen.spinner_height));
+                        textView.setTextSize(GeneralUtil.px2sp(PaymentActivity.this, getResources().getDimensionPixelOffset(R.dimen.textSize_middle)));
+                        textView.setGravity(Gravity.CENTER_VERTICAL);
+                        return view;
+                    }
+                };
+                sp_payment_type.setAdapter(arrayAdapter);
+                break;
+            case Constants.INTENT_REQUEST_DICOUNT_TO_PAYMENT:
+                sp_payment_type.setVisibility(View.INVISIBLE);
+                break;
+        }
+
+
     }
 
     @Override
@@ -102,21 +112,27 @@ public class PaymentActivity extends BaseActivity implements IPaymentView, Adapt
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_payment:
-                switch (type_payment){
-                    case Constants.TYPE_PAYMENT_CARD:
-                        String card_no = et_card_no.getText().toString().trim();
-                        if (!TextUtils.isEmpty(card_no)) {
-                            paymentPresenter.paymentByCard(order.getAmount(), card_no, position, feedback);
-                        }else{
-                            Toast.makeText(this, "Please enter the card number", Toast.LENGTH_SHORT).show();
+                switch (request){
+                    case Constants.INTENT_REQUEST_DETAIL_TO_PAYMENT:
+                        switch (type_payment){
+                            case Constants.TYPE_PAYMENT_CARD:
+                                String card_no = et_card_no.getText().toString().trim();
+//                                if (!TextUtils.isEmpty(card_no)) {
+//                                    paymentPresenter.paymentByCard(order.getAmount(), card_no, position, feedback);
+//                                }else{
+//                                    Toast.makeText(this, getResources().getString(R.string.toast_card_no), Toast.LENGTH_SHORT).show();
+//                                }
+//                                break;
+//                            case Constants.TYPE_PAYMENT_BALANCE:
+//                                if (order.getAmount() < userInfo.getBalance()){
+//                                    paymentPresenter.paymentByBalance(order.getAmount(), userInfo, position, feedback);
+//                                }else{
+//                                    Toast.makeText(this, getResources().getString(R.string.toast_balance_not_enough), Toast.LENGTH_SHORT).show();
+//                                }
+                                break;
                         }
                         break;
-                    case Constants.TYPE_PAYMENT_BALANCE:
-                        if (order.getAmount() < userInfo.getBalance()){
-                            paymentPresenter.paymentByBalance(order.getAmount(), userInfo, position, feedback);
-                        }else{
-                            Toast.makeText(this, "The balance is not enough, please top up first", Toast.LENGTH_SHORT).show();
-                        }
+                    case Constants.INTENT_REQUEST_DICOUNT_TO_PAYMENT:
                         break;
                 }
                 break;
@@ -131,20 +147,20 @@ public class PaymentActivity extends BaseActivity implements IPaymentView, Adapt
         switch (paymentType){
             case Constants.TYPE_PAYMENT_CARD:
                 if (Constants.RESPONSE_CODE_SUCCESSFUL == code){
-                    Toast.makeText(this, "Payment Successful", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getResources().getString(R.string.toast_payment_success), Toast.LENGTH_SHORT).show();
                     setResult(RESULT_OK);
                     this.finish();
                 }else{
-                    Toast.makeText(this, "Payment Failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getResources().getString(R.string.toast_payment_failed), Toast.LENGTH_SHORT).show();
                 }
                 break;
             case Constants.TYPE_PAYMENT_BALANCE:
                 if (Constants.RESPONSE_CODE_SUCCESSFUL == code){
-                    Toast.makeText(this, "Payment Successful", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getResources().getString(R.string.toast_payment_success), Toast.LENGTH_SHORT).show();
                     setResult(RESULT_OK);
                     this.finish();
                 }else{
-                    Toast.makeText(this, "Payment Failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getResources().getString(R.string.toast_payment_failed), Toast.LENGTH_SHORT).show();
                 }
                 break;
         }

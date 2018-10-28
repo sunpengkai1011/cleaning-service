@@ -4,9 +4,8 @@ import hottopic.mit.co.nz.cleaningservice.entities.orders.Order;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
 
 public interface IOrderPresenter {
-    void getOrder(UserInfo userInfo);
-    void startedOrder(int position, String started);
-    void finishedOrder(int position, String finished);
-    void getServiceType();
-    void bookingService(Order order, UserInfo userInfo);
+    void getOrders(String userId);
+    void startedOrder(String userId, int position, String started);
+    void finishedOrder(String userId, int position, String finished);
+    void bookingService(Order order, String userId);
 }

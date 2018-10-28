@@ -7,31 +7,21 @@ import hottopic.mit.co.nz.cleaningservice.entities.users.UAddress;
 
 public class Order implements Serializable{
     private int orderId;
-    private int userId;
+    private String userId;
+    private String date;
     private ServiceType serviceType;
     private UAddress uAddress;
-    private String date;
-    private int orderStatus;
-    private String feedback;
-    private int duration;
-    private float amount;
-    private String startTime;
-    private String endTime;
+    private int status;
 
     public Order() {
     }
 
-    public Order(int userId, ServiceType serviceType, UAddress uAddress, String date) {
+    public Order(String userId, ServiceType serviceType, UAddress uAddress, String date) {
         this.userId = userId;
         this.serviceType = serviceType;
         this.uAddress = uAddress;
         this.date = date;
-        feedback = "";
-        orderStatus = Constants.STATUS_ORDER_BOOKED;
-        duration = 0;
-        amount = 0;
-        startTime = "";
-        endTime = "";
+        this.status = Constants.STATUS_ORDER_BOOKED;
     }
 
     public int getOrderId() {
@@ -42,11 +32,11 @@ public class Order implements Serializable{
         this.orderId = orderId;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
@@ -74,51 +64,11 @@ public class Order implements Serializable{
         this.date = date;
     }
 
-    public int getOrderStatus() {
-        return orderStatus;
+    public int getStatus() {
+        return status;
     }
 
-    public void setOrderStatus(int orderStatus) {
-        this.orderStatus = orderStatus;
-    }
-
-    public String getFeedback() {
-        return feedback;
-    }
-
-    public void setFeedback(String feedback) {
-        this.feedback = feedback;
-    }
-
-    public int getDuration() {
-        return duration;
-    }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
-
-    public float getAmount() {
-        return amount;
-    }
-
-    public void setAmount(float amount) {
-        this.amount = amount;
-    }
-
-    public String getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
-    }
-
-    public String getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

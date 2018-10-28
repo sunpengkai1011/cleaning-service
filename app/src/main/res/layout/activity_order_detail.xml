@@ -7,11 +7,19 @@
         android:id="@+id/view_title_bar"
         layout="@layout/view_title_bar" />
 
-    <ScrollView
+    <Button
+        android:id="@+id/btn_commit"
+        style="@style/general_button"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentBottom="true"
+        android:text="@string/btn_payment"/>
+
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/view_title_bar"
-        android:layout_marginBottom="20dp">
+        android:layout_above="@id/btn_commit"
+        android:paddingBottom="10dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -31,30 +39,30 @@
                 android:gravity="right" />
 
             <TextView
-                android:id="@+id/tv_title_price_per_hour"
+                android:id="@+id/tv_title_unit_price"
                 style="@style/order_booking_title"
                 android:layout_below="@id/tv_service_type"
                 android:layout_marginTop="20dp"
-                android:text="@string/title_price_per_hour" />
+                android:text="@string/title_unit_price" />
 
             <TextView
-                android:id="@+id/tv_price_per_hour"
+                android:id="@+id/tv_unit_price"
                 style="@style/order_booking_text"
                 android:layout_below="@id/tv_service_type"
                 android:layout_marginTop="20dp"
-                android:layout_toRightOf="@id/tv_title_price_per_hour" />
+                android:layout_toRightOf="@id/tv_title_unit_price" />
 
             <TextView
                 android:id="@+id/tv_title_date"
                 style="@style/order_booking_title"
-                android:layout_below="@id/tv_title_price_per_hour"
+                android:layout_below="@id/tv_title_unit_price"
                 android:layout_marginTop="20dp"
                 android:text="@string/title_date" />
 
             <TextView
                 android:id="@+id/tv_date"
                 style="@style/order_booking_text"
-                android:layout_below="@id/tv_price_per_hour"
+                android:layout_below="@id/tv_unit_price"
                 android:layout_marginTop="20dp"
                 android:layout_toRightOf="@id/tv_title_date" />
 
@@ -182,14 +190,6 @@
                 android:hint="@string/hint_feedback"
                 android:layout_alignBaseline="@id/tv_title_feedback"
                 android:layout_toRightOf="@id/tv_title_feedback"/>
-
-            <Button
-                android:id="@+id/btn_payment"
-                style="@style/general_button"
-                android:layout_below="@id/et_feedback"
-                android:layout_marginTop="40dp"
-                android:text="@string/btn_payment"
-                android:visibility="gone"/>
         </RelativeLayout>
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 </RelativeLayout>

@@ -7,9 +7,8 @@ import hottopic.mit.co.nz.cleaningservice.entities.orders.ServiceType;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
 
 public interface IOrder {
-    List<Order> getOrder(UserInfo userInfo);
-    boolean startedOrder(int position, String started);
-    boolean finishedOrder(int position, String finished);
-    boolean orderBooking(Order order, UserInfo userInfo);
-    List<ServiceType> getServiceTypes();
+    List<Order> getOrders(String userId);
+    boolean startedOrder(String userId, int position, String started);
+    boolean finishedOrder(String userId, int position, String finished);
+    boolean orderBooking(Order order, String userId);
 }

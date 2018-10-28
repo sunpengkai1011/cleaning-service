@@ -8,11 +8,16 @@
     <color name="background_main">#CCCCCC</color>
     <color name="white">#FFFFFFFF</color>
     <color name="black">#FF000000</color>
+    <color name="status_other">#f41533</color>
+    <color name="status_payment">#78f108</color>
     <color name="register_blue">#0968EC</color>
+    <color name="user_blue">#500968EC</color>
     <color name="background_logout">#9e0618</color>
     <color name="transparent">#00FFFFFF</color>
-    <color name="grey">#AA000000</color>
+    <color name="light_grey">#b9b8b8</color>
+    <color name="light_blue">#afe3fc</color>
     <color name="click_grey">#696969</color>
+    <color name="grey">#535353</color>
     <color name="transparent_grey">#0f000000</color>
     <color name="route">#8000ec00</color>
 

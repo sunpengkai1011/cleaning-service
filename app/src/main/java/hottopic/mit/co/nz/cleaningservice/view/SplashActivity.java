@@ -5,9 +5,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import java.lang.ref.WeakReference;
 
+import hottopic.mit.co.nz.cleaningservice.presenter.home.HomePresenterImpl;
+import hottopic.mit.co.nz.cleaningservice.view.home.HomeActivity;
 import hottopic.mit.co.nz.cleaningservice.view.login.LoginActivity;
 
 public class SplashActivity extends AppCompatActivity {

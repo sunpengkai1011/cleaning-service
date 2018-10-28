@@ -5,7 +5,7 @@ import java.io.Serializable;
 import hottopic.mit.co.nz.cleaningservice.Constants;
 
 public class UserInfo implements Serializable{
-    private int userId;
+    private String userId;
     private String userName;
     private String password;
     private String phoneNumber;
@@ -16,7 +16,8 @@ public class UserInfo implements Serializable{
 
     public UserInfo() {}
 
-    public UserInfo(String userName, String password, String phoneNumber, String email, UAddress uAddress) {
+    public UserInfo(String userId, String userName, String password, String phoneNumber, String email, UAddress uAddress) {
+        this.userId = userId;
         this.userName = userName;
         this.password = password;
         this.phoneNumber = phoneNumber;
@@ -26,11 +27,11 @@ public class UserInfo implements Serializable{
         balance = 0;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CleaningService</string>
+    <string name="app_name">Pajns Ltd</string>
     <string name="back">Back</string>
     <string name="google_maps_key">AIzaSyA8eJEaPxmkqOSRBC-pNoCQzemiJfIjo5U</string>
     <string name="title_addressAct">Addresses</string>
@@ -50,7 +50,7 @@
     <string name="tab_order">Order</string>
     <string name="tab_me">Me</string>
     <string name="title_order">ORDER</string>
-    <string name="title_me">ME</string>
+    <string name="title_me">User</string>
     <string name="title_edit">EDIT</string>
 
     <!-- User Info -->
@@ -75,9 +75,9 @@
     <string name="top_up_message">Do you want to top up?</string>
 
     <!-- Order -->
-    <string name="title_service_type">Service Type: </string>
-    <string name="title_price_per_hour">Price(Per Hour): </string>
-    <string name="title_date">Service Date: </string>
+    <string name="title_service_type">Type: </string>
+    <string name="title_unit_price">Price: </string>
+    <string name="title_date">Date: </string>
     <string name="title_start_time">Start Time: </string>
     <string name="title_finished_time">Finished Time: </string>
     <string name="title_status">Order Status: </string>
@@ -101,6 +101,10 @@
 
     <!-- Payment -->
     <string name="hint_card_no">Card Number.</string>
+    <string name="toast_card_no">Please enter the card number.</string>
+    <string name="toast_balance_not_enough">The balance is not enough, please top up first.</string>
+    <string name="toast_payment_success">Payment Successful</string>
+    <string name="toast_payment_failed">Payment Failed</string>
     <string name="title_payment">PAYMENT</string>
     <array name="payment_type">
         <item>Payment by card</item>

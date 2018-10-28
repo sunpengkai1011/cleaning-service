@@ -16,10 +16,10 @@ import hottopic.mit.co.nz.cleaningservice.Constants;
 import hottopic.mit.co.nz.cleaningservice.R;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.Order;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.ServiceType;
+import hottopic.mit.co.nz.cleaningservice.entities.orders.cleaning.CleaningOrder;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
 import hottopic.mit.co.nz.cleaningservice.presenter.home.OrderPresenterImpl;
 import hottopic.mit.co.nz.cleaningservice.utils.GeneralUtil;
-import hottopic.mit.co.nz.cleaningservice.view.home.HomeActivity;
 import hottopic.mit.co.nz.cleaningservice.view.payment.PaymentActivity;
 
 public class OrderDetailActivity extends BaseActivity implements IOrderView{
@@ -42,7 +42,7 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
         setContentView(R.layout.activity_order_detail);
         tv_title = findViewById(R.id.tv_title);
         tv_service_type = findViewById(R.id.tv_service_type);
-        tv_price_per_hour = findViewById(R.id.tv_price_per_hour);
+        tv_price_per_hour = findViewById(R.id.tv_unit_price);
         tv_date = findViewById(R.id.tv_date);
         tv_address = findViewById(R.id.tv_address);
         tv_status = findViewById(R.id.tv_status);
@@ -65,21 +65,21 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
 
     @Override
     public void initData() {
-        order = (Order) getIntent().getSerializableExtra(Constants.KEY_INTENT_ORDER);
+        order = (CleaningOrder) getIntent().getSerializableExtra(Constants.KEY_INTENT_ORDER);
         userInfo = (UserInfo) getIntent().getSerializableExtra(Constants.KEY_INTENT_USERINFO);
         position = getIntent().getIntExtra(Constants.KEY_INTENT_ORDER_POSITION, 0);
         tv_title.setText(getResources().getString(R.string.title_order_detail));
         lyt_back.setVisibility(View.VISIBLE);
         if (order != null){
-            tv_service_type.setText(order.getServiceType().getTypeName());
-            tv_price_per_hour.setText(String.valueOf(order.getServiceType().getPricePerHour()));
-            tv_date.setText(order.getDate());
-            tv_address.setText(order.getuAddress().toString());
-            tv_start_time.setText(order.getStartTime());
-            tv_finished_time.setText(order.getEndTime());
-            tv_duration.setText(String.valueOf(order.getDuration()));
-            tv_amount.setText(String.valueOf(order.getAmount()));
-            tv_feedback.setText(order.getFeedback());
+//            tv_service_type.setText(order.getServiceType().getTypeName());
+////            tv_price_per_hour.setText(String.valueOf(order.getCleaningType().getUnitPrice()));
+//            tv_date.setText(order.get());
+//            tv_address.setText(order.getuAddress().toString());
+//            tv_start_time.setText(order.getStartTime());
+//            tv_finished_time.setText(order.getEndTime());
+//            tv_duration.setText(String.valueOf(order.getDuration()));
+//            tv_amount.setText(String.valueOf(order.getAmount()));
+//            tv_feedback.setText(order.getFeedback());
             viewVisibleByStatus();
         }
 
@@ -101,10 +101,10 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
                 this.finish();
                 break;
             case R.id.btn_finished:
-                orderPresenter.finishedOrder(position, GeneralUtil.getCurrentTime());
+                orderPresenter.finishedOrder(userInfo.getUserId(), position, GeneralUtil.getCurrentTime());
                 break;
             case R.id.btn_started:
-                orderPresenter.startedOrder(position, GeneralUtil.getCurrentTime());
+                orderPresenter.startedOrder(userInfo.getUserId(), position, GeneralUtil.getCurrentTime());
                 break;
             case R.id.btn_payment:
                 String feedback = et_feedback.getText().toString().trim();
@@ -117,6 +117,7 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
                 intent.putExtra(Constants.KEY_INTENT_ORDER_POSITION, position);
                 intent.putExtra(Constants.KEY_INTENT_USERINFO, userInfo);
                 intent.putExtra(Constants.KEY_INTENT_ORDER, order);
+                intent.putExtra(Constants.KEY_INTENT_TO_PAYMENT, Constants.INTENT_REQUEST_DETAIL_TO_PAYMENT);
                 startActivityForResult(intent, Constants.INTENT_REQUEST_DETAIL_TO_PAYMENT);
                 break;
         }
@@ -149,13 +150,8 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
 
     }
 
-    @Override
-    public void getServiceTypeResult(List<ServiceType> types, int code) {
-
-    }
-
     private void viewVisibleByStatus(){
-        switch (order.getOrderStatus()){
+        switch (order.getStatus()){
             case Constants.STATUS_ORDER_BOOKED:
                 tv_status.setText(getResources().getString(R.string.status_booked));
                 tv_title_start_time.setVisibility(View.GONE);

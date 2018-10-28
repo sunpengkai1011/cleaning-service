@@ -89,6 +89,7 @@ public class RegisterActivity extends BaseActivity implements IRegisterView {
     }
 
     private void registerUser(){
+        String userId = String.valueOf(System.currentTimeMillis());
         String username = et_username.getText().toString().trim();
         String password = et_password.getText().toString().trim();
         String confirm_pwd = et_confirm_pwd.getText().toString().trim();
@@ -105,7 +106,7 @@ public class RegisterActivity extends BaseActivity implements IRegisterView {
                 Toast.makeText(this, getResources().getString(R.string.toast_pwd_different), Toast.LENGTH_SHORT).show();
             }else{
                 UAddress address = new UAddress(city, suburb, street);
-                UserInfo userInfo = new UserInfo(username, password, phone_number, email, address);
+                UserInfo userInfo = new UserInfo(userId, username, password, phone_number, email, address);
                 registerPresenter.doRegister(userInfo);
             }
         }else {

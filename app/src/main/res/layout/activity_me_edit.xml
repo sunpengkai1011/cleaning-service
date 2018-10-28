@@ -22,7 +22,7 @@
                 android:id="@+id/iv_user_icon"
                 style="@style/user_icon"
                 android:scaleType="centerCrop"
-                android:src="@drawable/logo_user"
+                android:src="@drawable/icon_user"
                 android:layout_centerVertical="true"/>
 
             <LinearLayout
@@ -76,14 +76,12 @@
                 <EditText
                     android:id="@+id/et_phone_number"
                     style="@style/user_info_edit"
-                    android:layout_toRightOf="@id/tv_title_phone_number"
                     android:hint="@string/hint_phone_number" />
 
                 <EditText
                     android:id="@+id/et_email"
                     style="@style/user_info_edit"
                     android:layout_below="@id/et_phone_number"
-                    android:layout_toRightOf="@id/tv_title_email"
                     android:hint="@string/hint_email" />
 
                 <EditText
@@ -110,6 +108,84 @@
                     android:layout_below="@id/et_street"
                     android:layout_marginTop="40dp"
                     android:text="@string/btn_edit" />
+            </RelativeLayout>
+        </ScrollView>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/view_divider"
+            android:layout_marginTop="20dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:paddingRight="10dp">
+
+                <TextView
+                    android:id="@+id/tv_title_phone_number"
+                    style="@style/user_info_title"
+                    android:text="@string/user_info_title_phone" />
+
+                <TextView
+                    android:id="@+id/tv_title_email"
+                    style="@style/user_info_title"
+                    android:layout_below="@id/tv_phone_number"
+                    android:text="@string/user_info_title_email" />
+
+                <TextView
+                    android:id="@+id/tv_title_address"
+                    style="@style/user_info_title"
+                    android:layout_below="@id/tv_email"
+                    android:text="@string/user_info_title_address" />
+
+                <TextView
+                    android:id="@+id/tv_phone_number"
+                    style="@style/user_info_text"
+                    android:layout_toRightOf="@id/tv_title_phone_number" />
+
+                <TextView
+                    android:id="@+id/tv_email"
+                    style="@style/user_info_text"
+                    android:layout_below="@id/tv_phone_number"
+                    android:layout_toRightOf="@id/tv_title_email" />
+
+                <TextView
+                    android:id="@+id/tv_address"
+                    style="@style/user_info_text"
+                    android:layout_below="@id/tv_email"
+                    android:layout_toRightOf="@id/tv_title_address" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_below="@id/tv_address">
+
+                    <TextView
+                        android:id="@+id/tv_title_balance"
+                        style="@style/user_info_title"
+                        android:layout_marginTop="0dp"
+                        android:layout_centerVertical="true"
+                        android:text="@string/user_info_title_balance" />
+
+                    <ImageView
+                        android:id="@+id/iv_top_up"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/icon_money" />
+
+                    <TextView
+                        android:id="@+id/tv_balance"
+                        style="@style/user_info_text"
+                        android:layout_marginTop="0dp"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@id/iv_top_up"
+                        android:layout_toRightOf="@id/tv_title_balance" />
+                </RelativeLayout>
             </RelativeLayout>
         </ScrollView>
     </RelativeLayout>

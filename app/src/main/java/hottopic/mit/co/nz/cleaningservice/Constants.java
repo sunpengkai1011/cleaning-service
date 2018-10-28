@@ -3,6 +3,8 @@ package hottopic.mit.co.nz.cleaningservice;
 import java.util.HashMap;
 import java.util.Map;
 
+import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
+
 public class Constants {
     //Google Map
     public static final String GoogleMap_BASE_URL = "https://maps.googleapis.com/";
@@ -26,6 +28,8 @@ public class Constants {
     public static final String KEY_INTENT_ORDER = "order";
     public static final String KEY_INTENT_ORDER_POSITION = "order_position";
     public static final String KEY_INTENT_FEEDBACK = "feedback";
+    public static final String KEY_INTENT_TO_PAYMENT = "intent_to_payment";
+    public static final String KEY_INTENT_SERVICETYPE = "service_type";
     public static final int INTENT_REQUEST_ME_TO_EDIT = 200;
     public static final int INTENT_REQUEST_ME_TO_DISCOUNT = 203;
     public static final int INTENT_REQUEST_ODER_TO_CREATE = 201;
@@ -33,6 +37,27 @@ public class Constants {
     public static final int INTENT_REQUEST_ORDER_TO_DETAIL = 204;
     public static final int INTENT_REQUEST_DETAIL_TO_PAYMENT = 205;
     public static final int INTENT_REQUEST_DICOUNT_TO_PAYMENT = 206;
+
+    //Service
+    public static final int ID_SERVICE_G_CLEANING = 300;
+    public static final int ID_SERVICE_D_CLEANING = 301;
+    public static final int ID_SERVICE_BUFFERING = 302;
+    public static final int ID_SERVICE_WATERBLASTING = 303;
+    public static final int ID_SERVICE_CARPETWASH = 304;
+
+    public static final int SUB_OPTION_NONE = 0;
+    public static final int SUB_OPTION_1BEDROOM = 1;
+    public static final int SUB_OPTION_2BEDROOMS = 2;
+    public static final int SUB_OPTION_3BEDROOMS = 3;
+    public static final int SUB_OPTION_4BEDROOMS = 4;
+
+    public static final int ID_SERVICE_G_INRONING = 305;
+    public static final int ID_SERVICE_S_INRONING = 306;
+
+    public static final int ID_CLOTHES_SHIRT = 400;
+    public static final int ID_CLOTHES_JACKET = 401;
+    public static final int ID_CLOTHES_LONG_DRESS = 402;
+    public static final int ID_CLOTHES_SCHOOL_UNIFORM = 403;
 
     //Order Status
     public static final int STATUS_ORDER_BOOKED = 1;
@@ -47,6 +72,10 @@ public class Constants {
     //Payment
     public static final int TYPE_PAYMENT_CARD = 0;
     public static final int TYPE_PAYMENT_BALANCE = 1;
+
+    //Handler
+    public static final int WHAT_ADVERTISEMENT = 0;
+    public static final int WHAT_EXIT = 1;
 
     public static Map<String, Long> realTime_depart = new HashMap<>();
     public static Map<String, Long> realTime_arrive = new HashMap<>();

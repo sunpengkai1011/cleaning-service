@@ -1,6 +1,8 @@
 package hottopic.mit.co.nz.cleaningservice.view.home.order;
 
 import android.content.Intent;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -8,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -23,26 +27,46 @@ import java.util.Locale;
 import hottopic.mit.co.nz.cleaningservice.BaseActivity;
 import hottopic.mit.co.nz.cleaningservice.Constants;
 import hottopic.mit.co.nz.cleaningservice.R;
+import hottopic.mit.co.nz.cleaningservice.adapter.ClothesAdapter;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.Order;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.ServiceType;
+import hottopic.mit.co.nz.cleaningservice.entities.orders.cleaning.AreaCleaningOrder;
+import hottopic.mit.co.nz.cleaningservice.entities.orders.cleaning.AreaCleaningType;
+import hottopic.mit.co.nz.cleaningservice.entities.orders.cleaning.SubOption;
+import hottopic.mit.co.nz.cleaningservice.entities.orders.cleaning.TimerCleaningOrder;
+import hottopic.mit.co.nz.cleaningservice.entities.orders.cleaning.TimerCleaningType;
+import hottopic.mit.co.nz.cleaningservice.entities.orders.ironing.ClothesType;
+import hottopic.mit.co.nz.cleaningservice.entities.orders.ironing.IroningOrder;
+import hottopic.mit.co.nz.cleaningservice.entities.orders.ironing.IroningType;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UAddress;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
 import hottopic.mit.co.nz.cleaningservice.presenter.home.OrderPresenterImpl;
 import hottopic.mit.co.nz.cleaningservice.utils.GeneralUtil;
 import hottopic.mit.co.nz.cleaningservice.utils.mdatepicker.CustomDatePicker;
-import hottopic.mit.co.nz.cleaningservice.view.home.HomeActivity;
+import hottopic.mit.co.nz.cleaningservice.view.home.HomeOldActivity;
 
-public class OrderBookingActivity extends BaseActivity implements IOrderView, AdapterView.OnItemSelectedListener {
-    private TextView tv_title, tv_username, tv_price_per_hour, tv_date;
-    private EditText et_city, et_suburb, et_street;
-    private Spinner sp_service_type;
+import static android.widget.AdapterView.*;
+
+public class OrderBookingActivity extends BaseActivity implements IOrderView{
+    private TextView tv_title, tv_username, tv_unit_price, tv_bulk, tv_service_type;
+    private RelativeLayout lyt_unit_price, lyt_date, lyt_area, lyt_clothes, lyt_sub_option;
+    private CheckBox cb_user_address;
+    private EditText et_city, et_suburb, et_street, et_area;
     private RelativeLayout lyt_back;
-    private Button btn_booking;
-    private List<ServiceType> types;
-    private List<String> typeList;
-    private ArrayAdapter<String> arrayAdapter;
-    private int serviceTypeNum;
+    private RecyclerView rv_clothes;
+    private Button btn_booking, btn_date;
+    private Spinner sp_sub_option;
     private UserInfo userInfo;
+
+    private ServiceType serviceType;
+    private ClothesAdapter clothesAdapter;
+
+    private List<String> subOptions;
+    private int subOptionPosition = 0;
+
+    private TimerCleaningType timerCleaningType;
+    private AreaCleaningType areaCleaningType;
+    private IroningType ironingType;
 
     private CustomDatePicker datePicker;
 
@@ -53,12 +77,22 @@ public class OrderBookingActivity extends BaseActivity implements IOrderView, Ad
         setContentView(R.layout.activity_booking);
         tv_title = findViewById(R.id.tv_title);
         tv_username = findViewById(R.id.tv_username);
-        sp_service_type = findViewById(R.id.sp_service_type);
-        tv_price_per_hour = findViewById(R.id.tv_price_per_hour);
-        tv_date = findViewById(R.id.tv_date);
+        tv_unit_price = findViewById(R.id.tv_unit_price);
+        tv_bulk = findViewById(R.id.tv_bulk);
+        tv_service_type = findViewById(R.id.tv_service_type);
+        cb_user_address = findViewById(R.id.cb_user_address);
+        lyt_unit_price = findViewById(R.id.lyt_unit_price);
+        lyt_date = findViewById(R.id.lyt_date);
+        lyt_area = findViewById(R.id.lyt_area);
+        lyt_clothes = findViewById(R.id.lyt_clothes);
+        lyt_sub_option = findViewById(R.id.lyt_sub_option);
+        sp_sub_option = findViewById(R.id.sp_sub_option);
+        btn_date = findViewById(R.id.btn_date);
         et_city = findViewById(R.id.et_city);
         et_suburb = findViewById(R.id.et_suburb);
         et_street = findViewById(R.id.et_street);
+        et_area = findViewById(R.id.et_area);
+        rv_clothes = findViewById(R.id.rv_clothes);
         lyt_back = findViewById(R.id.lyt_back);
         btn_booking = findViewById(R.id.btn_booking);
     }
@@ -69,20 +103,58 @@ public class OrderBookingActivity extends BaseActivity implements IOrderView, Ad
         lyt_back.setVisibility(View.VISIBLE);
 
         orderPresenter = new OrderPresenterImpl(this, this);
-        orderPresenter.getServiceType();
 
         userInfo = (UserInfo) getIntent().getSerializableExtra(Constants.KEY_INTENT_USERINFO);
+        serviceType = (ServiceType) getIntent().getSerializableExtra(Constants.KEY_INTENT_SERVICETYPE);
+
         if (userInfo != null && !TextUtils.isEmpty(userInfo.getUserName())){
             tv_username.setText(userInfo.getUserName());
         }
+        if (serviceType != null) {
+            tv_service_type.setText(serviceType.getTypeName());
+            switch (serviceType.getTypeId()){
+                case Constants.ID_SERVICE_G_CLEANING:
+                case Constants.ID_SERVICE_D_CLEANING:
+                    timerCleaningType = (TimerCleaningType) serviceType;
+                    initSpinnerData();
+                    break;
+                case Constants.ID_SERVICE_BUFFERING:
+                case Constants.ID_SERVICE_WATERBLASTING:
+                case Constants.ID_SERVICE_CARPETWASH:
+                    areaCleaningType = (AreaCleaningType) serviceType;
+                    tv_unit_price.setText(areaCleaningType.formatPrice());
+                    break;
+                case Constants.ID_SERVICE_G_INRONING:
+                case Constants.ID_SERVICE_S_INRONING:
+                    ironingType = (IroningType) serviceType;
+                    tv_bulk.setText(ironingType.formatBulkDiscount());
+                    initClothesList();
+                    break;
+            }
+        }
         initDatePicker();
+        visibleByType();
     }
 
     @Override
     public void initListener() {
         lyt_back.setOnClickListener(this);
         btn_booking.setOnClickListener(this);
-        tv_date.setOnClickListener(this);
+        btn_date.setOnClickListener(this);
+        cb_user_address.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b){
+                    et_city.setText(userInfo.getuAddress().getCity());
+                    et_suburb.setText(userInfo.getuAddress().getSuburb());
+                    et_street.setText(userInfo.getuAddress().getStreet());
+                }else{
+                    et_city.setText("");
+                    et_suburb.setText("");
+                    et_street.setText("");
+                }
+            }
+        });
     }
 
     @Override
@@ -94,8 +166,8 @@ public class OrderBookingActivity extends BaseActivity implements IOrderView, Ad
             case R.id.btn_booking:
                 booking();
                 break;
-            case R.id.tv_date:
-                datePicker.show(tv_date.getText().toString().trim());
+            case R.id.btn_date:
+                datePicker.show(btn_date.getText().toString().trim());
                 break;
         }
     }
@@ -104,7 +176,7 @@ public class OrderBookingActivity extends BaseActivity implements IOrderView, Ad
     public void bookingResult(int code) {
         if (Constants.RESPONSE_CODE_SUCCESSFUL == code){
             Toast.makeText(this, getResources().getString(R.string.booking_success), Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(OrderBookingActivity.this, HomeActivity.class);
+            Intent intent = new Intent(OrderBookingActivity.this, HomeOldActivity.class);
             intent.putExtra(Constants.KEY_INTENT_BOOKING, true);
             this.setResult(RESULT_OK, intent);
             this.finish();
@@ -113,12 +185,55 @@ public class OrderBookingActivity extends BaseActivity implements IOrderView, Ad
         }
     }
 
-    @Override
-    public void getServiceTypeResult(List<ServiceType> types, int code) {
-        if (Constants.RESPONSE_CODE_SUCCESSFUL == code){
-            this.types = types;
-            createTypeList();
-            arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, typeList)
+    private void visibleByType(){
+        if (serviceType != null) {
+            switch (serviceType.getTypeId()){
+                case Constants.ID_SERVICE_G_CLEANING:
+                case Constants.ID_SERVICE_D_CLEANING:
+                    lyt_sub_option.setVisibility(View.VISIBLE);
+                    lyt_area.setVisibility(View.GONE);
+                    lyt_clothes.setVisibility(View.GONE);
+                    break;
+                case Constants.ID_SERVICE_BUFFERING:
+                case Constants.ID_SERVICE_WATERBLASTING:
+                case Constants.ID_SERVICE_CARPETWASH:
+                    lyt_sub_option.setVisibility(View.GONE);
+                    lyt_clothes.setVisibility(View.GONE);
+                    lyt_area.setVisibility(View.VISIBLE);
+                    break;
+                case Constants.ID_SERVICE_G_INRONING:
+                case Constants.ID_SERVICE_S_INRONING:
+                    lyt_sub_option.setVisibility(View.GONE);
+                    lyt_area.setVisibility(View.GONE);
+                    lyt_clothes.setVisibility(View.VISIBLE);
+                    lyt_unit_price.setVisibility(View.GONE);
+                    break;
+            }
+        }
+    }
+
+
+    private void initDatePicker() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.ENGLISH);
+        Date nowDate = new Date();
+        Date endDate = new Date();
+        endDate.setYear(nowDate.getYear() + 5);
+        String now = sdf.format(nowDate);
+        String end = sdf.format(endDate);
+        btn_date.setText(now);
+
+        datePicker = new CustomDatePicker(this, time -> btn_date.setText(time), now, end);
+        datePicker.showSpecificTime(true);
+        datePicker.setIsLoop(false);
+    }
+
+    private void initSpinnerData(){
+        if (timerCleaningType != null){
+            subOptions = new ArrayList<>();
+            for (SubOption option : timerCleaningType.getSubOptions()){
+                subOptions.add(option.getSubOptionName());
+            }
+            ArrayAdapter arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, subOptions)
             {
                 @Override
                 public View getView(int position, View convertView, ViewGroup parent)
@@ -141,60 +256,74 @@ public class OrderBookingActivity extends BaseActivity implements IOrderView, Ad
                     return view;
                 }
             };
-            sp_service_type.setAdapter(arrayAdapter);
-            sp_service_type.setOnItemSelectedListener(this);
-            tv_price_per_hour.setText(String.valueOf(types.get(0).getPricePerHour()));
+            sp_sub_option.setAdapter(arrayAdapter);
+            sp_sub_option.setOnItemSelectedListener(new OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    subOptionPosition = i;
+                    tv_unit_price.setText(timerCleaningType.getSubOptions().get(subOptionPosition).formatPrice());
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+                    subOptionPosition = 0;
+                }
+            });
         }
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        serviceTypeNum = i;
-        tv_price_per_hour.setText(String.valueOf(types.get(i).getPricePerHour()));
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
-
-    private void createTypeList(){
-        typeList = new ArrayList<>();
-        for(ServiceType type : types) {
-            typeList.add(type.getTypeName());
-        }
-    }
-
-    private void initDatePicker() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.ENGLISH);
-        Date nowDate = new Date();
-        Date endDate = new Date();
-        endDate.setYear(nowDate.getYear() + 5);
-        String now = sdf.format(nowDate);
-        String end = sdf.format(endDate);
-        tv_date.setText(now);
-
-        datePicker = new CustomDatePicker(this, new CustomDatePicker.ResultHandler() {
-            @Override
-            public void handle(String time) {
-                tv_date.setText(time);
-            }
-        }, now, end);
-        datePicker.showSpecificTime(true);
-        datePicker.setIsLoop(false);
+    private void initClothesList(){
+        clothesAdapter = new ClothesAdapter(this);
+        clothesAdapter.setData(ironingType.getClothesTypes());
+        rv_clothes.setAdapter(clothesAdapter);
+        rv_clothes.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void booking(){
         UAddress uAddress;
-        ServiceType serviceType = types.get(serviceTypeNum);
+        Order order = null;
         String city = et_city.getText().toString().trim();
         String suburb = et_suburb.getText().toString().trim();
         String street = et_street.getText().toString().trim();
-        String date = tv_date.getText().toString().trim();
+        String date = btn_date.getText().toString().trim();
         if (!TextUtils.isEmpty(city) && !TextUtils.isEmpty(suburb) && !TextUtils.isEmpty(street)){
             uAddress = new UAddress(city, suburb, street);
-            Order order = new Order(userInfo.getUserId(), serviceType, uAddress, date);
-            orderPresenter.bookingService(order, userInfo);
+            if (serviceType != null) {
+                switch (serviceType.getTypeId()){
+                    case Constants.ID_SERVICE_G_CLEANING:
+                    case Constants.ID_SERVICE_D_CLEANING:
+                        order = new TimerCleaningOrder(userInfo.getUserId(), timerCleaningType, uAddress, date, timerCleaningType.getSubOptions().get(subOptionPosition));
+                        break;
+                    case Constants.ID_SERVICE_BUFFERING:
+                    case Constants.ID_SERVICE_WATERBLASTING:
+                    case Constants.ID_SERVICE_CARPETWASH:
+                        if (!TextUtils.isEmpty(et_area.getText().toString())){
+                            order = new AreaCleaningOrder(userInfo.getUserId(), areaCleaningType, uAddress, date, Integer.valueOf(et_area.getText().toString()));
+                        }else {
+                            Toast.makeText(this, "Please enter the area.", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        break;
+                    case Constants.ID_SERVICE_G_INRONING:
+                    case Constants.ID_SERVICE_S_INRONING:
+                        float amount = 0;
+                        int total_pieces = 0;
+                        for(ClothesType clothesType : ironingType.getClothesTypes()){
+                            total_pieces += clothesType.getQuantity();
+                            amount += clothesType.getQuantity() * clothesType.getUnitPrice();
+                        }
+                        if (total_pieces != 0){
+                            order = new IroningOrder(userInfo.getUserId(), ironingType, uAddress, date, total_pieces, ironingType.getClothesTypes(), amount);
+                        }else{
+                            Toast.makeText(this, "Please enter the clothes pieces.", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        break;
+                }
+            }
+            if (order != null) {
+                orderPresenter.bookingService(order, userInfo.getUserId());
+            }
         }else {
             if (TextUtils.isEmpty(city)){
                 if (TextUtils.isEmpty(city)){
