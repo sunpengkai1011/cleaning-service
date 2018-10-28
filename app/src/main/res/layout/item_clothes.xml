@@ -3,9 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:paddingBottom="10dp"
     android:paddingLeft="@dimen/booking_padding_left"
     android:paddingRight="@dimen/booking_padding_right"
-    android:paddingBottom="10dp"
     android:paddingTop="5dp">
 
     <RelativeLayout
@@ -23,6 +23,7 @@
         <TextView
             android:id="@+id/tv_clothes"
             style="@style/order_booking_title"
+            android:layout_width="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/iv_clothes_icon"
             android:text="T-Shirt" />
@@ -39,6 +40,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/lyt_quantity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="right">
@@ -65,6 +67,17 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_toLeftOf="@id/lyt_add"
+            android:inputType="number"
+            android:text="0"
+            android:textSize="@dimen/textSize_middle" />
+
+        <TextView
+            android:id="@+id/tv_quantity"
+            style="@style/order_booking_text"
+            android:layout_width="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:layout_alignParentRight="true"
             android:inputType="number"
             android:text="0"
             android:textSize="@dimen/textSize_middle" />

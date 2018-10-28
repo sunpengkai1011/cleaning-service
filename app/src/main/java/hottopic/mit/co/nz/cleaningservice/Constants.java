@@ -77,6 +77,10 @@ public class Constants {
     public static final int WHAT_ADVERTISEMENT = 0;
     public static final int WHAT_EXIT = 1;
 
+    //Clother
+    public static final int ADAPTER_CLOTHES_BOOKING = 1;
+    public static final int ADAPTER_CLOTHES_DETAIL = 2;
+
     public static Map<String, Long> realTime_depart = new HashMap<>();
     public static Map<String, Long> realTime_arrive = new HashMap<>();
 }

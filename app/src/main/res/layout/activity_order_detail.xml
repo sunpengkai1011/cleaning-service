@@ -10,186 +10,279 @@
     <Button
         android:id="@+id/btn_commit"
         style="@style/general_button"
-        android:layout_marginTop="10dp"
         android:layout_alignParentBottom="true"
-        android:text="@string/btn_payment"/>
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/btn_payment" />
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/view_title_bar"
         android:layout_above="@id/btn_commit"
+        android:layout_below="@id/view_title_bar"
         android:paddingBottom="10dp">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="30dp">
+
+                <TextView
+                    android:id="@+id/tv_title_service_type"
+                    style="@style/order_booking_title"
+                    android:layout_centerVertical="true"
+                    android:text="@string/title_service_type" />
+
+                <TextView
+                    android:id="@+id/tv_service_type"
+                    style="@style/order_booking_text"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/tv_title_service_type" />
+            </RelativeLayout>
 
             <TextView
-                android:id="@+id/tv_title_service_type"
-                style="@style/order_booking_title"
-                android:layout_marginTop="30dp"
-                android:text="@string/title_service_type" />
-
-            <TextView
-                android:id="@+id/tv_service_type"
+                android:id="@+id/tv_sub_option"
                 style="@style/order_booking_text"
-                android:layout_marginTop="30dp"
-                android:layout_toRightOf="@id/tv_title_service_type"
-                android:gravity="right" />
+                android:layout_height="50dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="140dp"
+                android:gravity="center_vertical" />
 
-            <TextView
-                android:id="@+id/tv_title_unit_price"
-                style="@style/order_booking_title"
-                android:layout_below="@id/tv_service_type"
-                android:layout_marginTop="20dp"
-                android:text="@string/title_unit_price" />
+            <RelativeLayout
+                android:id="@+id/lyt_price"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
 
-            <TextView
-                android:id="@+id/tv_unit_price"
-                style="@style/order_booking_text"
-                android:layout_below="@id/tv_service_type"
-                android:layout_marginTop="20dp"
-                android:layout_toRightOf="@id/tv_title_unit_price" />
+                <TextView
+                    android:id="@+id/tv_title_unit_price"
+                    style="@style/order_booking_title"
+                    android:layout_centerVertical="true"
+                    android:text="@string/title_unit_price" />
 
-            <TextView
-                android:id="@+id/tv_title_date"
-                style="@style/order_booking_title"
-                android:layout_below="@id/tv_title_unit_price"
-                android:layout_marginTop="20dp"
-                android:text="@string/title_date" />
+                <TextView
+                    android:id="@+id/tv_unit_price"
+                    style="@style/order_booking_text"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/tv_title_unit_price" />
+            </RelativeLayout>
 
-            <TextView
-                android:id="@+id/tv_date"
-                style="@style/order_booking_text"
-                android:layout_below="@id/tv_unit_price"
-                android:layout_marginTop="20dp"
-                android:layout_toRightOf="@id/tv_title_date" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <TextView
+                    android:id="@+id/tv_title_date"
+                    style="@style/order_booking_title"
+                    android:layout_centerVertical="true"
+                    android:text="@string/title_date" />
+
+                <TextView
+                    android:id="@+id/tv_date"
+                    style="@style/order_booking_text"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/tv_title_date" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <TextView
+                    android:id="@+id/tv_title_phone"
+                    style="@style/order_booking_title"
+                    android:layout_centerVertical="true"
+                    android:text="Phone" />
+
+                <TextView
+                    android:id="@+id/tv_phone"
+                    style="@style/order_booking_text"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/tv_title_phone" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/lyt_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:id="@+id/tv_title_address"
+                    style="@style/order_booking_title"
+                    android:layout_centerVertical="true"
+                    android:text="@string/user_info_title_address" />
+
+                <TextView
+                    android:id="@+id/tv_address"
+                    style="@style/order_booking_text"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/tv_title_address" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <TextView
+                    android:id="@+id/tv_title_status"
+                    style="@style/order_booking_title"
+                    android:layout_centerVertical="true"
+                    android:text="@string/title_status" />
+
+                <TextView
+                    android:id="@+id/tv_status"
+                    style="@style/order_booking_text"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/tv_title_status" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/lyt_clothes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/booking_padding_right">
+
+                <TextView
+                    android:id="@+id/tv_bulk"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/textSize_standard"
+                    android:paddingLeft="@dimen/booking_padding_left"
+                    android:textStyle="bold" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_clothes"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_bulk"/>
+            </RelativeLayout>
 
 
-            <TextView
-                android:id="@+id/tv_title_address"
-                style="@style/order_booking_title"
-                android:layout_below="@id/tv_title_date"
-                android:layout_marginTop="20dp"
-                android:text="@string/user_info_title_address" />
+            <RelativeLayout
+                android:id="@+id/lyt_area"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
 
-            <TextView
-                android:id="@+id/tv_address"
-                style="@style/order_booking_text"
-                android:layout_alignBaseline="@id/tv_title_address"
-                android:layout_below="@id/tv_date"
-                android:layout_marginTop="20dp"
-                android:layout_toRightOf="@id/tv_title_address" />
+                <TextView
+                    android:id="@+id/tv_title_area"
+                    style="@style/order_booking_title"
+                    android:layout_centerVertical="true"
+                    android:text="Area: " />
 
-            <TextView
-                android:id="@+id/tv_title_status"
-                style="@style/order_booking_title"
-                android:layout_below="@id/tv_address"
-                android:layout_marginTop="20dp"
-                android:text="@string/title_status" />
+                <TextView
+                    android:id="@+id/tv_area"
+                    style="@style/order_booking_text"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/tv_title_area" />
+            </RelativeLayout>
 
-            <TextView
-                android:id="@+id/tv_status"
-                style="@style/order_booking_text"
-                android:layout_below="@id/tv_address"
-                android:layout_marginTop="20dp"
-                android:layout_toRightOf="@id/tv_title_status"/>
+            <RelativeLayout
+                android:id="@+id/lyt_started"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
 
-            <Button
-                android:id="@+id/btn_started"
-                style="@style/general_button"
-                android:layout_below="@id/tv_status"
-                android:layout_marginTop="40dp"
-                android:text="@string/btn_started"
-                android:visibility="gone"/>
+                <TextView
+                    android:id="@+id/tv_title_start_time"
+                    style="@style/order_booking_title"
+                    android:layout_centerVertical="true"
+                    android:text="@string/title_start_time" />
 
-            <TextView
-                android:id="@+id/tv_title_start_time"
-                style="@style/order_booking_title"
-                android:layout_below="@id/tv_status"
-                android:layout_marginTop="20dp"
-                android:text="@string/title_start_time" />
+                <TextView
+                    android:id="@+id/tv_start_time"
+                    style="@style/order_booking_text"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/tv_title_start_time" />
+            </RelativeLayout>
 
-            <TextView
-                android:id="@+id/tv_start_time"
-                style="@style/order_booking_text"
-                android:layout_below="@id/tv_status"
-                android:layout_marginTop="20dp"
-                android:layout_toRightOf="@id/tv_title_start_time"/>
+            <RelativeLayout
+                android:id="@+id/lyt_finished"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
 
-            <Button
-                android:id="@+id/btn_finished"
-                style="@style/general_button"
-                android:layout_below="@id/tv_start_time"
-                android:layout_marginTop="40dp"
-                android:text="@string/btn_finished"
-                android:visibility="gone"/>
+                <TextView
+                    android:id="@+id/tv_title_finished_time"
+                    style="@style/order_booking_title"
+                    android:layout_centerVertical="true"
+                    android:text="@string/title_finished_time" />
 
-            <TextView
-                android:id="@+id/tv_title_finished_time"
-                style="@style/order_booking_title"
-                android:layout_below="@id/tv_start_time"
-                android:layout_marginTop="20dp"
-                android:text="@string/title_finished_time" />
+                <TextView
+                    android:id="@+id/tv_finished_time"
+                    style="@style/order_booking_text"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/tv_title_finished_time" />
+            </RelativeLayout>
 
-            <TextView
-                android:id="@+id/tv_finished_time"
-                style="@style/order_booking_text"
-                android:layout_below="@id/tv_start_time"
-                android:layout_marginTop="20dp"
-                android:layout_toRightOf="@id/tv_title_finished_time"/>
+            <RelativeLayout
+                android:id="@+id/lyt_duration"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
 
-            <TextView
-                android:id="@+id/tv_title_duration"
-                style="@style/order_booking_title"
-                android:layout_below="@id/tv_finished_time"
-                android:layout_marginTop="20dp"
-                android:text="@string/title_duration" />
+                <TextView
+                    android:id="@+id/tv_title_duration"
+                    style="@style/order_booking_title"
+                    android:layout_centerVertical="true"
+                    android:text="@string/title_duration" />
 
-            <TextView
-                android:id="@+id/tv_duration"
-                style="@style/order_booking_text"
-                android:layout_below="@id/tv_finished_time"
-                android:layout_marginTop="20dp"
-                android:layout_toRightOf="@id/tv_title_duration"/>
+                <TextView
+                    android:id="@+id/tv_duration"
+                    style="@style/order_booking_text"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/tv_title_duration" />
+            </RelativeLayout>
 
-            <TextView
-                android:id="@+id/tv_title_amount"
-                style="@style/order_booking_title"
-                android:layout_below="@id/tv_duration"
-                android:layout_marginTop="20dp"
-                android:text="@string/title_amount" />
+            <RelativeLayout
+                android:id="@+id/lyt_amount"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
 
-            <TextView
-                android:id="@+id/tv_amount"
-                style="@style/order_booking_text"
-                android:layout_below="@id/tv_duration"
-                android:layout_marginTop="20dp"
-                android:layout_toRightOf="@id/tv_title_amount"/>
+                <TextView
+                    android:id="@+id/tv_title_amount"
+                    style="@style/order_booking_title"
+                    android:layout_centerVertical="true"
+                    android:text="@string/title_amount" />
 
-            <TextView
-                android:id="@+id/tv_title_feedback"
-                style="@style/order_booking_title"
-                android:layout_below="@id/tv_amount"
-                android:layout_marginTop="20dp"
-                android:text="@string/title_feedback" />
+                <TextView
+                    android:id="@+id/tv_amount"
+                    style="@style/order_booking_text"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/tv_title_amount" />
+            </RelativeLayout>
 
-            <TextView
-                android:id="@+id/tv_feedback"
-                style="@style/order_booking_text"
-                android:layout_below="@id/tv_amount"
-                android:layout_marginTop="20dp"
-                android:layout_toRightOf="@id/tv_title_feedback"/>
+            <RelativeLayout
+                android:id="@+id/lyt_feedback"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp">
 
-            <EditText
-                android:id="@+id/et_feedback"
-                style="@style/order_booking_text"
-                android:layout_below="@id/tv_amount"
-                android:layout_marginTop="20dp"
-                android:hint="@string/hint_feedback"
-                android:layout_alignBaseline="@id/tv_title_feedback"
-                android:layout_toRightOf="@id/tv_title_feedback"/>
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/tv_title_feedback"
+                    style="@style/order_booking_title"
+                    android:text="@string/title_feedback" />
+
+                <TextView
+                    android:id="@+id/tv_feedback"
+                    style="@style/order_booking_text"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/tv_title_feedback" />
+
+                <EditText
+                    android:id="@+id/et_feedback"
+                    style="@style/order_booking_text"
+                    android:layout_alignBaseline="@id/tv_title_feedback"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/tv_title_feedback"
+                    android:hint="@string/hint_feedback" />
+            </RelativeLayout>
+        </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </RelativeLayout>

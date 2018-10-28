@@ -64,6 +64,11 @@ public class GeneralUtil {
         return decimalFormat.format(distance) + " Km";
     }
 
+    public static String priceFormat(float price){
+        DecimalFormat decimalFormat = new DecimalFormat(".0");
+        return decimalFormat.format(price);
+    }
+
     public static AlertDialog mapMarkerDialog(Context context, String message,
                                               String posBtnMessage, Dialog.OnClickListener posListener,
                                               String neuBtnMessage, Dialog.OnClickListener neuListener,
@@ -129,7 +134,6 @@ public class GeneralUtil {
     }
 
     public static int calculateDuration(String startTime, String endTime){
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.ENGLISH);
         String[] startStr = startTime.split(" ");
         String[] startHourStr = startStr[1].split(":");
         String[] endStr = endTime.split(" ");

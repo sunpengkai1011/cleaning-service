@@ -78,9 +78,9 @@
     <string name="title_service_type">Type: </string>
     <string name="title_unit_price">Price: </string>
     <string name="title_date">Date: </string>
-    <string name="title_start_time">Start Time: </string>
+    <string name="title_start_time">Started Time: </string>
     <string name="title_finished_time">Finished Time: </string>
-    <string name="title_status">Order Status: </string>
+    <string name="title_status">Status: </string>
     <string name="title_duration">Duration: </string>
     <string name="title_amount">Amount: </string>
     <string name="title_feedback">Feedback: </string>

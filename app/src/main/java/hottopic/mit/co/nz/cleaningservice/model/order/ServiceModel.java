@@ -7,12 +7,9 @@ import java.util.List;
 
 import hottopic.mit.co.nz.cleaningservice.Constants;
 import hottopic.mit.co.nz.cleaningservice.R;
-import hottopic.mit.co.nz.cleaningservice.entities.orders.cleaning.TimerCleaningType;
-import hottopic.mit.co.nz.cleaningservice.entities.orders.ironing.ClothesType;
-import hottopic.mit.co.nz.cleaningservice.entities.orders.cleaning.AreaCleaningType;
-import hottopic.mit.co.nz.cleaningservice.entities.orders.cleaning.SubOption;
+import hottopic.mit.co.nz.cleaningservice.entities.orders.ClothesType;
+import hottopic.mit.co.nz.cleaningservice.entities.orders.SubOption;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.ServiceType;
-import hottopic.mit.co.nz.cleaningservice.entities.orders.ironing.IroningType;
 
 public class ServiceModel implements IService {
     private Context context;
@@ -41,7 +38,7 @@ public class ServiceModel implements IService {
         gc_options.add(gc_2bedrooms);
         gc_options.add(gc_3bedrooms);
         gc_options.add(gc_4bedrooms);
-        TimerCleaningType gc_cleaning = new TimerCleaningType(Constants.ID_SERVICE_G_CLEANING, "General Cleaning",  R.drawable.icon_g_cleaning, gc_options);
+        ServiceType gc_cleaning = new ServiceType(Constants.ID_SERVICE_G_CLEANING, "General Cleaning",  R.drawable.icon_g_cleaning, gc_options);
 
         SubOption dc_1bedroom = new SubOption(Constants.SUB_OPTION_4BEDROOMS, "1 Bedroom", 50);
         SubOption dc_2bedrooms = new SubOption(Constants.SUB_OPTION_4BEDROOMS, "2 Bedrooms", 95);
@@ -52,14 +49,14 @@ public class ServiceModel implements IService {
         dc_options.add(dc_2bedrooms);
         dc_options.add(dc_3bedrooms);
         dc_options.add(dc_4bedrooms);
-        TimerCleaningType dc_cleaning = new TimerCleaningType(Constants.ID_SERVICE_D_CLEANING, "Deep Cleaning", R.drawable.icon_d_cleaning, dc_options);
+        ServiceType dc_cleaning = new ServiceType(Constants.ID_SERVICE_D_CLEANING, "Deep Cleaning", R.drawable.icon_d_cleaning, dc_options);
         List<ServiceType> cleaningTypes = new ArrayList<>();
         cleaningTypes.add(gc_cleaning);
         cleaningTypes.add(dc_cleaning);
 
-        AreaCleaningType buffering = new AreaCleaningType(Constants.ID_SERVICE_BUFFERING, "Buffering", R.drawable.icon_buffering, 8);
-        AreaCleaningType waterBlasting = new AreaCleaningType(Constants.ID_SERVICE_WATERBLASTING, "Water Blasting", R.drawable.icon_water_blast, 6);
-        AreaCleaningType carpetWash = new AreaCleaningType(Constants.ID_SERVICE_CARPETWASH, "Carpet Washing",  R.drawable.icon_carpet_wash, 5);
+        ServiceType buffering = new ServiceType(Constants.ID_SERVICE_BUFFERING, "Buffering", R.drawable.icon_buffering, 8);
+        ServiceType waterBlasting = new ServiceType(Constants.ID_SERVICE_WATERBLASTING, "Water Blasting", R.drawable.icon_water_blast, 6);
+        ServiceType carpetWash = new ServiceType(Constants.ID_SERVICE_CARPETWASH, "Carpet Washing",  R.drawable.icon_carpet_wash, 5);
         cleaningTypes.add(buffering);
         cleaningTypes.add(waterBlasting);
         cleaningTypes.add(carpetWash);
@@ -86,8 +83,8 @@ public class ServiceModel implements IService {
         s_cleaningTypes.add(s_jacket);
         s_cleaningTypes.add(s_long_dress);
         s_cleaningTypes.add(s_school_uniform);
-        IroningType general_ironing = new IroningType(Constants.ID_SERVICE_G_INRONING, "General Ironing", R.drawable.icon_iron,g_cleaningTypes, 0.9f);
-        IroningType steam_ironing = new IroningType(Constants.ID_SERVICE_S_INRONING, "Steam Ironing", R.drawable.icon_steam, s_cleaningTypes, 0.9f);
+        ServiceType general_ironing = new ServiceType(Constants.ID_SERVICE_G_INRONING, "General Ironing", R.drawable.icon_iron,g_cleaningTypes, 0.9f);
+        ServiceType steam_ironing = new ServiceType(Constants.ID_SERVICE_S_INRONING, "Steam Ironing", R.drawable.icon_steam, s_cleaningTypes, 0.9f);
         ironingTypes.add(general_ironing);
         ironingTypes.add(steam_ironing);
         return ironingTypes;

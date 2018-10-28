@@ -17,7 +17,6 @@ import hottopic.mit.co.nz.cleaningservice.BaseActivity;
 import hottopic.mit.co.nz.cleaningservice.Constants;
 import hottopic.mit.co.nz.cleaningservice.R;
 import hottopic.mit.co.nz.cleaningservice.adapter.OrderAdapter;
-import hottopic.mit.co.nz.cleaningservice.entities.orders.Order;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
 import hottopic.mit.co.nz.cleaningservice.presenter.home.OrderPresenterImpl;
 import hottopic.mit.co.nz.cleaningservice.view.home.order.IOrderView;
@@ -26,7 +25,7 @@ import hottopic.mit.co.nz.cleaningservice.view.login.LoginActivity;
 
 public class UserActivity extends BaseActivity implements IOrderView{
     private TextView tv_title, tv_username, tv_user_role;
-    private RelativeLayout lyt_right;
+    private RelativeLayout lyt_back;
     private Button btn_logout;
     private UserInfo userInfo;
     private ImageView iv_icon;
@@ -34,7 +33,6 @@ public class UserActivity extends BaseActivity implements IOrderView{
     private SwipeRefreshLayout srl_orders;
     private OrderAdapter orderAdapter;
 
-    private List<Order> orders;
     private OrderPresenterImpl orderPresenter;
 
     @Override
@@ -43,7 +41,7 @@ public class UserActivity extends BaseActivity implements IOrderView{
         tv_title = findViewById(R.id.tv_title);
         tv_username = findViewById(R.id.tv_username);
         tv_user_role = findViewById(R.id.tv_user_role);
-        lyt_right = findViewById(R.id.lyt_right);
+        lyt_back = findViewById(R.id.lyt_back);
         iv_icon = findViewById(R.id.iv_icon);
         btn_logout = findViewById(R.id.btn_logout);
         rv_orders = findViewById(R.id.rv_orders);
@@ -53,7 +51,7 @@ public class UserActivity extends BaseActivity implements IOrderView{
     @Override
     public void initData() {
         tv_title.setText(getResources().getString(R.string.title_me));
-        lyt_right.setVisibility(View.VISIBLE);
+        lyt_back.setVisibility(View.VISIBLE);
         iv_icon.setImageResource(R.drawable.icon_edit);
         userInfo = (UserInfo)getIntent().getSerializableExtra(Constants.KEY_INTENT_USERINFO);
         setData();
@@ -64,7 +62,7 @@ public class UserActivity extends BaseActivity implements IOrderView{
     @Override
     public void initListener() {
         btn_logout.setOnClickListener(this);
-        lyt_right.setOnClickListener(this);
+        lyt_back.setOnClickListener(this);
         srl_orders.setOnRefreshListener(() -> {
             orderPresenter.getOrders(userInfo.getUserId());
         });
@@ -83,6 +81,9 @@ public class UserActivity extends BaseActivity implements IOrderView{
                 editIntent.putExtra(Constants.KEY_INTENT_USERINFO, userInfo);
                 startActivityForResult(editIntent, Constants.INTENT_REQUEST_ME_TO_EDIT);
                 break;
+            case R.id.lyt_back:
+                this.finish();
+                break;
         }
     }
 
@@ -98,9 +99,18 @@ public class UserActivity extends BaseActivity implements IOrderView{
     }
 
     @Override
-    public void getOrdersResult(List<Order> orders, int code) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (RESULT_OK == resultCode){
+            if (Constants.INTENT_REQUEST_ORDER_TO_DETAIL == requestCode){
+                orderPresenter.getOrders(userInfo.getUserId());
+            }
+        }
+    }
+
+    @Override
+    public void getOrdersResult(List orders, int code) {
         if (Constants.RESPONSE_CODE_SUCCESSFUL == code){
-            this.orders = orders;
             if (orderAdapter == null) {
                 orderAdapter = new OrderAdapter(this);
                 orderAdapter.setData(orders);

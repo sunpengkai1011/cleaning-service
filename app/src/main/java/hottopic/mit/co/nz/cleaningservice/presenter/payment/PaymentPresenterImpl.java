@@ -19,9 +19,9 @@ public class PaymentPresenterImpl implements IPaymentPresenter {
     }
 
     @Override
-    public void paymentByCard(float amount, String cardNo, int orderId, String feedback) {
+    public void paymentByCard(float amount, String cardNo, String userId, int orderId, String feedback) {
         iPayment = new PaymentModel(context);
-        if (iPayment.paymentByCard(amount, cardNo,orderId, feedback)){
+        if (iPayment.paymentByCard(amount, cardNo,userId, orderId, feedback)){
             iPaymentView.getPaymentResult(Constants.TYPE_PAYMENT_CARD, Constants.RESPONSE_CODE_SUCCESSFUL);
         }else {
             iPaymentView.getPaymentResult(Constants.TYPE_PAYMENT_CARD, Constants.RESPONSE_CODE_FAIL);

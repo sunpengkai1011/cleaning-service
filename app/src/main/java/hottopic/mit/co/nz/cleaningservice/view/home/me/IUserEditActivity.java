@@ -15,7 +15,6 @@ import hottopic.mit.co.nz.cleaningservice.R;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UAddress;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
 import hottopic.mit.co.nz.cleaningservice.presenter.home.MeEditPresenterImpl;
-import hottopic.mit.co.nz.cleaningservice.view.home.HomeOldActivity;
 
 public class IUserEditActivity extends BaseActivity implements IUserEditView {
     private TextView tv_title, tv_username, tv_user_role;
@@ -81,7 +80,7 @@ public class IUserEditActivity extends BaseActivity implements IUserEditView {
                 break;
             case Constants.RESPONSE_CODE_SUCCESSFUL:
                 Toast.makeText(this, "Edit Successful!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(IUserEditActivity.this, HomeOldActivity.class);
+                Intent intent = new Intent(IUserEditActivity.this, UserActivity.class);
                 intent.putExtra(Constants.KEY_INTENT_USERINFO, userInfo);
                 IUserEditActivity.this.setResult(RESULT_OK, intent);
                 startActivity(intent);

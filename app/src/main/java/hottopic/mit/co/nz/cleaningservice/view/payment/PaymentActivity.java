@@ -61,7 +61,7 @@ public class PaymentActivity extends BaseActivity implements IPaymentView, Adapt
         position = getIntent().getIntExtra(Constants.KEY_INTENT_ORDER_POSITION, 0);
         request = getIntent().getIntExtra(Constants.KEY_INTENT_TO_PAYMENT, 0);
 
-//        tv_amount.setText(String.valueOf(order.getAmount()));
+        tv_amount.setText(order.formatAmount());
         tv_balance.setText(String.valueOf(userInfo.getBalance()));
 
         paymentPresenter = new PaymentPresenterImpl(this, this);
@@ -117,18 +117,18 @@ public class PaymentActivity extends BaseActivity implements IPaymentView, Adapt
                         switch (type_payment){
                             case Constants.TYPE_PAYMENT_CARD:
                                 String card_no = et_card_no.getText().toString().trim();
-//                                if (!TextUtils.isEmpty(card_no)) {
-//                                    paymentPresenter.paymentByCard(order.getAmount(), card_no, position, feedback);
-//                                }else{
-//                                    Toast.makeText(this, getResources().getString(R.string.toast_card_no), Toast.LENGTH_SHORT).show();
-//                                }
-//                                break;
-//                            case Constants.TYPE_PAYMENT_BALANCE:
-//                                if (order.getAmount() < userInfo.getBalance()){
-//                                    paymentPresenter.paymentByBalance(order.getAmount(), userInfo, position, feedback);
-//                                }else{
-//                                    Toast.makeText(this, getResources().getString(R.string.toast_balance_not_enough), Toast.LENGTH_SHORT).show();
-//                                }
+                                if (!TextUtils.isEmpty(card_no)) {
+                                    paymentPresenter.paymentByCard(order.getAmount(), card_no, userInfo.getUserId(), position, feedback);
+                                }else{
+                                    Toast.makeText(this, getResources().getString(R.string.toast_card_no), Toast.LENGTH_SHORT).show();
+                                }
+                                break;
+                            case Constants.TYPE_PAYMENT_BALANCE:
+                                if (order.getAmount() < userInfo.getBalance()){
+                                    paymentPresenter.paymentByBalance(order.getAmount(), userInfo, position, feedback);
+                                }else{
+                                    Toast.makeText(this, getResources().getString(R.string.toast_balance_not_enough), Toast.LENGTH_SHORT).show();
+                                }
                                 break;
                         }
                         break;

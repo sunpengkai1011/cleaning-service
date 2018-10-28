@@ -95,7 +95,7 @@
     <!-- Order -->
 
     <style name="order_booking_title">
-        <item name="android:layout_width">90dp</item>
+        <item name="android:layout_width">130dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">@dimen/textSize_middle</item>
         <item name="android:textColor">@color/black</item>

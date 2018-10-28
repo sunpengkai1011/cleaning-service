@@ -6,19 +6,13 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
 
 import hottopic.mit.co.nz.cleaningservice.Constants;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.Order;
-import hottopic.mit.co.nz.cleaningservice.entities.orders.ServiceType;
-import hottopic.mit.co.nz.cleaningservice.entities.orders.cleaning.CleaningOrder;
-import hottopic.mit.co.nz.cleaningservice.entities.orders.cleaning.TimerCleaningOrder;
-import hottopic.mit.co.nz.cleaningservice.entities.orders.cleaning.TimerCleaningType;
-import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
 import hottopic.mit.co.nz.cleaningservice.utils.GeneralUtil;
 
 public class OrderModel implements IOrder {
-    private List<TimerCleaningOrder> orders;
+    private List<Order> orders;
     private Context context;
 
     public OrderModel(Context context) {
@@ -46,12 +40,17 @@ public class OrderModel implements IOrder {
     public boolean finishedOrder(String userId, int position, String finished) {
         orders = GeneralUtil.fromJson(GeneralUtil.getDataFromSP(context, userId), new TypeToken<List<Order>>(){}.getType());
         if (orders.size() > position) {
-            TimerCleaningOrder order = orders.get(position);
-            order.setEndTime(finished);
-            int duration = GeneralUtil.calculateDuration(order.getStartTime(), orders.get(position).getEndTime());
-            float amount = order.getSubOption().getUnitPrice() * duration;
-            order.setDuration(duration);
-            order.setAmount(amount);
+            Order order = orders.get(position);
+            switch (orders.get(position).getServiceType().getTypeId()){
+                case Constants.ID_SERVICE_G_CLEANING:
+                case Constants.ID_SERVICE_D_CLEANING:
+                    order.setEndTime(finished);
+                    int duration = GeneralUtil.calculateDuration(order.getStartTime(), orders.get(position).getEndTime());
+                    float amount = order.getSubOption().getUnitPrice() * duration;
+                    order.setDuration(duration);
+                    order.setAmount(amount);
+                    break;
+            }
             order.setStatus(Constants.STATUS_ORDER_FINISHED);
             GeneralUtil.storDataBySP(context, userId, GeneralUtil.toJson(orders, new TypeToken<List<Order>>(){}.getType()));
             return true;

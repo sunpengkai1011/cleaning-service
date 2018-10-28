@@ -1,6 +1,5 @@
 package hottopic.mit.co.nz.cleaningservice.view.home.order;
 
-import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -30,28 +29,21 @@ import hottopic.mit.co.nz.cleaningservice.R;
 import hottopic.mit.co.nz.cleaningservice.adapter.ClothesAdapter;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.Order;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.ServiceType;
-import hottopic.mit.co.nz.cleaningservice.entities.orders.cleaning.AreaCleaningOrder;
-import hottopic.mit.co.nz.cleaningservice.entities.orders.cleaning.AreaCleaningType;
-import hottopic.mit.co.nz.cleaningservice.entities.orders.cleaning.SubOption;
-import hottopic.mit.co.nz.cleaningservice.entities.orders.cleaning.TimerCleaningOrder;
-import hottopic.mit.co.nz.cleaningservice.entities.orders.cleaning.TimerCleaningType;
-import hottopic.mit.co.nz.cleaningservice.entities.orders.ironing.ClothesType;
-import hottopic.mit.co.nz.cleaningservice.entities.orders.ironing.IroningOrder;
-import hottopic.mit.co.nz.cleaningservice.entities.orders.ironing.IroningType;
+import hottopic.mit.co.nz.cleaningservice.entities.orders.SubOption;
+import hottopic.mit.co.nz.cleaningservice.entities.orders.ClothesType;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UAddress;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
 import hottopic.mit.co.nz.cleaningservice.presenter.home.OrderPresenterImpl;
 import hottopic.mit.co.nz.cleaningservice.utils.GeneralUtil;
 import hottopic.mit.co.nz.cleaningservice.utils.mdatepicker.CustomDatePicker;
-import hottopic.mit.co.nz.cleaningservice.view.home.HomeOldActivity;
 
 import static android.widget.AdapterView.*;
 
 public class OrderBookingActivity extends BaseActivity implements IOrderView{
     private TextView tv_title, tv_username, tv_unit_price, tv_bulk, tv_service_type;
-    private RelativeLayout lyt_unit_price, lyt_date, lyt_area, lyt_clothes, lyt_sub_option;
-    private CheckBox cb_user_address;
-    private EditText et_city, et_suburb, et_street, et_area;
+    private RelativeLayout lyt_unit_price, lyt_area, lyt_clothes, lyt_sub_option;
+    private CheckBox cb_user_info;
+    private EditText et_city, et_suburb, et_street, et_area, et_phone;
     private RelativeLayout lyt_back;
     private RecyclerView rv_clothes;
     private Button btn_booking, btn_date;
@@ -63,10 +55,6 @@ public class OrderBookingActivity extends BaseActivity implements IOrderView{
 
     private List<String> subOptions;
     private int subOptionPosition = 0;
-
-    private TimerCleaningType timerCleaningType;
-    private AreaCleaningType areaCleaningType;
-    private IroningType ironingType;
 
     private CustomDatePicker datePicker;
 
@@ -80,9 +68,8 @@ public class OrderBookingActivity extends BaseActivity implements IOrderView{
         tv_unit_price = findViewById(R.id.tv_unit_price);
         tv_bulk = findViewById(R.id.tv_bulk);
         tv_service_type = findViewById(R.id.tv_service_type);
-        cb_user_address = findViewById(R.id.cb_user_address);
+        cb_user_info = findViewById(R.id.cb_user_info);
         lyt_unit_price = findViewById(R.id.lyt_unit_price);
-        lyt_date = findViewById(R.id.lyt_date);
         lyt_area = findViewById(R.id.lyt_area);
         lyt_clothes = findViewById(R.id.lyt_clothes);
         lyt_sub_option = findViewById(R.id.lyt_sub_option);
@@ -92,6 +79,7 @@ public class OrderBookingActivity extends BaseActivity implements IOrderView{
         et_suburb = findViewById(R.id.et_suburb);
         et_street = findViewById(R.id.et_street);
         et_area = findViewById(R.id.et_area);
+        et_phone = findViewById(R.id.et_phone);
         rv_clothes = findViewById(R.id.rv_clothes);
         lyt_back = findViewById(R.id.lyt_back);
         btn_booking = findViewById(R.id.btn_booking);
@@ -115,19 +103,16 @@ public class OrderBookingActivity extends BaseActivity implements IOrderView{
             switch (serviceType.getTypeId()){
                 case Constants.ID_SERVICE_G_CLEANING:
                 case Constants.ID_SERVICE_D_CLEANING:
-                    timerCleaningType = (TimerCleaningType) serviceType;
                     initSpinnerData();
                     break;
                 case Constants.ID_SERVICE_BUFFERING:
                 case Constants.ID_SERVICE_WATERBLASTING:
                 case Constants.ID_SERVICE_CARPETWASH:
-                    areaCleaningType = (AreaCleaningType) serviceType;
-                    tv_unit_price.setText(areaCleaningType.formatPrice());
+                    tv_unit_price.setText(serviceType.formatPrice());
                     break;
                 case Constants.ID_SERVICE_G_INRONING:
                 case Constants.ID_SERVICE_S_INRONING:
-                    ironingType = (IroningType) serviceType;
-                    tv_bulk.setText(ironingType.formatBulkDiscount());
+                    tv_bulk.setText(serviceType.formatBulkDiscount());
                     initClothesList();
                     break;
             }
@@ -141,17 +126,19 @@ public class OrderBookingActivity extends BaseActivity implements IOrderView{
         lyt_back.setOnClickListener(this);
         btn_booking.setOnClickListener(this);
         btn_date.setOnClickListener(this);
-        cb_user_address.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        cb_user_info.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b){
                     et_city.setText(userInfo.getuAddress().getCity());
                     et_suburb.setText(userInfo.getuAddress().getSuburb());
                     et_street.setText(userInfo.getuAddress().getStreet());
+                    et_phone.setText(userInfo.getPhoneNumber());
                 }else{
                     et_city.setText("");
                     et_suburb.setText("");
                     et_street.setText("");
+                    et_phone.setText("");
                 }
             }
         });
@@ -176,9 +163,6 @@ public class OrderBookingActivity extends BaseActivity implements IOrderView{
     public void bookingResult(int code) {
         if (Constants.RESPONSE_CODE_SUCCESSFUL == code){
             Toast.makeText(this, getResources().getString(R.string.booking_success), Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(OrderBookingActivity.this, HomeOldActivity.class);
-            intent.putExtra(Constants.KEY_INTENT_BOOKING, true);
-            this.setResult(RESULT_OK, intent);
             this.finish();
         }else{
             Toast.makeText(this, getResources().getString(R.string.booking_fail), Toast.LENGTH_SHORT).show();
@@ -228,9 +212,9 @@ public class OrderBookingActivity extends BaseActivity implements IOrderView{
     }
 
     private void initSpinnerData(){
-        if (timerCleaningType != null){
+        if (serviceType != null){
             subOptions = new ArrayList<>();
-            for (SubOption option : timerCleaningType.getSubOptions()){
+            for (SubOption option : serviceType.getSubOptions()){
                 subOptions.add(option.getSubOptionName());
             }
             ArrayAdapter arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, subOptions)
@@ -261,7 +245,7 @@ public class OrderBookingActivity extends BaseActivity implements IOrderView{
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     subOptionPosition = i;
-                    tv_unit_price.setText(timerCleaningType.getSubOptions().get(subOptionPosition).formatPrice());
+                    tv_unit_price.setText(serviceType.getSubOptions().get(subOptionPosition).formatPrice());
                 }
 
                 @Override
@@ -273,8 +257,8 @@ public class OrderBookingActivity extends BaseActivity implements IOrderView{
     }
 
     private void initClothesList(){
-        clothesAdapter = new ClothesAdapter(this);
-        clothesAdapter.setData(ironingType.getClothesTypes());
+        clothesAdapter = new ClothesAdapter(this, Constants.ADAPTER_CLOTHES_BOOKING);
+        clothesAdapter.setData(serviceType.getClothesTypes());
         rv_clothes.setAdapter(clothesAdapter);
         rv_clothes.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -286,19 +270,26 @@ public class OrderBookingActivity extends BaseActivity implements IOrderView{
         String suburb = et_suburb.getText().toString().trim();
         String street = et_street.getText().toString().trim();
         String date = btn_date.getText().toString().trim();
-        if (!TextUtils.isEmpty(city) && !TextUtils.isEmpty(suburb) && !TextUtils.isEmpty(street)){
+        String phone = et_phone.getText().toString().trim();
+        if (!TextUtils.isEmpty(city) && !TextUtils.isEmpty(suburb) && !TextUtils.isEmpty(street) && !TextUtils.isEmpty(phone)){
             uAddress = new UAddress(city, suburb, street);
             if (serviceType != null) {
                 switch (serviceType.getTypeId()){
                     case Constants.ID_SERVICE_G_CLEANING:
                     case Constants.ID_SERVICE_D_CLEANING:
-                        order = new TimerCleaningOrder(userInfo.getUserId(), timerCleaningType, uAddress, date, timerCleaningType.getSubOptions().get(subOptionPosition));
+                        order = new Order(userInfo.getUserId(), serviceType, phone, date, uAddress, serviceType.getSubOptions().get(subOptionPosition));
                         break;
                     case Constants.ID_SERVICE_BUFFERING:
                     case Constants.ID_SERVICE_WATERBLASTING:
                     case Constants.ID_SERVICE_CARPETWASH:
                         if (!TextUtils.isEmpty(et_area.getText().toString())){
-                            order = new AreaCleaningOrder(userInfo.getUserId(), areaCleaningType, uAddress, date, Integer.valueOf(et_area.getText().toString()));
+                            int area = Integer.valueOf(et_area.getText().toString());
+                            if (area > 0) {
+                                float amount = area * serviceType.getUnitPrice();
+                                order = new Order(userInfo.getUserId(), serviceType, phone, date, uAddress, area, amount);
+                            }else {
+                                Toast.makeText(this, "Please enter the area.", Toast.LENGTH_SHORT).show();
+                            }
                         }else {
                             Toast.makeText(this, "Please enter the area.", Toast.LENGTH_SHORT).show();
                             return;
@@ -308,12 +299,15 @@ public class OrderBookingActivity extends BaseActivity implements IOrderView{
                     case Constants.ID_SERVICE_S_INRONING:
                         float amount = 0;
                         int total_pieces = 0;
-                        for(ClothesType clothesType : ironingType.getClothesTypes()){
+                        for(ClothesType clothesType : serviceType.getClothesTypes()){
                             total_pieces += clothesType.getQuantity();
                             amount += clothesType.getQuantity() * clothesType.getUnitPrice();
                         }
                         if (total_pieces != 0){
-                            order = new IroningOrder(userInfo.getUserId(), ironingType, uAddress, date, total_pieces, ironingType.getClothesTypes(), amount);
+                            if (total_pieces >= 20){
+                                amount = amount * serviceType.getBulkDiscount();
+                            }
+                            order = new Order(userInfo.getUserId(), serviceType, phone, date, uAddress, amount, total_pieces, serviceType.getClothesTypes());
                         }else{
                             Toast.makeText(this, "Please enter the clothes pieces.", Toast.LENGTH_SHORT).show();
                             return;
@@ -332,6 +326,8 @@ public class OrderBookingActivity extends BaseActivity implements IOrderView{
                     Toast.makeText(this, getResources().getString(R.string.toast_suburb), Toast.LENGTH_SHORT).show();
                 }else if (TextUtils.isEmpty(street)){
                     Toast.makeText(this, getResources().getString(R.string.toast_street), Toast.LENGTH_SHORT).show();
+                }else if(TextUtils.isEmpty(phone)){
+                    Toast.makeText(this, getResources().getString(R.string.toast_phone_number), Toast.LENGTH_SHORT).show();
                 }
             }
         }

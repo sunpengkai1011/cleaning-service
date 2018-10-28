@@ -20,7 +20,6 @@ import hottopic.mit.co.nz.cleaningservice.adapter.DiscountAdapter;
 import hottopic.mit.co.nz.cleaningservice.entities.discounts.Discount;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
 import hottopic.mit.co.nz.cleaningservice.presenter.home.DiscountPresenterImpl;
-import hottopic.mit.co.nz.cleaningservice.view.home.HomeOldActivity;
 
 public class DiscountActivity extends BaseActivity implements IDiscountView, DiscountAdapter.OnItemClickListener {
     private TextView tv_title;
@@ -84,7 +83,7 @@ public class DiscountActivity extends BaseActivity implements IDiscountView, Dis
     public void getTopUpResult(UserInfo userInfo, int code) {
         if (Constants.RESPONSE_CODE_SUCCESSFUL == code){
             Toast.makeText(this, getResources().getString(R.string.top_up_successful), Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(DiscountActivity.this, HomeOldActivity.class);
+            Intent intent = new Intent(DiscountActivity.this, UserActivity.class);
             intent.putExtra(Constants.KEY_INTENT_USERINFO, userInfo);
             DiscountActivity.this.setResult(RESULT_OK, intent);
             finish();

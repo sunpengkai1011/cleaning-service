@@ -1,4 +1,4 @@
-package hottopic.mit.co.nz.cleaningservice.entities.orders.ironing;
+package hottopic.mit.co.nz.cleaningservice.entities.orders;
 
 import java.io.Serializable;
 
