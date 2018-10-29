@@ -30,7 +30,7 @@
     </style>
 
     <style name="user_info_title">
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">100dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">@dimen/textSize_middle</item>
@@ -41,7 +41,7 @@
 
     <style name="user_info_text">
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_height">50dp</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">@dimen/textSize_middle</item>
         <item name="android:layout_marginTop">@dimen/user_margin_top</item>

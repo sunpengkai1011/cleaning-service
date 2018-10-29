@@ -33,6 +33,7 @@ public class Constants {
     public static final String KEY_INTENT_TO_PAYMENT = "intent_to_payment";
     public static final String KEY_INTENT_SERVICETYPE = "service_type";
     public static final String KEY_INTENT_DISCOUNT = "discount";
+    public static final String KEY_INTENT_LOCATION = "location";
     public static final int INTENT_REQUEST_ME_TO_EDIT = 200;
     public static final int INTENT_REQUEST_ME_TO_DISCOUNT = 203;
     public static final int INTENT_REQUEST_ODER_TO_CREATE = 201;

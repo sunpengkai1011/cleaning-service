@@ -1,12 +1,14 @@
 package hottopic.mit.co.nz.cleaningservice.view.home.order;
 
 import android.content.Intent;
+import android.media.Image;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +24,7 @@ import hottopic.mit.co.nz.cleaningservice.entities.orders.Order;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
 import hottopic.mit.co.nz.cleaningservice.presenter.home.OrderPresenterImpl;
 import hottopic.mit.co.nz.cleaningservice.utils.GeneralUtil;
+import hottopic.mit.co.nz.cleaningservice.view.map.MapActivity;
 import hottopic.mit.co.nz.cleaningservice.view.payment.PaymentActivity;
 
 public class OrderDetailActivity extends BaseActivity implements IOrderView{
@@ -31,7 +34,8 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
     private EditText et_feedback;
     private Button btn_commit;
     private RelativeLayout lyt_back, lyt_price, lyt_area, lyt_started, lyt_finished, lyt_duration,
-            lyt_amount, lyt_feedback, lyt_clothes;
+            lyt_amount, lyt_feedback, lyt_clothes, lyt_right;
+    private ImageView iv_icon;
     private RecyclerView rv_clothes;
     private Order order;
     private int position;
@@ -60,6 +64,7 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
 
         et_feedback = findViewById(R.id.et_feedback);
         btn_commit = findViewById(R.id.btn_commit);
+        iv_icon = findViewById(R.id.iv_icon);
 
         lyt_back = findViewById(R.id.lyt_back);
         lyt_price = findViewById(R.id.lyt_price);
@@ -71,6 +76,7 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
         lyt_feedback = findViewById(R.id.lyt_feedback);
         lyt_clothes = findViewById(R.id.lyt_clothes);
         rv_clothes = findViewById(R.id.rv_clothes);
+        lyt_right = findViewById(R.id.lyt_right);
     }
 
     @Override
@@ -79,7 +85,9 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
         userInfo = (UserInfo) getIntent().getSerializableExtra(Constants.KEY_INTENT_USERINFO);
         position = getIntent().getIntExtra(Constants.KEY_INTENT_ORDER_POSITION, 0);
         tv_title.setText(getResources().getString(R.string.title_order_detail));
+        lyt_right.setVisibility(View.VISIBLE);
         lyt_back.setVisibility(View.VISIBLE);
+        iv_icon.setImageResource(R.drawable.icon_navigation);
         if (order != null){
             tv_service_type.setText(order.getServiceType().getTypeName());
             tv_date.setText(order.getDate());
@@ -97,6 +105,7 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
     @Override
     public void initListener() {
         lyt_back.setOnClickListener(this);
+        lyt_right.setOnClickListener(this);
     }
 
     @Override
@@ -104,6 +113,14 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
         switch (view.getId()){
             case R.id.lyt_back:
                 this.finish();
+                break;
+            case R.id.lyt_right:
+                String location = order.getuAddress().toString();
+                location = location.replace(" ", "+");
+                location = location.replace(",", "+");
+                Intent intent = new Intent(OrderDetailActivity.this, MapActivity.class);
+                intent.putExtra(Constants.KEY_INTENT_LOCATION, location);
+                startActivity(intent);
                 break;
         }
     }

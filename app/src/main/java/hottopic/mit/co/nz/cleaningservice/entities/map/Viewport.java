@@ -2,7 +2,7 @@ package hottopic.mit.co.nz.cleaningservice.entities.map;
 
 import java.io.Serializable;
 
-public class Bound implements Serializable{
+public class Viewport implements Serializable {
     private Location northeast;
     private Location southwest;
 

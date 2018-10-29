@@ -62,7 +62,7 @@ public class UserEditActivity extends BaseActivity implements IUserEditView {
 
     @Override
     public void initData() {
-        tv_title.setText(getResources().getString(R.string.title_edit));
+        tv_title.setText(getResources().getString(R.string.title_info));
         lyt_back.setVisibility(View.VISIBLE);
         lyt_right.setVisibility(View.VISIBLE);
         iv_icon.setImageResource(R.drawable.icon_edit);
@@ -101,12 +101,14 @@ public class UserEditActivity extends BaseActivity implements IUserEditView {
                     lyt_user.setVisibility(View.GONE);
                     lyt_edit.setVisibility(View.VISIBLE);
                     btn_commit.setText(getResources().getString(R.string.btn_edit));
+                    tv_title.setText(getResources().getString(R.string.title_edit));
                     btn_commit.setBackgroundColor(getResources().getColor(R.color.background_title_bar));
                     isEdit = false;
                 }else{
                     lyt_user.setVisibility(View.VISIBLE);
                     lyt_edit.setVisibility(View.GONE);
                     btn_commit.setText(getResources().getString(R.string.btn_logout));
+                    tv_title.setText(getResources().getString(R.string.title_info));
                     btn_commit.setBackgroundColor(getResources().getColor(R.color.background_logout));
                     isEdit = true;
                 }

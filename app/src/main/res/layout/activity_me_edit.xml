@@ -114,6 +114,7 @@
                 <TextView
                     android:id="@+id/tv_address"
                     style="@style/user_info_text"
+                    android:layout_height="wrap_content"
                     android:layout_below="@id/tv_email"
                     android:layout_toRightOf="@id/tv_title_address" />
 
@@ -127,7 +128,6 @@
                         android:id="@+id/tv_title_balance"
                         style="@style/user_info_title"
                         android:layout_centerVertical="true"
-                        android:layout_marginTop="0dp"
                         android:text="@string/user_info_title_balance" />
 
                     <ImageView
@@ -142,7 +142,8 @@
                         android:id="@+id/tv_balance"
                         style="@style/user_info_text"
                         android:layout_centerVertical="true"
-                        android:layout_marginTop="0dp"
+                        android:textSize="@dimen/textSize_large"
+                        android:textColor="@color/gold"
                         android:layout_toLeftOf="@id/iv_top_up"
                         android:layout_toRightOf="@id/tv_title_balance" />
                 </RelativeLayout>

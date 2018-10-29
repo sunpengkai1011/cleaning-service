@@ -19,16 +19,14 @@ import java.util.List;
 import hottopic.mit.co.nz.cleaningservice.BaseActivity;
 import hottopic.mit.co.nz.cleaningservice.Constants;
 import hottopic.mit.co.nz.cleaningservice.R;
-import hottopic.mit.co.nz.cleaningservice.entities.discounts.Discount;
+import hottopic.mit.co.nz.cleaningservice.entities.top_up.Discount;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.Order;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
-import hottopic.mit.co.nz.cleaningservice.model.payment.IDiscount;
 import hottopic.mit.co.nz.cleaningservice.presenter.home.DiscountPresenterImpl;
 import hottopic.mit.co.nz.cleaningservice.presenter.payment.PaymentPresenterImpl;
 import hottopic.mit.co.nz.cleaningservice.utils.GeneralUtil;
 import hottopic.mit.co.nz.cleaningservice.view.home.me.DiscountActivity;
 import hottopic.mit.co.nz.cleaningservice.view.home.me.IDiscountView;
-import hottopic.mit.co.nz.cleaningservice.view.home.me.UserActivity;
 
 public class PaymentActivity extends BaseActivity implements IPaymentView, IDiscountView, AdapterView.OnItemSelectedListener{
     private TextView tv_title, tv_title_balance, tv_balance, tv_amount;

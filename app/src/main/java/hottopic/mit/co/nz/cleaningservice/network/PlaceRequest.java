@@ -5,7 +5,7 @@ import android.content.Context;
 import com.android.tu.loadingdialog.LoadingDialog;
 
 import hottopic.mit.co.nz.cleaningservice.Constants;
-import hottopic.mit.co.nz.cleaningservice.entities.request.RouteResponse;
+import hottopic.mit.co.nz.cleaningservice.entities.request.PlaceResponse;
 import hottopic.mit.co.nz.cleaningservice.utils.GeneralUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -13,19 +13,19 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class RouteRequest {
+public class PlaceRequest {
 
     private RequestCallBack mCallBack;
     private LoadingDialog dialog;
-    private String origin;
-    private String destination;
-    private String waypoints;
+    private String intput;
+    private String inputtype;
+    private String fields;
 
-    public RouteRequest(Context context, RequestCallBack callBack, String origin, String destination, String waypoints){
+    public PlaceRequest(Context context, RequestCallBack callBack, String input){
         mCallBack = callBack;
-        this.origin = origin;
-        this.destination = destination;
-        this.waypoints = "optimize:true|" + waypoints;
+        this.intput = input;
+        this.inputtype = "textquery";
+        this.fields = "formatted_address,name,geometry";
         this.dialog = GeneralUtil.getWaitDialog(context, "Waiting...");
     }
 
@@ -33,17 +33,17 @@ public class RouteRequest {
         dialog.show();
         Retrofit retrofit = new Retrofit.Builder().baseUrl(Constants.GoogleMap_BASE_URL).addConverterFactory(GsonConverterFactory.create()).build();
 
-        RouteService request = retrofit.create(RouteService.class);
-        Call<RouteResponse> call = request.getRouteInfo(origin, destination, waypoints, Constants.DEPARTURE_TIME, Constants.APIKEY, Constants.OPTIMAIZEWAYPOINTS);
-        call.enqueue(new Callback<RouteResponse>() {
+        PlaceService request = retrofit.create(PlaceService.class);
+        Call<PlaceResponse> call = request.getPlaceInfo(intput, inputtype, fields, Constants.APIKEY);
+        call.enqueue(new Callback<PlaceResponse>() {
             @Override
-            public void onResponse(Call<RouteResponse> call, Response<RouteResponse> response) {
+            public void onResponse(Call<PlaceResponse> call, Response<PlaceResponse> response) {
                 dialog.dismiss();
                 mCallBack.requestCallBack(response.body());
             }
 
             @Override
-            public void onFailure(Call<RouteResponse> call, Throwable t) {
+            public void onFailure(Call<PlaceResponse> call, Throwable t) {
                 dialog.dismiss();
                 mCallBack.requestFailure(call);
             }

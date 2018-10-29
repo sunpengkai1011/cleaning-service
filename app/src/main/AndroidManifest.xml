@@ -33,7 +33,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.MapActivity"/>
+        <activity android:name=".view.map.MapActivity"/>
         <activity android:name=".view.home.HomeActivity" />
         <activity android:name=".view.login.LoginActivity" />
         <activity android:name=".view.register.RegisterActivity" />

@@ -1,10 +1,8 @@
 package hottopic.mit.co.nz.cleaningservice.utils;
 
-import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.widget.Toast;
 
@@ -13,91 +11,32 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import hottopic.mit.co.nz.cleaningservice.R;
-import hottopic.mit.co.nz.cleaningservice.entities.map.Bound;
-import hottopic.mit.co.nz.cleaningservice.entities.map.LegInfo;
-import hottopic.mit.co.nz.cleaningservice.entities.map.RouteInfo;
-import hottopic.mit.co.nz.cleaningservice.entities.map.StepInfo;
+import hottopic.mit.co.nz.cleaningservice.entities.map.PlaceInfo;
+import hottopic.mit.co.nz.cleaningservice.entities.map.Viewport;
 
 
 public class MapUtil {
 
-    public static GoogleMap addMarkers(GoogleMap map, List<LegInfo> legs){
-        for (LegInfo info: legs) {
-            map.addMarker(new MarkerOptions().position(info.getStart_location().getLocation()).snippet(info.getStart_address()));
-        }
-        LegInfo last = legs.get(legs.size() - 1);
-        map.addMarker(new MarkerOptions().position(last.getEnd_location().getLocation()).snippet(last.getEnd_address()));
+    public static GoogleMap addMark(GoogleMap map, PlaceInfo placeInfo){
+        map.addMarker(new MarkerOptions().position(placeInfo.getGeometry().getLocation().getLocation()).title(placeInfo.getFormatted_address()));
         return map;
     }
 
-    public static GoogleMap displayArea(GoogleMap map, Context context, Bound bound, int padding){
+    public static GoogleMap displayArea(GoogleMap map, Context context, Viewport bound, int padding){
         LatLngBounds bounds = new LatLngBounds.Builder().include(bound.getNortheast().getLocation()).include(bound.getSouthwest().getLocation()).build();
         map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, GeneralUtil.dip2px(context, padding)));
         return map;
     }
 
-    @SuppressLint("ResourceType")
-    public static GoogleMap drawRoute(GoogleMap map, Context context, List<LegInfo> legs){
-        List<LatLng> points = new ArrayList<>();
-
-        for(LegInfo info: legs){
-            for(StepInfo stepInfo: info.getSteps()){
-               points.addAll(decodePoly(stepInfo.getPolyline().getPoints()));
-            }
-        }
-        PolylineOptions options = new PolylineOptions();
-        options.addAll(points).color(Color.parseColor(context.getResources().getString(R.color.route))).width(GeneralUtil.dip2px(context, 7));
-        map.addPolyline(options);
-        return map;
-    }
-
-    @SuppressLint("ResourceType")
-    public static GoogleMap drawRoute(GoogleMap map, Context context, List<LegInfo> legs, int position){
-        List<LatLng> points = new ArrayList<>();
-        for(StepInfo stepInfo: legs.get(position).getSteps()){
-            points.addAll(decodePoly(stepInfo.getPolyline().getPoints()));
-        }
-        PolylineOptions options = new PolylineOptions();
-        options.addAll(points).color(Color.parseColor(context.getResources().getString(R.color.route))).width(GeneralUtil.dip2px(context, 7));
-        map.addPolyline(options);
-        return map;
-    }
-
-    public static void intentToGoogleMap(Context context, RouteInfo routeInfo){
-        String uri = "https://www.google.com/maps/dir/?api=1&";
-        for(int i = 0; i < routeInfo.getLegs().size(); i++){
-            if(i == 0){
-                uri = uri + "origin=" + routeInfo.getLegs().get(i).getStart_location().getLocationStr() + "&waypoints=";
-            }if (i == routeInfo.getLegs().size() - 1){
-                uri = uri + "&destination=" + routeInfo.getLegs().get(i).getEnd_location().getLocationStr();
-            }else{
-                if (i == routeInfo.getLegs().size() - 2) {
-                    uri = uri + routeInfo.getLegs().get(i).getEnd_location().getLocationStr();
-                }else{
-                    uri = uri + routeInfo.getLegs().get(i).getEnd_location().getLocationStr() + "|";
-                }
-            }
-        }
-        uri = uri + "&travelmode=driving";
-        Uri gmmIntentUri = Uri.parse(uri);
-        Intent intent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-        intent.setPackage("com.google.android.apps.maps");
-        try {
-            context.startActivity(intent);
-        } catch (ActivityNotFoundException ex) {
-            try {
-                Intent unrestrictedIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                context.startActivity(unrestrictedIntent);
-            } catch (ActivityNotFoundException innerEx) {
-                Toast.makeText(context, "Please install a maps application", Toast.LENGTH_LONG).show();
-            }
-        }
+    public static void intentToGoogleMap(Context context, String location){
+        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + location + "&travelmode=driving");
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        context.startActivity(mapIntent);
     }
 
     /**

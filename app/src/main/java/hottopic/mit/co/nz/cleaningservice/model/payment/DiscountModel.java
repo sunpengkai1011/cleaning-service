@@ -5,8 +5,7 @@ import android.content.Context;
 import java.util.ArrayList;
 import java.util.List;
 
-import hottopic.mit.co.nz.cleaningservice.Constants;
-import hottopic.mit.co.nz.cleaningservice.entities.discounts.Discount;
+import hottopic.mit.co.nz.cleaningservice.entities.top_up.Discount;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
 import hottopic.mit.co.nz.cleaningservice.utils.GeneralUtil;
 

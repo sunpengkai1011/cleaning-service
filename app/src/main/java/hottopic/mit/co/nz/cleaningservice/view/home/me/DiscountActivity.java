@@ -1,15 +1,13 @@
 package hottopic.mit.co.nz.cleaningservice.view.home.me;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -17,12 +15,12 @@ import hottopic.mit.co.nz.cleaningservice.BaseActivity;
 import hottopic.mit.co.nz.cleaningservice.Constants;
 import hottopic.mit.co.nz.cleaningservice.R;
 import hottopic.mit.co.nz.cleaningservice.adapter.DiscountAdapter;
-import hottopic.mit.co.nz.cleaningservice.entities.discounts.Discount;
+import hottopic.mit.co.nz.cleaningservice.entities.top_up.Discount;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
 import hottopic.mit.co.nz.cleaningservice.presenter.home.DiscountPresenterImpl;
 import hottopic.mit.co.nz.cleaningservice.view.payment.PaymentActivity;
 
-public class DiscountActivity extends BaseActivity implements IDiscountView, DiscountAdapter.OnItemClickListener {
+public class DiscountActivity extends BaseActivity implements IDiscountView {
     private TextView tv_title;
     private RelativeLayout lyt_back;
     private RecyclerView rv_discount;
@@ -70,8 +68,20 @@ public class DiscountActivity extends BaseActivity implements IDiscountView, Dis
     public void getDiscountResult(List<Discount> discounts, int code) {
         this.discounts = discounts;
         if (Constants.RESPONSE_CODE_SUCCESSFUL == code) {
-            discountAdapter = new DiscountAdapter(this, discounts);
-            discountAdapter.setOnItemClickListener(this);
+            discountAdapter = new DiscountAdapter(this);
+            discountAdapter.setData(discounts);
+            discountAdapter.setOnItemClickListener(discount -> {
+                new AlertDialog.Builder(this).setMessage(getResources().getString(R.string.top_up_message))
+                        .setPositiveButton(getResources().getString(R.string.sure), (dialogInterface, i) -> {
+                            Intent intent = new Intent(DiscountActivity.this, PaymentActivity.class);
+                            intent.putExtra(Constants.KEY_INTENT_TO_PAYMENT, Constants.INTENT_REQUEST_DICOUNT_TO_PAYMENT);
+                            intent.putExtra(Constants.KEY_INTENT_USERINFO, userInfo);
+                            intent.putExtra(Constants.KEY_INTENT_DISCOUNT, discount);
+                            startActivityForResult(intent, Constants.INTENT_REQUEST_DICOUNT_TO_PAYMENT);
+                        }).
+                        setNegativeButton(getResources().getString(R.string.cancel), (dialogInterface, i) -> {
+                        }).show();
+            });
             rv_discount.setLayoutManager(new LinearLayoutManager(this));
             rv_discount.setAdapter(discountAdapter);
             rv_discount.setVisibility(View.VISIBLE);
@@ -82,20 +92,6 @@ public class DiscountActivity extends BaseActivity implements IDiscountView, Dis
 
     @Override
     public void getTopUpResult(UserInfo userInfo, int code) {
-    }
-
-    @Override
-    public void onItemClick(View view, final int position) {
-        new AlertDialog.Builder(this).setMessage(getResources().getString(R.string.top_up_message))
-                .setPositiveButton(getResources().getString(R.string.sure), (dialogInterface, i) -> {
-                    Intent intent = new Intent(DiscountActivity.this, PaymentActivity.class);
-                    intent.putExtra(Constants.KEY_INTENT_TO_PAYMENT, Constants.INTENT_REQUEST_DICOUNT_TO_PAYMENT);
-                    intent.putExtra(Constants.KEY_INTENT_USERINFO, userInfo);
-                    intent.putExtra(Constants.KEY_INTENT_DISCOUNT, discounts.get(position));
-                    startActivityForResult(intent, Constants.INTENT_REQUEST_DICOUNT_TO_PAYMENT);
-                }).
-                setNegativeButton(getResources().getString(R.string.cancel), (dialogInterface, i) -> {
-                }).show();
     }
 
     @Override

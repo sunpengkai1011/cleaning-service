@@ -1,4 +1,4 @@
-package hottopic.mit.co.nz.cleaningservice.entities.discounts;
+package hottopic.mit.co.nz.cleaningservice.entities.top_up;
 
 import java.io.Serializable;
 
@@ -41,6 +41,10 @@ public class Discount implements Serializable {
     }
 
     public String formatPrice(){
-        return "$ " + this.price;
+        return "$ " + (int)this.price;
+    }
+
+    public String formatBalance(){
+        return "$ " + (int)this.balance;
     }
 }

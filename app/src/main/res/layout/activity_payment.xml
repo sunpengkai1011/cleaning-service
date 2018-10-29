@@ -64,6 +64,6 @@
         style="@style/general_button"
         android:layout_alignParentBottom="true"
         android:text="@string/btn_payment"
-        android:layout_marginBottom="40dp"/>
+        android:layout_marginBottom="10dp"/>
 
 </RelativeLayout>
