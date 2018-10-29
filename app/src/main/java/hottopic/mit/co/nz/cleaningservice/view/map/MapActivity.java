@@ -2,7 +2,6 @@ package hottopic.mit.co.nz.cleaningservice.view.map;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -10,6 +9,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,7 +18,6 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -40,13 +40,12 @@ public class MapActivity extends BaseActivity implements
 
     private boolean mPermissionDenied = false;
 
-    private TextView tv_title;
+    private TextView tv_title, tv_location_address;
     private RelativeLayout lyt_back, lyt_right;
-    private PlaceResponse response;
     private String location;
 
     private MapPresenterImpl mapPresenter;
-    private boolean isLoaded = false;
+    private Animation animation_in, animation_out;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,6 +56,7 @@ public class MapActivity extends BaseActivity implements
     public void initView(){
         setContentView(R.layout.activity_map);
         tv_title = findViewById(R.id.tv_title);
+        tv_location_address = findViewById(R.id.tv_location_address);
         lyt_back = findViewById(R.id.lyt_back);
         lyt_right = findViewById(R.id.lyt_right);
     }
@@ -66,6 +66,9 @@ public class MapActivity extends BaseActivity implements
         lyt_right.setVisibility(View.VISIBLE);
         tv_title.setText("MAP");
         lyt_back.setVisibility(View.VISIBLE);
+
+        animation_in = AnimationUtils.loadAnimation(this, R.anim.anim_view_in);
+        animation_out = AnimationUtils.loadAnimation(this, R.anim.anim_view_out);
 
         mapPresenter = new MapPresenterImpl(this, this);
         location = getIntent().getStringExtra(Constants.KEY_INTENT_LOCATION);
@@ -148,7 +151,43 @@ public class MapActivity extends BaseActivity implements
 
     @Override
     public void onMapClick(LatLng latLng) {
+        if (View.GONE == tv_location_address.getVisibility()) {
+            animation_in.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
 
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                        tv_location_address.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+            tv_location_address.startAnimation(animation_in);
+        }else{
+            animation_out.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    tv_location_address.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+            tv_location_address.startAnimation(animation_out);
+        }
     }
 
     @Override
@@ -208,13 +247,13 @@ public class MapActivity extends BaseActivity implements
 
     @Override
     public void placeResponse(PlaceResponse response) {
-        this.response = response;
+        tv_location_address.setText(response.getCandidates().get(0).getFormatted_address());
         MapUtil.addMark(mMap, response.getCandidates().get(0));
         MapUtil.displayArea(mMap, this, response.getCandidates().get(0).getGeometry().getViewport(), 10);
     }
 
     @Override
     public void placeResponseError() {
-
+        Toast.makeText(this, "The location queries failed", Toast.LENGTH_SHORT).show();
     }
 }

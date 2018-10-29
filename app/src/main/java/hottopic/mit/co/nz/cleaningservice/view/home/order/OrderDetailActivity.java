@@ -87,7 +87,7 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
         tv_title.setText(getResources().getString(R.string.title_order_detail));
         lyt_right.setVisibility(View.VISIBLE);
         lyt_back.setVisibility(View.VISIBLE);
-        iv_icon.setImageResource(R.drawable.icon_navigation);
+        iv_icon.setImageResource(R.drawable.icon_location);
         if (order != null){
             tv_service_type.setText(order.getServiceType().getTypeName());
             tv_date.setText(order.getDate());

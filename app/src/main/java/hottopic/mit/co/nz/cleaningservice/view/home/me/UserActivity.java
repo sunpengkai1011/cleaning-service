@@ -29,7 +29,6 @@ public class UserActivity extends BaseActivity implements IOrderView{
     private TextView tv_title, tv_username, tv_user_role;
     private RelativeLayout lyt_back, lyt_header;
     private UserInfo userInfo;
-    private ImageView iv_icon;
     private RecyclerView rv_orders;
     private SwipeRefreshLayout srl_orders;
     private OrderAdapter orderAdapter;
@@ -47,7 +46,6 @@ public class UserActivity extends BaseActivity implements IOrderView{
         tv_user_role = findViewById(R.id.tv_user_role);
         lyt_back = findViewById(R.id.lyt_back);
         lyt_header = findViewById(R.id.lyt_header);
-        iv_icon = findViewById(R.id.iv_icon);
         rv_orders = findViewById(R.id.rv_orders);
         srl_orders = findViewById(R.id.srl_orders);
     }
@@ -56,7 +54,6 @@ public class UserActivity extends BaseActivity implements IOrderView{
     public void initData() {
         tv_title.setText(getResources().getString(R.string.title_me));
         lyt_back.setVisibility(View.VISIBLE);
-        iv_icon.setImageResource(R.drawable.icon_edit);
         userInfo = (UserInfo)getIntent().getSerializableExtra(Constants.KEY_INTENT_USERINFO);
         setData();
         orderPresenter = new OrderPresenterImpl(this, this);

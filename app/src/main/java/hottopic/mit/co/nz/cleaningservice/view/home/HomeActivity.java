@@ -92,9 +92,6 @@ public class HomeActivity extends BaseActivity implements IHomeView, RecyclerVie
         tv_title.setText("HOME");
         lyt_right.setVisibility(View.VISIBLE);
         iv_icon.setImageResource(R.drawable.icon_user);
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(GeneralUtil.dip2px(this,30), GeneralUtil.dip2px(this, 30));
-        layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
-        iv_icon.setLayoutParams(layoutParams);
         homePresenter = new HomePresenterImpl(this, this);
         homePresenter.getServiceTypes();
 
