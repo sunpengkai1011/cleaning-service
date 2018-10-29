@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -18,6 +19,7 @@ import hottopic.mit.co.nz.cleaningservice.Constants;
 import hottopic.mit.co.nz.cleaningservice.R;
 import hottopic.mit.co.nz.cleaningservice.adapter.OrderAdapter;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
+import hottopic.mit.co.nz.cleaningservice.presenter.home.HomePresenterImpl;
 import hottopic.mit.co.nz.cleaningservice.presenter.home.OrderPresenterImpl;
 import hottopic.mit.co.nz.cleaningservice.view.home.order.IOrderView;
 import hottopic.mit.co.nz.cleaningservice.view.home.order.OrderDetailActivity;
@@ -25,8 +27,7 @@ import hottopic.mit.co.nz.cleaningservice.view.login.LoginActivity;
 
 public class UserActivity extends BaseActivity implements IOrderView{
     private TextView tv_title, tv_username, tv_user_role;
-    private RelativeLayout lyt_back;
-    private Button btn_logout;
+    private RelativeLayout lyt_back, lyt_header;
     private UserInfo userInfo;
     private ImageView iv_icon;
     private RecyclerView rv_orders;
@@ -34,6 +35,9 @@ public class UserActivity extends BaseActivity implements IOrderView{
     private OrderAdapter orderAdapter;
 
     private OrderPresenterImpl orderPresenter;
+    private HomePresenterImpl homePresenter;
+
+    private boolean isNew = false;
 
     @Override
     public void initView() {
@@ -42,8 +46,8 @@ public class UserActivity extends BaseActivity implements IOrderView{
         tv_username = findViewById(R.id.tv_username);
         tv_user_role = findViewById(R.id.tv_user_role);
         lyt_back = findViewById(R.id.lyt_back);
+        lyt_header = findViewById(R.id.lyt_header);
         iv_icon = findViewById(R.id.iv_icon);
-        btn_logout = findViewById(R.id.btn_logout);
         rv_orders = findViewById(R.id.rv_orders);
         srl_orders = findViewById(R.id.srl_orders);
     }
@@ -61,8 +65,8 @@ public class UserActivity extends BaseActivity implements IOrderView{
 
     @Override
     public void initListener() {
-        btn_logout.setOnClickListener(this);
         lyt_back.setOnClickListener(this);
+        lyt_header.setOnClickListener(this);
         srl_orders.setOnRefreshListener(() -> {
             orderPresenter.getOrders(userInfo.getUserId());
         });
@@ -71,20 +75,26 @@ public class UserActivity extends BaseActivity implements IOrderView{
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.btn_logout:
-                Intent intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-                break;
-            case R.id.lyt_right:
-                Intent editIntent = new Intent(this, IUserEditActivity.class);
+            case R.id.lyt_header:
+                Intent editIntent = new Intent(this, UserEditActivity.class);
                 editIntent.putExtra(Constants.KEY_INTENT_USERINFO, userInfo);
                 startActivityForResult(editIntent, Constants.INTENT_REQUEST_ME_TO_EDIT);
                 break;
             case R.id.lyt_back:
+                if (isNew) {
+                    setResult(RESULT_OK);
+                }
                 this.finish();
                 break;
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (KeyEvent.KEYCODE_BACK == keyCode){
+            lyt_back.performClick();
+        }
+        return false;
     }
 
     private void setData(){
@@ -104,7 +114,21 @@ public class UserActivity extends BaseActivity implements IOrderView{
         if (RESULT_OK == resultCode){
             if (Constants.INTENT_REQUEST_ORDER_TO_DETAIL == requestCode){
                 orderPresenter.getOrders(userInfo.getUserId());
+                if (data != null && Constants.TYPE_PAYMENT_BALANCE == data.getIntExtra(Constants.KEY_INTENT_TO_PAYMENT, 0)) {
+                    homePresenter = new HomePresenterImpl(this);
+                    String username = userInfo.getUserName();
+                    userInfo = homePresenter.getUserInfo(username);
+                    isNew = true;
+                }
+            }else if(Constants.INTENT_REQUEST_ME_TO_EDIT == requestCode){
+                if (data != null){
+                    userInfo = (UserInfo) data.getSerializableExtra(Constants.KEY_INTENT_USERINFO);
+                    isNew = true;
+                }
             }
+        }else if(Constants.LOGOUT == resultCode){
+            setResult(Constants.LOGOUT);
+            this.finish();
         }
     }
 

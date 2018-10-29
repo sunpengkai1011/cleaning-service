@@ -1,5 +1,6 @@
 package hottopic.mit.co.nz.cleaningservice.view.payment;
 
+import android.content.Intent;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -13,15 +14,23 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
+
 import hottopic.mit.co.nz.cleaningservice.BaseActivity;
 import hottopic.mit.co.nz.cleaningservice.Constants;
 import hottopic.mit.co.nz.cleaningservice.R;
+import hottopic.mit.co.nz.cleaningservice.entities.discounts.Discount;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.Order;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
+import hottopic.mit.co.nz.cleaningservice.model.payment.IDiscount;
+import hottopic.mit.co.nz.cleaningservice.presenter.home.DiscountPresenterImpl;
 import hottopic.mit.co.nz.cleaningservice.presenter.payment.PaymentPresenterImpl;
 import hottopic.mit.co.nz.cleaningservice.utils.GeneralUtil;
+import hottopic.mit.co.nz.cleaningservice.view.home.me.DiscountActivity;
+import hottopic.mit.co.nz.cleaningservice.view.home.me.IDiscountView;
+import hottopic.mit.co.nz.cleaningservice.view.home.me.UserActivity;
 
-public class PaymentActivity extends BaseActivity implements IPaymentView, AdapterView.OnItemSelectedListener{
+public class PaymentActivity extends BaseActivity implements IPaymentView, IDiscountView, AdapterView.OnItemSelectedListener{
     private TextView tv_title, tv_title_balance, tv_balance, tv_amount;
     private EditText et_card_no;
     private RelativeLayout lyt_back;
@@ -35,6 +44,8 @@ public class PaymentActivity extends BaseActivity implements IPaymentView, Adapt
     private ArrayAdapter arrayAdapter;
     private int type_payment;
     private int request;
+    private Discount discount;
+    private DiscountPresenterImpl discountPresenter;
 
     private PaymentPresenterImpl paymentPresenter;
     @Override
@@ -55,19 +66,19 @@ public class PaymentActivity extends BaseActivity implements IPaymentView, Adapt
         tv_title.setText(getResources().getString(R.string.title_payment));
         lyt_back.setVisibility(View.VISIBLE);
 
-        order = (Order) getIntent().getSerializableExtra(Constants.KEY_INTENT_ORDER);
+
         userInfo = (UserInfo) getIntent().getSerializableExtra(Constants.KEY_INTENT_USERINFO);
-        feedback = getIntent().getStringExtra(Constants.KEY_INTENT_FEEDBACK);
-        position = getIntent().getIntExtra(Constants.KEY_INTENT_ORDER_POSITION, 0);
         request = getIntent().getIntExtra(Constants.KEY_INTENT_TO_PAYMENT, 0);
-
-        tv_amount.setText(order.formatAmount());
-        tv_balance.setText(String.valueOf(userInfo.getBalance()));
-
         paymentPresenter = new PaymentPresenterImpl(this, this);
+        discountPresenter = new DiscountPresenterImpl(this, this);
 
         switch (request){
             case Constants.INTENT_REQUEST_DETAIL_TO_PAYMENT:
+                order = (Order) getIntent().getSerializableExtra(Constants.KEY_INTENT_ORDER);
+                feedback = getIntent().getStringExtra(Constants.KEY_INTENT_FEEDBACK);
+                position = getIntent().getIntExtra(Constants.KEY_INTENT_ORDER_POSITION, 0);
+                tv_balance.setText(String.valueOf(userInfo.formatBalance()));
+                tv_amount.setText(order.formatAmount());
                 arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.payment_type))
                 {
                     @Override
@@ -95,6 +106,8 @@ public class PaymentActivity extends BaseActivity implements IPaymentView, Adapt
                 break;
             case Constants.INTENT_REQUEST_DICOUNT_TO_PAYMENT:
                 sp_payment_type.setVisibility(View.INVISIBLE);
+                discount = (Discount) getIntent().getSerializableExtra(Constants.KEY_INTENT_DISCOUNT);
+                tv_amount.setText(discount.formatPrice());
                 break;
         }
 
@@ -124,15 +137,17 @@ public class PaymentActivity extends BaseActivity implements IPaymentView, Adapt
                                 }
                                 break;
                             case Constants.TYPE_PAYMENT_BALANCE:
-                                if (order.getAmount() < userInfo.getBalance()){
-                                    paymentPresenter.paymentByBalance(order.getAmount(), userInfo, position, feedback);
-                                }else{
-                                    Toast.makeText(this, getResources().getString(R.string.toast_balance_not_enough), Toast.LENGTH_SHORT).show();
-                                }
+                                paymentPresenter.paymentByBalance(order.getAmount(), userInfo, position, feedback);
                                 break;
                         }
                         break;
                     case Constants.INTENT_REQUEST_DICOUNT_TO_PAYMENT:
+                        String card_no = et_card_no.getText().toString().trim();
+                        if (!TextUtils.isEmpty(card_no)) {
+                            discountPresenter.topUp(userInfo, discount);
+                        }else{
+                            Toast.makeText(this, getResources().getString(R.string.toast_card_no), Toast.LENGTH_SHORT).show();
+                        }
                         break;
                 }
                 break;
@@ -157,7 +172,9 @@ public class PaymentActivity extends BaseActivity implements IPaymentView, Adapt
             case Constants.TYPE_PAYMENT_BALANCE:
                 if (Constants.RESPONSE_CODE_SUCCESSFUL == code){
                     Toast.makeText(this, getResources().getString(R.string.toast_payment_success), Toast.LENGTH_SHORT).show();
-                    setResult(RESULT_OK);
+                    Intent intent = new Intent();
+                    intent.putExtra(Constants.KEY_INTENT_TO_PAYMENT, Constants.TYPE_PAYMENT_BALANCE);
+                    setResult(RESULT_OK, intent);
                     this.finish();
                 }else{
                     Toast.makeText(this, getResources().getString(R.string.toast_payment_failed), Toast.LENGTH_SHORT).show();
@@ -171,11 +188,17 @@ public class PaymentActivity extends BaseActivity implements IPaymentView, Adapt
         type_payment = i;
         switch (i){
             case Constants.TYPE_PAYMENT_CARD:
+                btn_payment.setEnabled(true);
                 et_card_no.setVisibility(View.VISIBLE);
                 tv_title_balance.setVisibility(View.GONE);
                 tv_balance.setVisibility(View.GONE);
                 break;
             case Constants.TYPE_PAYMENT_BALANCE:
+                if (userInfo.getBalance() < order.getAmount()){
+                    btn_payment.setEnabled(false);
+                }else {
+                    btn_payment.setEnabled(true);
+                }
                 et_card_no.setVisibility(View.GONE);
                 tv_title_balance.setVisibility(View.VISIBLE);
                 tv_balance.setVisibility(View.VISIBLE);
@@ -186,5 +209,23 @@ public class PaymentActivity extends BaseActivity implements IPaymentView, Adapt
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+
+    @Override
+    public void getDiscountResult(List<Discount> discounts, int code) {
+
+    }
+
+    @Override
+    public void getTopUpResult(UserInfo userInfo, int code) {
+        if (Constants.RESPONSE_CODE_SUCCESSFUL == code) {
+            Toast.makeText(this, getResources().getString(R.string.top_up_successful), Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(PaymentActivity.this, DiscountActivity.class);
+            intent.putExtra(Constants.KEY_INTENT_USERINFO, userInfo);
+            setResult(RESULT_OK, intent);
+            finish();
+        } else {
+            Toast.makeText(this, getResources().getString(R.string.top_up_fail), Toast.LENGTH_SHORT).show();
+        }
     }
 }

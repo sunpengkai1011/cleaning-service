@@ -18,8 +18,8 @@ public class DiscountModel implements IDiscount {
         this.context = context;
     }
 
-    public UserInfo getUserInfo() {
-        userInfo = GeneralUtil.fromJson(GeneralUtil.getDataFromSP(context, Constants.SP_KEY_USERINFO), UserInfo.class);
+    public UserInfo getUserInfo(String username) {
+        userInfo = GeneralUtil.fromJson(GeneralUtil.getDataFromSP(context, username), UserInfo.class);
         return userInfo;
     }
 
@@ -45,8 +45,9 @@ public class DiscountModel implements IDiscount {
     public boolean topUp(UserInfo userInfo, Discount discount) {
         if (userInfo != null && discount != null){
             if (discount.getBalance() != 0){
-                userInfo.setBalance(discount.getBalance());
-                GeneralUtil.storDataBySP(context, Constants.SP_KEY_USERINFO, GeneralUtil.toJson(userInfo, UserInfo.class));
+                float balance = discount.getBalance() + userInfo.getBalance();
+                userInfo.setBalance(balance);
+                GeneralUtil.storDataBySP(context, userInfo.getUserName(), GeneralUtil.toJson(userInfo, UserInfo.class));
                 return true;
             }else {
                 return false;

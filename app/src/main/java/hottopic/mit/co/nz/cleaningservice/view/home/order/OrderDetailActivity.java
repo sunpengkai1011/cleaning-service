@@ -165,7 +165,13 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
         super.onActivityResult(requestCode, resultCode, data);
         if (RESULT_OK == resultCode){
             if (Constants.INTENT_REQUEST_DETAIL_TO_PAYMENT == requestCode){
-                this.setResult(RESULT_OK);
+                if (data != null){
+                    Intent intent = new Intent();
+                    intent.putExtra(Constants.KEY_INTENT_TO_PAYMENT, data.getIntExtra(Constants.KEY_INTENT_TO_PAYMENT, 1));
+                    setResult(RESULT_OK, intent);
+                }else {
+                    this.setResult(RESULT_OK);
+                }
                 finish();
             }
         }

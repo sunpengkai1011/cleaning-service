@@ -20,6 +20,7 @@ import hottopic.mit.co.nz.cleaningservice.adapter.DiscountAdapter;
 import hottopic.mit.co.nz.cleaningservice.entities.discounts.Discount;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
 import hottopic.mit.co.nz.cleaningservice.presenter.home.DiscountPresenterImpl;
+import hottopic.mit.co.nz.cleaningservice.view.payment.PaymentActivity;
 
 public class DiscountActivity extends BaseActivity implements IDiscountView, DiscountAdapter.OnItemClickListener {
     private TextView tv_title;
@@ -58,7 +59,7 @@ public class DiscountActivity extends BaseActivity implements IDiscountView, Dis
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.lyt_back:
                 this.finish();
                 break;
@@ -68,44 +69,48 @@ public class DiscountActivity extends BaseActivity implements IDiscountView, Dis
     @Override
     public void getDiscountResult(List<Discount> discounts, int code) {
         this.discounts = discounts;
-        if (Constants.RESPONSE_CODE_SUCCESSFUL == code){
+        if (Constants.RESPONSE_CODE_SUCCESSFUL == code) {
             discountAdapter = new DiscountAdapter(this, discounts);
             discountAdapter.setOnItemClickListener(this);
             rv_discount.setLayoutManager(new LinearLayoutManager(this));
             rv_discount.setAdapter(discountAdapter);
             rv_discount.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             rv_discount.setVisibility(View.GONE);
         }
     }
 
     @Override
     public void getTopUpResult(UserInfo userInfo, int code) {
-        if (Constants.RESPONSE_CODE_SUCCESSFUL == code){
-            Toast.makeText(this, getResources().getString(R.string.top_up_successful), Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(DiscountActivity.this, UserActivity.class);
-            intent.putExtra(Constants.KEY_INTENT_USERINFO, userInfo);
-            DiscountActivity.this.setResult(RESULT_OK, intent);
-            finish();
-        }else {
-            Toast.makeText(this, getResources().getString(R.string.top_up_fail), Toast.LENGTH_SHORT).show();
-        }
     }
 
     @Override
     public void onItemClick(View view, final int position) {
         new AlertDialog.Builder(this).setMessage(getResources().getString(R.string.top_up_message))
-                .setPositiveButton(getResources().getString(R.string.sure), new Dialog.OnClickListener(){
+                .setPositiveButton(getResources().getString(R.string.sure), (dialogInterface, i) -> {
+                    Intent intent = new Intent(DiscountActivity.this, PaymentActivity.class);
+                    intent.putExtra(Constants.KEY_INTENT_TO_PAYMENT, Constants.INTENT_REQUEST_DICOUNT_TO_PAYMENT);
+                    intent.putExtra(Constants.KEY_INTENT_USERINFO, userInfo);
+                    intent.putExtra(Constants.KEY_INTENT_DISCOUNT, discounts.get(position));
+                    startActivityForResult(intent, Constants.INTENT_REQUEST_DICOUNT_TO_PAYMENT);
+                }).
+                setNegativeButton(getResources().getString(R.string.cancel), (dialogInterface, i) -> {
+                }).show();
+    }
 
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        discountPresenter.topUp(userInfo, discounts.get(position));
-                    }
-                }).setNegativeButton(getResources().getString(R.string.cancel), new Dialog.OnClickListener(){
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (RESULT_OK == resultCode){
+            if (Constants.INTENT_REQUEST_DICOUNT_TO_PAYMENT == requestCode){
+                if (data != null) {
+                    userInfo = (UserInfo) data.getSerializableExtra(Constants.KEY_INTENT_USERINFO);
+                    Intent intent = new Intent(DiscountActivity.this, UserEditActivity.class);
+                    intent.putExtra(Constants.KEY_INTENT_USERINFO, userInfo);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
             }
-        }).show();
+        }
     }
 }

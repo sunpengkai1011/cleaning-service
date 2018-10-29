@@ -39,4 +39,8 @@ public class Discount implements Serializable {
     public void setPrice(float price) {
         this.price = price;
     }
+
+    public String formatPrice(){
+        return "$ " + this.price;
+    }
 }

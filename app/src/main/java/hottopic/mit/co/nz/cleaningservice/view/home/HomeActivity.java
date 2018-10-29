@@ -32,7 +32,9 @@ import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
 import hottopic.mit.co.nz.cleaningservice.presenter.home.HomePresenterImpl;
 import hottopic.mit.co.nz.cleaningservice.utils.GeneralUtil;
 import hottopic.mit.co.nz.cleaningservice.view.home.me.UserActivity;
+import hottopic.mit.co.nz.cleaningservice.view.home.me.UserEditActivity;
 import hottopic.mit.co.nz.cleaningservice.view.home.order.OrderBookingActivity;
+import hottopic.mit.co.nz.cleaningservice.view.login.LoginActivity;
 
 public class HomeActivity extends BaseActivity implements IHomeView, RecyclerViewPager.OnPageChangedListener, ServiceAdapter.OnItemClickedListener {
     private TextView tv_title, tv_page_number;
@@ -120,7 +122,7 @@ public class HomeActivity extends BaseActivity implements IHomeView, RecyclerVie
             case R.id.lyt_right:
                 Intent intent = new Intent(HomeActivity.this, UserActivity.class);
                 intent.putExtra(Constants.KEY_INTENT_USERINFO, userInfo);
-                startActivity(intent);
+                startActivityForResult(intent, Constants.INTENT_REQUEST_HOME_TO_USER);
                 break;
         }
     }
@@ -194,5 +196,17 @@ public class HomeActivity extends BaseActivity implements IHomeView, RecyclerVie
         intent.putExtra(Constants.KEY_INTENT_SERVICETYPE, serviceType);
         intent.putExtra(Constants.KEY_INTENT_USERINFO, userInfo);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (Constants.LOGOUT == resultCode){
+            this.finish();
+            Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+            startActivity(intent);
+        }else if(RESULT_OK == resultCode){
+            userInfo = homePresenter.getUserInfo(userInfo.getUserName());
+        }
     }
 }

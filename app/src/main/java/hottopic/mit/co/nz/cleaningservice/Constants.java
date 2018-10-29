@@ -13,6 +13,8 @@ public class Constants {
     public static final boolean OPTIMAIZEWAYPOINTS = true;
     public static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
+    public static final int LOGOUT = 1000;
+
     //Response code
     public static final int RESPONSE_CODE_SUCCESSFUL = 100;
     public static final int RESPONSE_CODE_FAIL = 101;
@@ -30,11 +32,13 @@ public class Constants {
     public static final String KEY_INTENT_FEEDBACK = "feedback";
     public static final String KEY_INTENT_TO_PAYMENT = "intent_to_payment";
     public static final String KEY_INTENT_SERVICETYPE = "service_type";
+    public static final String KEY_INTENT_DISCOUNT = "discount";
     public static final int INTENT_REQUEST_ME_TO_EDIT = 200;
     public static final int INTENT_REQUEST_ME_TO_DISCOUNT = 203;
     public static final int INTENT_REQUEST_ODER_TO_CREATE = 201;
     public static final int INTENT_REQUEST_LOGIN_TO_REGISTER = 202;
     public static final int INTENT_REQUEST_ORDER_TO_DETAIL = 204;
+    public static final int INTENT_REQUEST_HOME_TO_USER = 207;
     public static final int INTENT_REQUEST_DETAIL_TO_PAYMENT = 205;
     public static final int INTENT_REQUEST_DICOUNT_TO_PAYMENT = 206;
 

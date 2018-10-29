@@ -36,7 +36,7 @@ public class DiscountPresenterImpl implements IDiscountPresenter{
     public void topUp(UserInfo userInfo, Discount discount) {
         iDiscount = new DiscountModel(context);
         if (iDiscount.topUp(userInfo, discount)){
-            iDiscountView.getTopUpResult(iDiscount.getUserInfo(), Constants.RESPONSE_CODE_SUCCESSFUL);
+            iDiscountView.getTopUpResult(iDiscount.getUserInfo(userInfo.getUserName()), Constants.RESPONSE_CODE_SUCCESSFUL);
         }else{
             iDiscountView.getTopUpResult(new UserInfo(), Constants.RESPONSE_CODE_FAIL);
         }

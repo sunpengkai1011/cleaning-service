@@ -90,4 +90,8 @@ public class UserInfo implements Serializable{
     public void setBalance(float balance) {
         this.balance = balance;
     }
+
+    public String formatBalance(){
+        return "$ " + this.balance;
+    }
 }
