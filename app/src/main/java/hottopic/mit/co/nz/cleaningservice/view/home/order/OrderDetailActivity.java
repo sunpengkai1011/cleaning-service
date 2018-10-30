@@ -116,8 +116,8 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
                 break;
             case R.id.lyt_right:
                 String location = order.getuAddress().toString();
+                location = location.replace(", ", "+");
                 location = location.replace(" ", "+");
-                location = location.replace(",", "+");
                 Intent intent = new Intent(OrderDetailActivity.this, MapActivity.class);
                 intent.putExtra(Constants.KEY_INTENT_LOCATION, location);
                 startActivity(intent);
