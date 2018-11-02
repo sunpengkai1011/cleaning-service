@@ -28,7 +28,7 @@ public class Order implements Serializable{
 
     private int quantity;
     private List<ClothesType> clothesTypes;
-
+    private int rating;
 
 
     public Order() {
@@ -43,7 +43,8 @@ public class Order implements Serializable{
         this.amount = amount;
         this.phone = phone;
         this.feedback = "";
-        this.status = Constants.STATUS_ORDER_BOOKED;
+        this.status = Constants.STATUS_ORDER_FINISHED;
+        this.rating = 10;
     }
 
     public Order(String userId, ServiceType serviceType, String phone, String date, UAddress uAddress, SubOption subOption) {
@@ -57,6 +58,7 @@ public class Order implements Serializable{
         this.startTime = "";
         this.endTime = "";
         this.status = Constants.STATUS_ORDER_BOOKED;
+        this.rating = 10;
     }
 
     public Order(String userId, ServiceType serviceType, String phone, String date, UAddress uAddress, float amount, int quantity, List<ClothesType> clothesTypes) {
@@ -68,7 +70,8 @@ public class Order implements Serializable{
         this.quantity = quantity;
         this.phone = phone;
         this.clothesTypes = clothesTypes;
-        this.status = Constants.STATUS_ORDER_BOOKED;
+        this.status = Constants.STATUS_ORDER_FINISHED;
+        this.rating = 10;
     }
 
     public int getOrderId() {
@@ -197,6 +200,14 @@ public class Order implements Serializable{
 
     public void setClothesTypes(List<ClothesType> clothesTypes) {
         this.clothesTypes = clothesTypes;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
     }
 
     public String formatDuration(){

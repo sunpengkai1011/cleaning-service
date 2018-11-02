@@ -129,13 +129,13 @@ public class PaymentActivity extends BaseActivity implements IPaymentView, IDisc
                             case Constants.TYPE_PAYMENT_CARD:
                                 String card_no = et_card_no.getText().toString().trim();
                                 if (!TextUtils.isEmpty(card_no)) {
-                                    paymentPresenter.paymentByCard(order.getAmount(), card_no, userInfo.getUserId(), position, feedback);
+                                    paymentPresenter.paymentByCard(order.getAmount(), card_no, userInfo.getUserId(), position, feedback, order.getRating());
                                 }else{
                                     Toast.makeText(this, getResources().getString(R.string.toast_card_no), Toast.LENGTH_SHORT).show();
                                 }
                                 break;
                             case Constants.TYPE_PAYMENT_BALANCE:
-                                paymentPresenter.paymentByBalance(order.getAmount(), userInfo, position, feedback);
+                                paymentPresenter.paymentByBalance(order.getAmount(), userInfo, position, feedback, order.getRating());
                                 break;
                         }
                         break;

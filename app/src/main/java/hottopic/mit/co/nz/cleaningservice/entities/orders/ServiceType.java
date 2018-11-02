@@ -3,6 +3,8 @@ package hottopic.mit.co.nz.cleaningservice.entities.orders;
 import java.io.Serializable;
 import java.util.List;
 
+import hottopic.mit.co.nz.cleaningservice.utils.GeneralUtil;
+
 public class ServiceType implements Serializable{
     private int typeId;
     private String typeName;
@@ -98,7 +100,7 @@ public class ServiceType implements Serializable{
     }
 
     public String formatBulkDiscount(){
-        return "More than 20 pieces will enjoy the " + this.bulkDiscount + " discount.";
+        return GeneralUtil.formatDiscount(this.bulkDiscount);
     }
 
     public String formatPrice(){

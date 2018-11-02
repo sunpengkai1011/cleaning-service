@@ -20,13 +20,14 @@ public class PaymentModel implements IPayment {
     }
 
     @Override
-    public boolean paymentByCard(float amount, String cardNo, String userId, int orderId, String feedback) {
-        if (!TextUtils.isEmpty(cardNo) && amount != 0){
+    public boolean paymentByCard(float amount, String cardNo, String userId, int orderId, String feedback, int rating) {
+        if (!TextUtils.isEmpty(cardNo)){
             List<Order> orders = GeneralUtil.fromJson(GeneralUtil.getDataFromSP(context, userId), new TypeToken<List<Order>>(){}.getType());
             if (!TextUtils.isEmpty(feedback)){
                 orders.get(orderId).setFeedback(feedback);
             }
             orders.get(orderId).setStatus(Constants.STATUS_ORDER_PAID);
+            orders.get(orderId).setRating(rating);
             GeneralUtil.storDataBySP(context, userId, GeneralUtil.toJson(orders, new TypeToken<List<Order>>(){}.getType()));
             return true;
         }
@@ -34,13 +35,14 @@ public class PaymentModel implements IPayment {
     }
 
     @Override
-    public boolean paymentByBalance(float amount, UserInfo userInfo, int orderId, String feedback) {
-        if (userInfo != null && amount != 0){
+    public boolean paymentByBalance(float amount, UserInfo userInfo, int orderId, String feedback, int rating) {
+        if (userInfo != null){
             List<Order> orders = GeneralUtil.fromJson(GeneralUtil.getDataFromSP(context, userInfo.getUserId()), new TypeToken<List<Order>>(){}.getType());
             if (!TextUtils.isEmpty(feedback)){
                 orders.get(orderId).setFeedback(feedback);
             }
             orders.get(orderId).setStatus(Constants.STATUS_ORDER_PAID);
+            orders.get(orderId).setRating(rating);
             float balance = userInfo.getBalance() - amount;
             userInfo.setBalance(balance);
             GeneralUtil.storDataBySP(context, userInfo.getUserId(), GeneralUtil.toJson(orders, new TypeToken<List<Order>>(){}.getType()));

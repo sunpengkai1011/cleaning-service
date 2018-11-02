@@ -24,6 +24,7 @@ import hottopic.mit.co.nz.cleaningservice.entities.orders.Order;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
 import hottopic.mit.co.nz.cleaningservice.presenter.home.OrderPresenterImpl;
 import hottopic.mit.co.nz.cleaningservice.utils.GeneralUtil;
+import hottopic.mit.co.nz.cleaningservice.utils.custom.RatingBar;
 import hottopic.mit.co.nz.cleaningservice.view.map.MapActivity;
 import hottopic.mit.co.nz.cleaningservice.view.payment.PaymentActivity;
 
@@ -34,12 +35,14 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
     private EditText et_feedback;
     private Button btn_commit;
     private RelativeLayout lyt_back, lyt_price, lyt_area, lyt_started, lyt_finished, lyt_duration,
-            lyt_amount, lyt_feedback, lyt_clothes, lyt_right;
+            lyt_amount, lyt_feedback, lyt_clothes, lyt_right, lyt_rating;
     private ImageView iv_icon;
     private RecyclerView rv_clothes;
     private Order order;
     private int position;
     private UserInfo userInfo;
+    private RatingBar rb_stars;
+    private int rating = 10;
 
     private OrderPresenterImpl orderPresenter;
 
@@ -77,6 +80,8 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
         lyt_clothes = findViewById(R.id.lyt_clothes);
         rv_clothes = findViewById(R.id.rv_clothes);
         lyt_right = findViewById(R.id.lyt_right);
+        lyt_rating = findViewById(R.id.lyt_rating);
+        rb_stars = findViewById(R.id.rb_stars);
     }
 
     @Override
@@ -106,6 +111,10 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
     public void initListener() {
         lyt_back.setOnClickListener(this);
         lyt_right.setOnClickListener(this);
+        rb_stars.setOnRatingChangeListener(ratingCount -> {
+            rating = (int) (ratingCount * 2);
+            order.setRating(rating);
+        });
     }
 
     @Override
@@ -211,6 +220,7 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
                 lyt_duration.setVisibility(View.GONE);
                 lyt_amount.setVisibility(View.GONE);
                 lyt_feedback.setVisibility(View.GONE);
+                lyt_rating.setVisibility(View.GONE);
                 btn_commit.setVisibility(View.VISIBLE);
 
                 tv_status.setText(getResources().getString(R.string.status_booked));
@@ -226,6 +236,7 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
                 lyt_duration.setVisibility(View.GONE);
                 lyt_amount.setVisibility(View.GONE);
                 lyt_feedback.setVisibility(View.GONE);
+                lyt_rating.setVisibility(View.GONE);
                 btn_commit.setVisibility(View.VISIBLE);
 
                 tv_status.setText(getResources().getString(R.string.status_started));
@@ -272,6 +283,8 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
                 tv_finished_time.setText(order.getEndTime());
                 tv_duration.setText(order.formatDuration());
                 tv_amount.setText(order.formatAmount());
+                rb_stars.setStar(order.getRating()/2);
+                rb_stars.setClickable(false);
                 if (!TextUtils.isEmpty(order.getFeedback())){
                     tv_feedback.setText(order.getFeedback());
                 }else {
@@ -294,16 +307,6 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
         switch (order.getStatus()){
             case Constants.STATUS_ORDER_BOOKED:
             case Constants.STATUS_ORDER_STARTED:
-                lyt_feedback.setVisibility(View.GONE);
-                btn_commit.setVisibility(View.VISIBLE);
-
-                tv_status.setText(getResources().getString(R.string.status_booked));
-                tv_status.setTextColor(getResources().getColor(R.color.status_other));
-                btn_commit.setText(getResources().getString(R.string.btn_finished));
-                btn_commit.setOnClickListener(view -> {
-                    orderPresenter.finishedOrder(order.getUserId(), position, GeneralUtil.getCurrentTime());
-                });
-                break;
             case Constants.STATUS_ORDER_FINISHED:
                 tv_feedback.setVisibility(View.GONE);
                 btn_commit.setVisibility(View.VISIBLE);
@@ -333,6 +336,8 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
 
                 tv_status.setText(getResources().getString(R.string.status_paid));
                 tv_status.setTextColor(getResources().getColor(R.color.status_payment));
+                rb_stars.setStar(order.getRating()/2);
+                rb_stars.setClickable(false);
                 if (!TextUtils.isEmpty(order.getFeedback())){
                     tv_feedback.setText(order.getFeedback());
                 }else {
@@ -351,7 +356,6 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
         lyt_started.setVisibility(View.GONE);
         lyt_finished.setVisibility(View.GONE);
         lyt_duration.setVisibility(View.GONE);
-        lyt_feedback.setVisibility(View.GONE);
         ClothesAdapter clothesAdapter = new ClothesAdapter(this, Constants.ADAPTER_CLOTHES_DETAIL);
         clothesAdapter.setData(order.getServiceType().getClothesTypes());
         rv_clothes.setAdapter(clothesAdapter);
@@ -364,6 +368,7 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
             case Constants.STATUS_ORDER_STARTED:
             case Constants.STATUS_ORDER_FINISHED:
                 btn_commit.setVisibility(View.VISIBLE);
+                tv_feedback.setVisibility(View.GONE);
 
                 tv_status.setText(getResources().getString(R.string.status_finished));
                 tv_status.setTextColor(getResources().getColor(R.color.status_other));
@@ -386,8 +391,16 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
                 break;
             case Constants.STATUS_ORDER_PAID:
                 btn_commit.setVisibility(View.GONE);
+                et_feedback.setVisibility(View.GONE);
+                rb_stars.setStar(order.getRating()/2);
+                rb_stars.setClickable(false);
                 tv_status.setText(getResources().getString(R.string.status_paid));
                 tv_status.setTextColor(getResources().getColor(R.color.status_payment));
+                if (!TextUtils.isEmpty(order.getFeedback())){
+                    tv_feedback.setText(order.getFeedback());
+                }else {
+                    lyt_feedback.setVisibility(View.GONE);
+                }
                 break;
         }
     }

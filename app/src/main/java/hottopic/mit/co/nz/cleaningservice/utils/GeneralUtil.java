@@ -27,19 +27,10 @@ public class GeneralUtil {
         return (int) (dp*density+0.5);
     }
 
-    public static int px2dip(Context context, int px) {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (px / scale + 0.5f);
-    }
 
     public static int px2sp(Context context, int pxValue) {
         final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
         return (int) (pxValue / fontScale + 0.5f);
-    }
-
-    public static int sp2px(Context context, int spValue) {
-        final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
-        return (int) (spValue * fontScale + 0.5f);
     }
 
     public static LoadingDialog getWaitDialog(Context context, String title){
@@ -50,45 +41,14 @@ public class GeneralUtil {
         return loadBuilder.create();
     }
 
-    public static String secondToMinutes(int second){
-        return second / 60 + " Mins";
-    }
-
-    public static int msToMinutes(int ms){
-        return ms / 6000;
-    }
-
-    public static String mToKm(int meter){
-        float distance = (float) meter / 1000;
-        DecimalFormat decimalFormat = new DecimalFormat(".0");
-        return decimalFormat.format(distance) + " Km";
-    }
-
     public static String priceFormat(float price){
-        DecimalFormat decimalFormat = new DecimalFormat(".0");
+        DecimalFormat decimalFormat;
+        if (price < 1){
+            decimalFormat = new DecimalFormat("0.0");
+        }else {
+            decimalFormat = new DecimalFormat(".0");
+        }
         return decimalFormat.format(price);
-    }
-
-    public static AlertDialog mapMarkerDialog(Context context, String message,
-                                              String posBtnMessage, Dialog.OnClickListener posListener,
-                                              String neuBtnMessage, Dialog.OnClickListener neuListener,
-                                              String negBtnMessage, Dialog.OnClickListener negListener){
-        AlertDialog.Builder builder = new AlertDialog.Builder(context)
-                .setMessage(message)
-                .setPositiveButton(posBtnMessage, posListener)
-                .setNeutralButton(neuBtnMessage, neuListener)
-                .setNegativeButton(negBtnMessage, negListener);
-        return builder.create();
-    }
-
-    public static AlertDialog twoBtnDialog(Context context, String message,
-                                              String posBtnMessage, Dialog.OnClickListener posListener,
-                                              String negBtnMessage, Dialog.OnClickListener negListener){
-        AlertDialog.Builder builder = new AlertDialog.Builder(context)
-                .setMessage(message)
-                .setPositiveButton(posBtnMessage, posListener)
-                .setNegativeButton(negBtnMessage, negListener);
-        return builder.create();
     }
 
     /**
@@ -142,12 +102,17 @@ public class GeneralUtil {
         int startMin = Integer.valueOf(startHourStr[1]);
         int endHour = Integer.valueOf(endHourStr[0]);
         int startHour = Integer.valueOf(startHourStr[0]);
-        int duration = 0;
+        int duration;
         if (endMin > startMin && endMin - startMin > 30){
             duration = endHour - startHour + 1;
         }else{
             duration = endHour - startHour;
         }
         return duration;
+    }
+
+    public static String formatDiscount(float discount){
+        int dis = (int)((1 - discount) * 100);
+        return "More than 20 pieces will enjoy the " + dis + "% discount.";
     }
 }

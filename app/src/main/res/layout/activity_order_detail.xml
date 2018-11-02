@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <include
         android:id="@+id/view_title_bar"
@@ -258,6 +259,35 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/lyt_rating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:id="@+id/tv_title_rating"
+                    style="@style/order_booking_title"
+                    android:layout_width="wrap_content"
+                    android:text="Rating: " />
+
+                <hottopic.mit.co.nz.cleaningservice.utils.custom.RatingBar
+                    android:id="@+id/rb_stars"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:starCount="5"
+                    android:gravity="center"
+                    app:starEmpty="@drawable/icon_star_empty"
+                    app:starFill="@drawable/icon_star"
+                    android:layout_toRightOf="@id/tv_title_rating"
+                    app:starHalf="@drawable/icon_star_half"
+                    app:starImageSize="30dp"
+                    app:starPadding="15dp"
+                    app:starStep="5"
+                    app:stepSize="Half"/>
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:id="@+id/lyt_feedback"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -272,14 +302,13 @@
                 <TextView
                     android:id="@+id/tv_feedback"
                     style="@style/order_booking_text"
-                    android:layout_centerVertical="true"
+                    android:layout_alignBaseline="@id/tv_title_feedback"
                     android:layout_toRightOf="@id/tv_title_feedback" />
 
                 <EditText
                     android:id="@+id/et_feedback"
                     style="@style/order_booking_text"
                     android:layout_alignBaseline="@id/tv_title_feedback"
-                    android:layout_centerVertical="true"
                     android:layout_toRightOf="@id/tv_title_feedback"
                     android:hint="@string/hint_feedback" />
             </RelativeLayout>

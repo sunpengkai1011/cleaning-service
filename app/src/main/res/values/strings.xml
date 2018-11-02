@@ -39,7 +39,7 @@
     <!--Order Status -->
     <string name="status_booked">Booked</string>
     <string name="status_started">Started</string>
-    <string name="status_finished">Finished</string>
+    <string name="status_finished">Unpaid</string>
     <string name="status_paid">Paid</string>
 
     <!-- User Role -->

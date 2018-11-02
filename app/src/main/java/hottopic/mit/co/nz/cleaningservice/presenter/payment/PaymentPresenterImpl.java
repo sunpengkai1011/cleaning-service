@@ -19,9 +19,9 @@ public class PaymentPresenterImpl implements IPaymentPresenter {
     }
 
     @Override
-    public void paymentByCard(float amount, String cardNo, String userId, int orderId, String feedback) {
+    public void paymentByCard(float amount, String cardNo, String userId, int orderId, String feedback, int rating) {
         iPayment = new PaymentModel(context);
-        if (iPayment.paymentByCard(amount, cardNo,userId, orderId, feedback)){
+        if (iPayment.paymentByCard(amount, cardNo,userId, orderId, feedback, rating)){
             iPaymentView.getPaymentResult(Constants.TYPE_PAYMENT_CARD, Constants.RESPONSE_CODE_SUCCESSFUL);
         }else {
             iPaymentView.getPaymentResult(Constants.TYPE_PAYMENT_CARD, Constants.RESPONSE_CODE_FAIL);
@@ -29,9 +29,9 @@ public class PaymentPresenterImpl implements IPaymentPresenter {
     }
 
     @Override
-    public void paymentByBalance(float amount, UserInfo userInfo, int orderId, String feedback) {
+    public void paymentByBalance(float amount, UserInfo userInfo, int orderId, String feedback, int rating) {
         iPayment = new PaymentModel(context);
-        if (iPayment.paymentByBalance(amount, userInfo,orderId, feedback)){
+        if (iPayment.paymentByBalance(amount, userInfo,orderId, feedback, rating)){
             iPaymentView.getPaymentResult(Constants.TYPE_PAYMENT_BALANCE, Constants.RESPONSE_CODE_SUCCESSFUL);
         }else {
             iPaymentView.getPaymentResult(Constants.TYPE_PAYMENT_BALANCE, Constants.RESPONSE_CODE_FAIL);
