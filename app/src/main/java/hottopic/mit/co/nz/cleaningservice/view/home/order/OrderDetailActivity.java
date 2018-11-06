@@ -283,7 +283,8 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
                 tv_finished_time.setText(order.getEndTime());
                 tv_duration.setText(order.formatDuration());
                 tv_amount.setText(order.formatAmount());
-                rb_stars.setStar(order.getRating()/2);
+                float stars = (float)order.getRating() / 2;
+                rb_stars.setStar(stars);
                 rb_stars.setClickable(false);
                 if (!TextUtils.isEmpty(order.getFeedback())){
                     tv_feedback.setText(order.getFeedback());
@@ -336,7 +337,8 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
 
                 tv_status.setText(getResources().getString(R.string.status_paid));
                 tv_status.setTextColor(getResources().getColor(R.color.status_payment));
-                rb_stars.setStar(order.getRating()/2);
+                float stars = (float)order.getRating() / 2;
+                rb_stars.setStar(stars);
                 rb_stars.setClickable(false);
                 if (!TextUtils.isEmpty(order.getFeedback())){
                     tv_feedback.setText(order.getFeedback());
@@ -392,7 +394,8 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
             case Constants.STATUS_ORDER_PAID:
                 btn_commit.setVisibility(View.GONE);
                 et_feedback.setVisibility(View.GONE);
-                rb_stars.setStar(order.getRating()/2);
+                float stars = (float)order.getRating() / 2;
+                rb_stars.setStar(stars);
                 rb_stars.setClickable(false);
                 tv_status.setText(getResources().getString(R.string.status_paid));
                 tv_status.setTextColor(getResources().getColor(R.color.status_payment));
