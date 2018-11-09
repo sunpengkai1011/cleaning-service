@@ -90,7 +90,7 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
         lyt_back.setVisibility(View.VISIBLE);
         iv_icon.setImageResource(R.drawable.icon_location);
         if (order != null){
-            tv_service_type.setText(order.getServiceType().getTypeName());
+            tv_service_type.setText(order.getServiceType().getType_name());
             tv_date.setText(order.getDate());
             tv_address.setText(order.getuAddress().toString());
             if (!TextUtils.isEmpty(order.getPhone())) {
@@ -158,7 +158,7 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
     }
 
     private void viewVisibleByType(){
-        switch (order.getServiceType().getTypeId()){
+        switch (order.getServiceType().getId()){
             case Constants.ID_SERVICE_G_CLEANING:
             case Constants.ID_SERVICE_D_CLEANING:
                 timerCleaningOrder();
@@ -205,7 +205,7 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
     }
 
     private void timerCleaningOrder(){
-        tv_sub_option.setText(order.getSubOption().getSubOptionName());
+        tv_sub_option.setText(order.getSubOption().getProduct_name());
         tv_unit_price.setText(String.valueOf(order.getSubOption().formatPrice()));
         lyt_area.setVisibility(View.GONE);
         lyt_clothes.setVisibility(View.GONE);
@@ -292,7 +292,7 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
 
     private void areaCleaningOrder(){
         tv_sub_option.setVisibility(View.GONE);
-        tv_unit_price.setText(String.valueOf(order.getServiceType().formatPrice()));
+        tv_unit_price.setText(String.valueOf(order.getServiceType().getProducts().get(0).formatPrice()));
         lyt_area.setVisibility(View.VISIBLE);
         tv_area.setText(order.formatArea());
         lyt_clothes.setVisibility(View.GONE);
@@ -353,7 +353,7 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
         lyt_finished.setVisibility(View.GONE);
         lyt_duration.setVisibility(View.GONE);
         ClothesAdapter clothesAdapter = new ClothesAdapter(this, Constants.ADAPTER_CLOTHES_DETAIL);
-        clothesAdapter.setData(order.getServiceType().getClothesTypes());
+        clothesAdapter.setData(order.getServiceType().getProducts());
         rv_clothes.setAdapter(clothesAdapter);
         rv_clothes.setLayoutManager(new LinearLayoutManager(this));
         if (order.getQuantity() > 20){

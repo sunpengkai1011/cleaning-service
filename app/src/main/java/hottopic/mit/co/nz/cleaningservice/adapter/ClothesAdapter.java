@@ -1,5 +1,6 @@
 package hottopic.mit.co.nz.cleaningservice.adapter;
 
+import android.app.Service;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -14,8 +15,9 @@ import android.widget.TextView;
 import hottopic.mit.co.nz.cleaningservice.Constants;
 import hottopic.mit.co.nz.cleaningservice.R;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.ClothesType;
+import hottopic.mit.co.nz.cleaningservice.entities.orders.ServiceProduct;
 
-public class ClothesAdapter extends BaseAdapter<ClothesType, ClothesAdapter.ClothesViewHolder>{
+public class ClothesAdapter extends BaseAdapter<ServiceProduct, ClothesAdapter.ClothesViewHolder>{
     private int type;
     public ClothesAdapter(Context context, int type) {
         super(context);
@@ -27,7 +29,7 @@ public class ClothesAdapter extends BaseAdapter<ClothesType, ClothesAdapter.Clot
         return new ClothesViewHolder(context);
     }
 
-    class ClothesViewHolder extends BaseViewHolder<ClothesType>{
+    class ClothesViewHolder extends BaseViewHolder<ServiceProduct>{
         private ImageView iv_clothes_icon;
         private TextView tv_clothes, tv_unit_price, tv_quantity;
         private RelativeLayout lyt_add, lyt_minus, lyt_quantity;
@@ -46,10 +48,10 @@ public class ClothesAdapter extends BaseAdapter<ClothesType, ClothesAdapter.Clot
         }
 
         @Override
-        public void onBindViewHolder(ClothesType model, int position) {
+        public void onBindViewHolder(ServiceProduct model, int position) {
             iv_clothes_icon.setImageResource(model.getIcon());
-            tv_clothes.setText(model.getClothesName());
-            tv_unit_price.setText(model.formatPriceForBooking());
+            tv_clothes.setText(model.getProduct_name());
+            tv_unit_price.setText(model.formatPrice());
             switch (type){
                 case Constants.ADAPTER_CLOTHES_BOOKING:
                     tv_quantity.setVisibility(View.GONE);

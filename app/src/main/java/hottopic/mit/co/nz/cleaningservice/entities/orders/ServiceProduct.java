@@ -10,6 +10,7 @@ public class ServiceProduct implements Serializable {
     private int icon;
     private float unit_price;
     private String unit;
+    private int quantity;
 
 
     public ServiceProduct(int id, int main_id, int sub_id, String product_name, float unit_price, String unit) {
@@ -76,5 +77,17 @@ public class ServiceProduct implements Serializable {
 
     public void setUnit(String unit) {
         this.unit = unit;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public String formatPrice(){
+        return "$" + this.unit_price + this.unit;
     }
 }

@@ -44,7 +44,7 @@ public class OrderAdapter extends BaseAdapter<Order, OrderAdapter.OrderViewHolde
         public void onBindViewHolder(Order model, int position) {
             String[] strs = model.getDate().split(" ");
             tv_date.setText(strs[0]);
-            tv_service_type.setText(model.getServiceType().getTypeName());
+            tv_service_type.setText(model.getServiceType().getType_name());
             switch (model.getStatus()){
                 case Constants.STATUS_ORDER_BOOKED:
                     tv_status.setText(context.getResources().getString(R.string.status_booked));

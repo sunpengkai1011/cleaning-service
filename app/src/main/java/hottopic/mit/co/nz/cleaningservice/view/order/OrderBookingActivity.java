@@ -17,6 +17,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.ecommerce.Product;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,9 +30,11 @@ import hottopic.mit.co.nz.cleaningservice.Constants;
 import hottopic.mit.co.nz.cleaningservice.R;
 import hottopic.mit.co.nz.cleaningservice.adapter.ClothesAdapter;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.Order;
+import hottopic.mit.co.nz.cleaningservice.entities.orders.ServiceProduct;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.ServiceType;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.SubOption;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.ClothesType;
+import hottopic.mit.co.nz.cleaningservice.entities.orders.SubServiceType;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UAddress;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
 import hottopic.mit.co.nz.cleaningservice.presenter.order.OrderPresenterImpl;
@@ -50,7 +54,7 @@ public class OrderBookingActivity extends BaseActivity implements IOrderView{
     private Spinner sp_sub_option;
     private UserInfo userInfo;
 
-    private ServiceType serviceType;
+    private SubServiceType serviceType;
     private ClothesAdapter clothesAdapter;
 
     private List<String> subOptions;
@@ -93,14 +97,14 @@ public class OrderBookingActivity extends BaseActivity implements IOrderView{
         orderPresenter = new OrderPresenterImpl(this, this);
 
         userInfo = Constants.userInfo;
-        serviceType = (ServiceType) getIntent().getSerializableExtra(Constants.KEY_INTENT_SERVICETYPE);
+        serviceType = (SubServiceType) getIntent().getSerializableExtra(Constants.KEY_INTENT_SERVICETYPE);
 
         if (userInfo != null && !TextUtils.isEmpty(userInfo.getUsername())){
             tv_username.setText(userInfo.getUsername());
         }
         if (serviceType != null) {
-            tv_service_type.setText(serviceType.getTypeName());
-            switch (serviceType.getTypeId()){
+            tv_service_type.setText(serviceType.getType_name());
+            switch (serviceType.getId()){
                 case Constants.ID_SERVICE_G_CLEANING:
                 case Constants.ID_SERVICE_D_CLEANING:
                     initSpinnerData();
@@ -108,7 +112,7 @@ public class OrderBookingActivity extends BaseActivity implements IOrderView{
                 case Constants.ID_SERVICE_BUFFERING:
                 case Constants.ID_SERVICE_WATERBLASTING:
                 case Constants.ID_SERVICE_CARPETWASH:
-                    tv_unit_price.setText(serviceType.formatPrice());
+                    tv_unit_price.setText(serviceType.getProducts().get(0).formatPrice());
                     break;
                 case Constants.ID_SERVICE_G_INRONING:
                 case Constants.ID_SERVICE_S_INRONING:
@@ -126,20 +130,17 @@ public class OrderBookingActivity extends BaseActivity implements IOrderView{
         lyt_back.setOnClickListener(this);
         btn_booking.setOnClickListener(this);
         btn_date.setOnClickListener(this);
-        cb_user_info.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b){
-                    et_city.setText(userInfo.getCity());
-                    et_suburb.setText(userInfo.getSuburb());
-                    et_street.setText(userInfo.getStreet());
-                    et_phone.setText(userInfo.getPhone());
-                }else{
-                    et_city.setText("");
-                    et_suburb.setText("");
-                    et_street.setText("");
-                    et_phone.setText("");
-                }
+        cb_user_info.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b){
+                et_city.setText(userInfo.getCity());
+                et_suburb.setText(userInfo.getSuburb());
+                et_street.setText(userInfo.getStreet());
+                et_phone.setText(userInfo.getPhone());
+            }else{
+                et_city.setText("");
+                et_suburb.setText("");
+                et_street.setText("");
+                et_phone.setText("");
             }
         });
     }
@@ -171,7 +172,7 @@ public class OrderBookingActivity extends BaseActivity implements IOrderView{
 
     private void visibleByType(){
         if (serviceType != null) {
-            switch (serviceType.getTypeId()){
+            switch (serviceType.getId()){
                 case Constants.ID_SERVICE_G_CLEANING:
                 case Constants.ID_SERVICE_D_CLEANING:
                     lyt_sub_option.setVisibility(View.VISIBLE);
@@ -214,8 +215,8 @@ public class OrderBookingActivity extends BaseActivity implements IOrderView{
     private void initSpinnerData(){
         if (serviceType != null){
             subOptions = new ArrayList<>();
-            for (SubOption option : serviceType.getSubOptions()){
-                subOptions.add(option.getSubOptionName());
+            for (ServiceProduct product : serviceType.getProducts()){
+                subOptions.add(product.getProduct_name());
             }
             ArrayAdapter arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, subOptions)
             {
@@ -245,7 +246,7 @@ public class OrderBookingActivity extends BaseActivity implements IOrderView{
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     subOptionPosition = i;
-                    tv_unit_price.setText(serviceType.getSubOptions().get(subOptionPosition).formatPrice());
+                    tv_unit_price.setText(serviceType.getProducts().get(subOptionPosition).formatPrice());
                 }
 
                 @Override
@@ -258,7 +259,7 @@ public class OrderBookingActivity extends BaseActivity implements IOrderView{
 
     private void initClothesList(){
         clothesAdapter = new ClothesAdapter(this, Constants.ADAPTER_CLOTHES_BOOKING);
-        clothesAdapter.setData(serviceType.getClothesTypes());
+        clothesAdapter.setData(serviceType.getProducts());
         rv_clothes.setAdapter(clothesAdapter);
         rv_clothes.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -274,10 +275,10 @@ public class OrderBookingActivity extends BaseActivity implements IOrderView{
         if (!TextUtils.isEmpty(city) && !TextUtils.isEmpty(suburb) && !TextUtils.isEmpty(street) && !TextUtils.isEmpty(phone)){
             uAddress = new UAddress(city, suburb, street);
             if (serviceType != null) {
-                switch (serviceType.getTypeId()){
+                switch (serviceType.getId()){
                     case Constants.ID_SERVICE_G_CLEANING:
                     case Constants.ID_SERVICE_D_CLEANING:
-                        order = new Order(userInfo.getUserId(), serviceType, phone, date, uAddress, serviceType.getSubOptions().get(subOptionPosition));
+                        order = new Order(userInfo.getUserId(), serviceType, phone, date, uAddress, serviceType.getProducts().get(subOptionPosition));
                         break;
                     case Constants.ID_SERVICE_BUFFERING:
                     case Constants.ID_SERVICE_WATERBLASTING:
@@ -285,7 +286,7 @@ public class OrderBookingActivity extends BaseActivity implements IOrderView{
                         if (!TextUtils.isEmpty(et_area.getText().toString())){
                             int area = Integer.valueOf(et_area.getText().toString());
                             if (area > 0) {
-                                float amount = area * serviceType.getUnitPrice();
+                                float amount = area * serviceType.getProducts().get(0).getUnit_price();
                                 order = new Order(userInfo.getUserId(), serviceType, phone, date, uAddress, area, amount);
                             }else {
                                 Toast.makeText(this, "Please enter the area.", Toast.LENGTH_SHORT).show();
@@ -299,15 +300,15 @@ public class OrderBookingActivity extends BaseActivity implements IOrderView{
                     case Constants.ID_SERVICE_S_INRONING:
                         float amount = 0;
                         int total_pieces = 0;
-                        for(ClothesType clothesType : serviceType.getClothesTypes()){
+                        for(ServiceProduct clothesType : serviceType.getProducts()){
                             total_pieces += clothesType.getQuantity();
-                            amount += clothesType.getQuantity() * clothesType.getUnitPrice();
+                            amount += clothesType.getQuantity() * clothesType.getUnit_price();
                         }
                         if (total_pieces != 0){
                             if (total_pieces >= 20){
-                                amount = amount * serviceType.getBulkDiscount();
+                                amount = amount * serviceType.getBulk_discount();
                             }
-                            order = new Order(userInfo.getUserId(), serviceType, phone, date, uAddress, amount, total_pieces, serviceType.getClothesTypes());
+                            order = new Order(userInfo.getUserId(), serviceType, phone, date, uAddress, amount, total_pieces, serviceType.getProducts());
                         }else{
                             Toast.makeText(this, "Please enter the clothes pieces.", Toast.LENGTH_SHORT).show();
                             return;

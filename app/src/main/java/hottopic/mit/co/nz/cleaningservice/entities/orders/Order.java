@@ -11,7 +11,7 @@ public class Order implements Serializable{
     private int orderId;
     private int userId;
     private String date;
-    private ServiceType serviceType;
+    private SubServiceType serviceType;
     private UAddress uAddress;
     private int status;
     private String phone;
@@ -21,20 +21,20 @@ public class Order implements Serializable{
 
     private int area;
 
-    private SubOption subOption;
+    private ServiceProduct subOption;
     private int duration;
     private String startTime;
     private String endTime;
 
     private int quantity;
-    private List<ClothesType> clothesTypes;
+    private List<ServiceProduct> clothesTypes;
     private int rating;
 
 
     public Order() {
     }
 
-    public Order(int userId, ServiceType serviceType, String phone, String date, UAddress uAddress, int area, float amount) {
+    public Order(int userId, SubServiceType serviceType, String phone, String date, UAddress uAddress, int area, float amount) {
         this.userId = userId;
         this.date = date;
         this.serviceType = serviceType;
@@ -47,12 +47,12 @@ public class Order implements Serializable{
         this.rating = 10;
     }
 
-    public Order(int userId, ServiceType serviceType, String phone, String date, UAddress uAddress, SubOption subOption) {
+    public Order(int userId, SubServiceType serviceType, String phone, String date, UAddress uAddress, ServiceProduct serviceProduct) {
         this.userId = userId;
         this.date = date;
         this.serviceType = serviceType;
         this.uAddress = uAddress;
-        this.subOption = subOption;
+        this.subOption = serviceProduct;
         this.duration = 0;
         this.phone = phone;
         this.startTime = "";
@@ -61,7 +61,7 @@ public class Order implements Serializable{
         this.rating = 10;
     }
 
-    public Order(int userId, ServiceType serviceType, String phone, String date, UAddress uAddress, float amount, int quantity, List<ClothesType> clothesTypes) {
+    public Order(int userId, SubServiceType serviceType, String phone, String date, UAddress uAddress, float amount, int quantity, List<ServiceProduct> clothesTypes) {
         this.userId = userId;
         this.date = date;
         this.serviceType = serviceType;
@@ -90,11 +90,11 @@ public class Order implements Serializable{
         this.userId = userId;
     }
 
-    public ServiceType getServiceType() {
+    public SubServiceType getServiceType() {
         return serviceType;
     }
 
-    public void setServiceType(ServiceType serviceType) {
+    public void setServiceType(SubServiceType serviceType) {
         this.serviceType = serviceType;
     }
 
@@ -154,11 +154,11 @@ public class Order implements Serializable{
         this.area = area;
     }
 
-    public SubOption getSubOption() {
+    public ServiceProduct getSubOption() {
         return subOption;
     }
 
-    public void setSubOption(SubOption subOption) {
+    public void setSubOption(ServiceProduct subOption) {
         this.subOption = subOption;
     }
 
@@ -194,11 +194,11 @@ public class Order implements Serializable{
         this.quantity = quantity;
     }
 
-    public List<ClothesType> getClothesTypes() {
+    public List<ServiceProduct> getClothesTypes() {
         return clothesTypes;
     }
 
-    public void setClothesTypes(List<ClothesType> clothesTypes) {
+    public void setClothesTypes(List<ServiceProduct> clothesTypes) {
         this.clothesTypes = clothesTypes;
     }
 

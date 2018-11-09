@@ -52,12 +52,12 @@ public class OrderModel implements IOrder {
     public boolean finishedOrder(int userId, int position, String finished) {
         if (orders.size() > position) {
             Order order = orders.get(position);
-            switch (orders.get(position).getServiceType().getTypeId()){
+            switch (orders.get(position).getServiceType().getId()){
                 case Constants.ID_SERVICE_G_CLEANING:
                 case Constants.ID_SERVICE_D_CLEANING:
                     order.setEndTime(finished);
                     int duration = GeneralUtil.calculateDuration(order.getStartTime(), orders.get(position).getEndTime());
-                    float amount = order.getSubOption().getUnitPrice() * duration;
+                    float amount = order.getSubOption().getUnit_price() * duration;
                     order.setDuration(duration);
                     order.setAmount(amount);
                     break;

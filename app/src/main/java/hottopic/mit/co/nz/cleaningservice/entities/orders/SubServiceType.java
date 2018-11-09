@@ -3,6 +3,8 @@ package hottopic.mit.co.nz.cleaningservice.entities.orders;
 import java.io.Serializable;
 import java.util.List;
 
+import hottopic.mit.co.nz.cleaningservice.utils.GeneralUtil;
+
 public class SubServiceType implements Serializable {
     private int id;
     private int main_id;
@@ -65,5 +67,9 @@ public class SubServiceType implements Serializable {
 
     public void setProducts(List<ServiceProduct> products) {
         this.products = products;
+    }
+
+    public String formatBulkDiscount(){
+        return GeneralUtil.formatDiscount(this.bulk_discount);
     }
 }

@@ -46,11 +46,11 @@ public class Constants {
     public static final int INTENT_REQUEST_DICOUNT_TO_PAYMENT = 206;
 
     //Service
-    public static final int ID_SERVICE_G_CLEANING = 300;
-    public static final int ID_SERVICE_D_CLEANING = 301;
-    public static final int ID_SERVICE_BUFFERING = 302;
-    public static final int ID_SERVICE_WATERBLASTING = 303;
-    public static final int ID_SERVICE_CARPETWASH = 304;
+    public static final int ID_SERVICE_G_CLEANING = 1;
+    public static final int ID_SERVICE_D_CLEANING = 2;
+    public static final int ID_SERVICE_BUFFERING = 3;
+    public static final int ID_SERVICE_WATERBLASTING = 4;
+    public static final int ID_SERVICE_CARPETWASH = 5;
 
     public static final int SUB_OPTION_NONE = 0;
     public static final int SUB_OPTION_1BEDROOM = 1;
@@ -58,8 +58,8 @@ public class Constants {
     public static final int SUB_OPTION_3BEDROOMS = 3;
     public static final int SUB_OPTION_4BEDROOMS = 4;
 
-    public static final int ID_SERVICE_G_INRONING = 305;
-    public static final int ID_SERVICE_S_INRONING = 306;
+    public static final int ID_SERVICE_G_INRONING = 6;
+    public static final int ID_SERVICE_S_INRONING = 7;
 
     public static final int ID_CLOTHES_SHIRT = 400;
     public static final int ID_CLOTHES_JACKET = 401;
