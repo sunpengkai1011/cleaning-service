@@ -7,9 +7,6 @@ public class UAddress implements Serializable{
     private String suburb;
     private String street;
 
-    public UAddress() {
-    }
-
     public UAddress(String city, String suburb, String street) {
         this.city = city;
         this.suburb = suburb;

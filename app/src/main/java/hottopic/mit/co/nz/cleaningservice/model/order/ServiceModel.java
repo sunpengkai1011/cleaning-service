@@ -8,8 +8,8 @@ import java.util.List;
 import hottopic.mit.co.nz.cleaningservice.Constants;
 import hottopic.mit.co.nz.cleaningservice.R;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.ClothesType;
-import hottopic.mit.co.nz.cleaningservice.entities.orders.SubOption;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.ServiceType;
+import hottopic.mit.co.nz.cleaningservice.entities.orders.SubOption;
 
 public class ServiceModel implements IService {
     private Context context;
@@ -40,9 +40,9 @@ public class ServiceModel implements IService {
         gc_options.add(gc_4bedrooms);
         ServiceType gc_cleaning = new ServiceType(Constants.ID_SERVICE_G_CLEANING, "General Cleaning",  R.drawable.icon_g_cleaning, gc_options);
 
-        SubOption dc_1bedroom = new SubOption(Constants.SUB_OPTION_4BEDROOMS, "1 Bedroom", 50);
-        SubOption dc_2bedrooms = new SubOption(Constants.SUB_OPTION_4BEDROOMS, "2 Bedrooms", 95);
-        SubOption dc_3bedrooms = new SubOption(Constants.SUB_OPTION_4BEDROOMS, "3 Bedrooms", 140);
+        SubOption dc_1bedroom = new SubOption(Constants.SUB_OPTION_1BEDROOM, "1 Bedroom", 50);
+        SubOption dc_2bedrooms = new SubOption(Constants.SUB_OPTION_2BEDROOMS, "2 Bedrooms", 95);
+        SubOption dc_3bedrooms = new SubOption(Constants.SUB_OPTION_3BEDROOMS, "3 Bedrooms", 140);
         SubOption dc_4bedrooms = new SubOption(Constants.SUB_OPTION_4BEDROOMS, "4 Bedrooms", 185);
         List<SubOption> dc_options = new ArrayList<>();
         dc_options.add(dc_1bedroom);

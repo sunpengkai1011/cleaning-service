@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import hottopic.mit.co.nz.cleaningservice.R;
-import hottopic.mit.co.nz.cleaningservice.entities.top_up.Discount;
+import hottopic.mit.co.nz.cleaningservice.entities.orders.Discount;
 
 public class DiscountAdapter extends BaseAdapter<Discount, DiscountAdapter.DiscountViewHolder>{
     private OnItemClickListener onItemClickListener;

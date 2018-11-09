@@ -37,16 +37,16 @@ public class PaymentModel implements IPayment {
     @Override
     public boolean paymentByBalance(float amount, UserInfo userInfo, int orderId, String feedback, int rating) {
         if (userInfo != null){
-            List<Order> orders = GeneralUtil.fromJson(GeneralUtil.getDataFromSP(context, userInfo.getUserId()), new TypeToken<List<Order>>(){}.getType());
-            if (!TextUtils.isEmpty(feedback)){
-                orders.get(orderId).setFeedback(feedback);
-            }
-            orders.get(orderId).setStatus(Constants.STATUS_ORDER_PAID);
-            orders.get(orderId).setRating(rating);
-            float balance = userInfo.getBalance() - amount;
-            userInfo.setBalance(balance);
-            GeneralUtil.storDataBySP(context, userInfo.getUserId(), GeneralUtil.toJson(orders, new TypeToken<List<Order>>(){}.getType()));
-            GeneralUtil.storDataBySP(context, userInfo.getUserName(), GeneralUtil.toJson(userInfo, UserInfo.class));
+//            List<Order> orders = GeneralUtil.fromJson(GeneralUtil.getDataFromSP(context, userInfo.getUserId()), new TypeToken<List<Order>>(){}.getType());
+//            if (!TextUtils.isEmpty(feedback)){
+//                orders.get(orderId).setFeedback(feedback);
+//            }
+//            orders.get(orderId).setStatus(Constants.STATUS_ORDER_PAID);
+//            orders.get(orderId).setRating(rating);
+//            float balance = userInfo.getBalance() - amount;
+//            userInfo.setBalance(balance);
+//         GeneralUtil.storDataBySP(context, userInfo.getUserId(), GeneralUtil.toJson(orders, new TypeToken<List<Order>>(){}.getType()));
+//            GeneralUtil.storDataBySP(context, userInfo.getUserName(), GeneralUtil.toJson(userInfo, UserInfo.class));
             return true;
         }
         return false;

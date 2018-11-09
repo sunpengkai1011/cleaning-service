@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
-
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,15 +25,14 @@ import hottopic.mit.co.nz.cleaningservice.Constants;
 import hottopic.mit.co.nz.cleaningservice.R;
 import hottopic.mit.co.nz.cleaningservice.adapter.ServiceAdapter;
 import hottopic.mit.co.nz.cleaningservice.adapter.ViewPagerAdapter;
-import hottopic.mit.co.nz.cleaningservice.entities.orders.ServiceType;
+import hottopic.mit.co.nz.cleaningservice.entities.orders.MainServiceType;
+import hottopic.mit.co.nz.cleaningservice.entities.orders.ServiceTypes;
+import hottopic.mit.co.nz.cleaningservice.entities.orders.SubServiceType;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.TitleModel;
-import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
 import hottopic.mit.co.nz.cleaningservice.presenter.home.HomePresenterImpl;
-import hottopic.mit.co.nz.cleaningservice.utils.GeneralUtil;
-import hottopic.mit.co.nz.cleaningservice.view.home.me.UserActivity;
-import hottopic.mit.co.nz.cleaningservice.view.home.me.UserEditActivity;
-import hottopic.mit.co.nz.cleaningservice.view.home.order.OrderBookingActivity;
-import hottopic.mit.co.nz.cleaningservice.view.login.LoginActivity;
+import hottopic.mit.co.nz.cleaningservice.view.order.OrderBookingActivity;
+import hottopic.mit.co.nz.cleaningservice.view.order.OrdersActivity;
+import hottopic.mit.co.nz.cleaningservice.view.user.LoginActivity;
 
 public class HomeActivity extends BaseActivity implements IHomeView, RecyclerViewPager.OnPageChangedListener, ServiceAdapter.OnItemClickedListener {
     private TextView tv_title, tv_page_number;
@@ -43,8 +41,8 @@ public class HomeActivity extends BaseActivity implements IHomeView, RecyclerVie
     private ImageView iv_icon;
     private RelativeLayout lyt_right;
     private RecyclerViewPager rvp_ad;
+    private ServiceTypes serviceTypes;
     private HomePresenterImpl homePresenter;
-    private UserInfo userInfo;
 
     private int totalPages = 1;
     private int autoPage = 0;
@@ -77,6 +75,18 @@ public class HomeActivity extends BaseActivity implements IHomeView, RecyclerVie
             R.drawable.advertisement_4};
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        int statusType = intent.getIntExtra(Constants.KEY_INTENT_CLOSETYPE, 0);
+        if (Constants.CLOSETYPE_LOGOUT == statusType){
+            //open login page
+            Intent login = new Intent(this, LoginActivity.class);
+            startActivity(login);
+            finish();
+        }
+    }
+
+    @Override
     public void initView() {
         setContentView(R.layout.activity_home);
         tv_title = findViewById(R.id.tv_title);
@@ -92,11 +102,13 @@ public class HomeActivity extends BaseActivity implements IHomeView, RecyclerVie
         tv_title.setText("HOME");
         lyt_right.setVisibility(View.VISIBLE);
         iv_icon.setImageResource(R.drawable.icon_user);
+        serviceTypes = (ServiceTypes) getIntent().getSerializableExtra(Constants.KEY_INTENT_SERVICETYPE);
         homePresenter = new HomePresenterImpl(this, this);
-        homePresenter.getServiceTypes();
-
-        userInfo = (UserInfo) getIntent().getSerializableExtra(Constants.KEY_INTENT_USERINFO);
-
+        if (serviceTypes == null){
+            homePresenter.getServiceTypes();
+        }else{
+            viewDisplay(serviceTypes);
+        }
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);//LinearLayoutManager.HORIZONTAL 设置水平滚动
         rvp_ad.setLayoutManager(layoutManager);
         rvp_ad.setAdapter(new ViewPagerAdapter(this, ad_list));
@@ -117,9 +129,8 @@ public class HomeActivity extends BaseActivity implements IHomeView, RecyclerVie
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.lyt_right:
-                Intent intent = new Intent(HomeActivity.this, UserActivity.class);
-                intent.putExtra(Constants.KEY_INTENT_USERINFO, userInfo);
-                startActivityForResult(intent, Constants.INTENT_REQUEST_HOME_TO_USER);
+                Intent intent = new Intent(HomeActivity.this, OrdersActivity.class);
+                startActivity(intent);
                 break;
         }
     }
@@ -142,17 +153,21 @@ public class HomeActivity extends BaseActivity implements IHomeView, RecyclerVie
     }
 
     @Override
-    public void getServiceTypes(List<ServiceType> cleaningTypes, List<ServiceType> ironingTypes) {
+    public void getSerivceError(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void getServiceTypes(ServiceTypes serviceTypes) {
+        viewDisplay(serviceTypes);
+    }
+
+    private void viewDisplay(ServiceTypes serviceTypes){
         List dataList = new ArrayList();
-        TitleModel titleModel = new TitleModel("Cleaning Service");
-        dataList.add(titleModel);
-        if (cleaningTypes != null) {
-            dataList.addAll(cleaningTypes);
-        }
-        titleModel = new TitleModel("Ironing Service");
-        dataList.add(titleModel);
-        if (ironingTypes != null) {
-            dataList.addAll(ironingTypes);
+        List<MainServiceType> mainServiceTypes = serviceTypes.getMainServiceTypes();
+        for (MainServiceType mainServiceType : mainServiceTypes){
+            dataList.add(new TitleModel(mainServiceType.getType_name()));
+            dataList.addAll(mainServiceType.getSubServiceTypes());
         }
         initServiceAdapter(dataList);
     }
@@ -188,22 +203,9 @@ public class HomeActivity extends BaseActivity implements IHomeView, RecyclerVie
     }
 
     @Override
-    public void OnItemClicked(ServiceType serviceType) {
+    public void OnItemClicked(SubServiceType serviceType) {
         Intent intent = new Intent(HomeActivity.this, OrderBookingActivity.class);
         intent.putExtra(Constants.KEY_INTENT_SERVICETYPE, serviceType);
-        intent.putExtra(Constants.KEY_INTENT_USERINFO, userInfo);
         startActivity(intent);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (Constants.LOGOUT == resultCode){
-            this.finish();
-            Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
-            startActivity(intent);
-        }else if(RESULT_OK == resultCode){
-            userInfo = homePresenter.getUserInfo(userInfo.getUserName());
-        }
     }
 }

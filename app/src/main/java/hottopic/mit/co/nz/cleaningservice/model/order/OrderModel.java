@@ -2,43 +2,54 @@ package hottopic.mit.co.nz.cleaningservice.model.order;
 
 import android.content.Context;
 
-import com.google.gson.reflect.TypeToken;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import hottopic.mit.co.nz.cleaningservice.Constants;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.Order;
+import hottopic.mit.co.nz.cleaningservice.network.ServiceTypesRequest;
+import hottopic.mit.co.nz.cleaningservice.presenter.home.HomePresenterImpl;
+import hottopic.mit.co.nz.cleaningservice.presenter.home.IHomePresenter;
 import hottopic.mit.co.nz.cleaningservice.utils.GeneralUtil;
+import hottopic.mit.co.nz.cleaningservice.view.home.IHomeView;
 
 public class OrderModel implements IOrder {
     private List<Order> orders;
     private Context context;
+    private IHomePresenter presenter;
 
-    public OrderModel(Context context) {
+    public OrderModel(Context context){
         this.context = context;
     }
 
-    @Override
-    public List<Order> getOrders(String userId) {
-        return GeneralUtil.fromJson(GeneralUtil.getDataFromSP(context, userId), new TypeToken<List<Order>>(){}.getType());
+    public OrderModel(Context context, IHomeView iHomeView) {
+        this.context = context;
+        presenter = new HomePresenterImpl(context, iHomeView);
     }
 
     @Override
-    public boolean startedOrder(String userId, int position, String started) {
-        orders = GeneralUtil.fromJson(GeneralUtil.getDataFromSP(context, userId), new TypeToken<List<Order>>(){}.getType());
+    public void getServiceTypes() {
+        new ServiceTypesRequest(context).getData().subscribe(
+                serviceTypesResponse -> presenter.serviceTypesResult(serviceTypesResponse),
+                e -> presenter.serviceTypesResult(null));
+    }
+
+    @Override
+    public void getOrders(int userId) {
+    }
+
+    @Override
+    public boolean startedOrder(int userId, int position, String started) {
         if (orders.size() > position) {
             orders.get(position).setStartTime(started);
             orders.get(position).setStatus(Constants.STATUS_ORDER_STARTED);
-            GeneralUtil.storDataBySP(context, userId, GeneralUtil.toJson(orders, new TypeToken<List<Order>>(){}.getType()));
             return true;
         }
         return false;
     }
 
     @Override
-    public boolean finishedOrder(String userId, int position, String finished) {
-        orders = GeneralUtil.fromJson(GeneralUtil.getDataFromSP(context, userId), new TypeToken<List<Order>>(){}.getType());
+    public boolean finishedOrder(int userId, int position, String finished) {
         if (orders.size() > position) {
             Order order = orders.get(position);
             switch (orders.get(position).getServiceType().getTypeId()){
@@ -52,21 +63,18 @@ public class OrderModel implements IOrder {
                     break;
             }
             order.setStatus(Constants.STATUS_ORDER_FINISHED);
-            GeneralUtil.storDataBySP(context, userId, GeneralUtil.toJson(orders, new TypeToken<List<Order>>(){}.getType()));
             return true;
         }
         return false;
     }
 
     @Override
-    public boolean orderBooking(Order order, String userId) {
-        List<Order> orders = GeneralUtil.fromJson(GeneralUtil.getDataFromSP(context, order.getUserId()), new TypeToken<ArrayList<Order>>(){}.getType());
+    public boolean orderBooking(Order order, int userId) {
         if (orders == null){
             orders = new ArrayList<>();
         }
         if (order != null) {
             orders.add(order);
-            GeneralUtil.storDataBySP(context, order.getUserId(), GeneralUtil.toJson(orders, new TypeToken<List<Order>>(){}.getType()));
             return true;
         }
         return false;

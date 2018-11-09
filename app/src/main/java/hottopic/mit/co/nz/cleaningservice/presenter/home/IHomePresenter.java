@@ -1,8 +1,8 @@
 package hottopic.mit.co.nz.cleaningservice.presenter.home;
 
-import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
+import hottopic.mit.co.nz.cleaningservice.entities.network.ServiceTypesResponse;
 
 public interface IHomePresenter {
     void getServiceTypes();
-    UserInfo getUserInfo(String username);
+    void serviceTypesResult(ServiceTypesResponse response);
 }

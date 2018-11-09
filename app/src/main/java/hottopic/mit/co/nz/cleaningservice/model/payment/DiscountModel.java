@@ -5,7 +5,7 @@ import android.content.Context;
 import java.util.ArrayList;
 import java.util.List;
 
-import hottopic.mit.co.nz.cleaningservice.entities.top_up.Discount;
+import hottopic.mit.co.nz.cleaningservice.entities.orders.Discount;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
 import hottopic.mit.co.nz.cleaningservice.utils.GeneralUtil;
 
@@ -46,7 +46,7 @@ public class DiscountModel implements IDiscount {
             if (discount.getBalance() != 0){
                 float balance = discount.getBalance() + userInfo.getBalance();
                 userInfo.setBalance(balance);
-                GeneralUtil.storDataBySP(context, userInfo.getUserName(), GeneralUtil.toJson(userInfo, UserInfo.class));
+                GeneralUtil.storDataBySP(context, userInfo.getUsername(), GeneralUtil.toJson(userInfo, UserInfo.class));
                 return true;
             }else {
                 return false;

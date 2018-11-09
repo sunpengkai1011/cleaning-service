@@ -2,45 +2,59 @@ package hottopic.mit.co.nz.cleaningservice.entities.users;
 
 import java.io.Serializable;
 
-import hottopic.mit.co.nz.cleaningservice.Constants;
-
 public class UserInfo implements Serializable{
-    private String userId;
-    private String userName;
+    private int id;
+    private String username;
     private String password;
-    private String phoneNumber;
+    private String phone;
     private String email;
-    private UAddress uAddress;
-    private UserRole userRole;
+    private String city;
+    private String suburb;
+    private String street;
+    private int role_id;
+    private String role_name;
     private float balance;
 
-    public UserInfo() {}
-
-    public UserInfo(String userId, String userName, String password, String phoneNumber, String email, UAddress uAddress) {
-        this.userId = userId;
-        this.userName = userName;
+    public UserInfo(String username, String password, String phone,
+                    String email, String city, String suburb, String street,
+                    int role_id, float balance) {
+        this.username = username;
         this.password = password;
-        this.phoneNumber = phoneNumber;
+        this.phone = phone;
         this.email = email;
-        this.uAddress = uAddress;
-        userRole = new UserRole(Constants.ROLE_CUSTOMER);
-        balance = 0;
+        this.city = city;
+        this.suburb = suburb;
+        this.street = street;
+        this.role_id = role_id;
+        this.balance = balance;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getUserName() {
-        return userName;
+    public int getRole_id() {
+        return role_id;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setRole_id(int role_id) {
+        this.role_id = role_id;
+    }
+
+    public String getRole_name() {
+        return role_name;
+    }
+
+    public void setRole_name(String role_name) {
+        this.role_name = role_name;
+    }
+
+    public int getUserId() {
+        return id;
     }
 
     public String getPassword() {
@@ -51,12 +65,12 @@ public class UserInfo implements Serializable{
         this.password = password;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getEmail() {
@@ -67,20 +81,28 @@ public class UserInfo implements Serializable{
         this.email = email;
     }
 
-    public UAddress getuAddress() {
-        return uAddress;
+    public String getCity() {
+        return city;
     }
 
-    public void setuAddress(UAddress uAddress) {
-        this.uAddress = uAddress;
+    public void setCity(String city) {
+        this.city = city;
     }
 
-    public UserRole getUserRole() {
-        return userRole;
+    public String getSuburb() {
+        return suburb;
     }
 
-    public void setUserRole(UserRole userRole) {
-        this.userRole = userRole;
+    public void setSuburb(String suburb) {
+        this.suburb = suburb;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
     }
 
     public float getBalance() {
@@ -93,5 +115,9 @@ public class UserInfo implements Serializable{
 
     public String formatBalance(){
         return "$ " + this.balance;
+    }
+
+    public String getAddress() {
+        return street + ", " + suburb + ", " + city;
     }
 }

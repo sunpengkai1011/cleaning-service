@@ -9,7 +9,7 @@ import hottopic.mit.co.nz.cleaningservice.utils.GeneralUtil;
 
 public class Order implements Serializable{
     private int orderId;
-    private String userId;
+    private int userId;
     private String date;
     private ServiceType serviceType;
     private UAddress uAddress;
@@ -34,7 +34,7 @@ public class Order implements Serializable{
     public Order() {
     }
 
-    public Order(String userId, ServiceType serviceType, String phone, String date, UAddress uAddress, int area, float amount) {
+    public Order(int userId, ServiceType serviceType, String phone, String date, UAddress uAddress, int area, float amount) {
         this.userId = userId;
         this.date = date;
         this.serviceType = serviceType;
@@ -47,7 +47,7 @@ public class Order implements Serializable{
         this.rating = 10;
     }
 
-    public Order(String userId, ServiceType serviceType, String phone, String date, UAddress uAddress, SubOption subOption) {
+    public Order(int userId, ServiceType serviceType, String phone, String date, UAddress uAddress, SubOption subOption) {
         this.userId = userId;
         this.date = date;
         this.serviceType = serviceType;
@@ -61,7 +61,7 @@ public class Order implements Serializable{
         this.rating = 10;
     }
 
-    public Order(String userId, ServiceType serviceType, String phone, String date, UAddress uAddress, float amount, int quantity, List<ClothesType> clothesTypes) {
+    public Order(int userId, ServiceType serviceType, String phone, String date, UAddress uAddress, float amount, int quantity, List<ClothesType> clothesTypes) {
         this.userId = userId;
         this.date = date;
         this.serviceType = serviceType;
@@ -82,11 +82,11 @@ public class Order implements Serializable{
         this.orderId = orderId;
     }
 
-    public String getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 

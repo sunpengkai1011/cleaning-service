@@ -6,6 +6,7 @@ import java.util.Map;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
 
 public class Constants {
+    public static UserInfo userInfo;
     //Google Map
     public static final String GoogleMap_BASE_URL = "https://maps.googleapis.com/";
     public static final String APIKEY = "AIzaSyA8eJEaPxmkqOSRBC-pNoCQzemiJfIjo5U";
@@ -13,10 +14,10 @@ public class Constants {
     public static final boolean OPTIMAIZEWAYPOINTS = true;
     public static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
-    public static final int LOGOUT = 1000;
+    public static final int CLOSETYPE_LOGOUT = 1;
 
     //Response code
-    public static final int RESPONSE_CODE_SUCCESSFUL = 100;
+    public static final int RESPONSE_CODE_SUCCESSFUL = 200;
     public static final int RESPONSE_CODE_FAIL = 101;
 
     //SharedPreference
@@ -25,7 +26,7 @@ public class Constants {
     public static final String SP_KEY_ORDERS = "ORDERS";
 
     //Intent
-    public static final String KEY_INTENT_USERINFO = "userinfo";
+    public static final String KEY_INTENT_USERNAME = "username";
     public static final String KEY_INTENT_BOOKING = "booking";
     public static final String KEY_INTENT_ORDER = "order";
     public static final String KEY_INTENT_ORDER_POSITION = "order_position";
@@ -34,6 +35,7 @@ public class Constants {
     public static final String KEY_INTENT_SERVICETYPE = "service_type";
     public static final String KEY_INTENT_DISCOUNT = "discount";
     public static final String KEY_INTENT_LOCATION = "location";
+    public static final String KEY_INTENT_CLOSETYPE = "close_type";
     public static final int INTENT_REQUEST_ME_TO_EDIT = 200;
     public static final int INTENT_REQUEST_ME_TO_DISCOUNT = 203;
     public static final int INTENT_REQUEST_ODER_TO_CREATE = 201;
@@ -88,4 +90,21 @@ public class Constants {
 
     public static Map<String, Long> realTime_depart = new HashMap<>();
     public static Map<String, Long> realTime_arrive = new HashMap<>();
+
+    public static final int TYPE_G_T_SHIRT = 17;
+    public static final int TYPE_G_JACKET = 18;
+    public static final int TYPE_G_LONG_DRESS = 19;
+    public static final int TYPE_G_SCHOOL_UNIFORM = 20;
+    public static final int TYPE_S_T_SHIRT = 21;
+    public static final int TYPE_S_JACKET = 22;
+    public static final int TYPE_S_LONG_DRESS = 23;
+    public static final int TYPE_S_SCHOOL_UNIFORM = 24;
+
+    public static final int TYPE_G_CLEANING = 1;
+    public static final int TYPE_G_IRONING = 6;
+    public static final int TYPE_D_CLEANING = 2;
+    public static final int TYPE_S_IRONING = 7;
+    public static final int TYPE_BUFFERING = 3;
+    public static final int TYPE_WATER_BLASTING = 4;
+    public static final int TYPE_CARPET_WASHING = 5;
 }
