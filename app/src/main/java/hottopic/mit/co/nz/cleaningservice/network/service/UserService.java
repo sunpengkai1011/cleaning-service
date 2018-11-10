@@ -1,7 +1,7 @@
 package hottopic.mit.co.nz.cleaningservice.network.service;
 
 import hottopic.mit.co.nz.cleaningservice.entities.network.LoginResponse;
-import hottopic.mit.co.nz.cleaningservice.entities.network.RegisterResponse;
+import hottopic.mit.co.nz.cleaningservice.entities.network.BooleanResponse;
 import hottopic.mit.co.nz.cleaningservice.entities.network.UserInfoEditResponse;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
 import io.reactivex.Single;
@@ -18,7 +18,7 @@ public interface UserService {
     Single<LoginResponse> signin(@Path("username") String username, @Header("Authorization") String authorization);
 
     @POST("cleaning/user")
-    Single<RegisterResponse> register(@Body UserInfo userInfo);
+    Single<BooleanResponse> register(@Body UserInfo userInfo);
 
     @POST("cleaning/edit")
     Single<UserInfoEditResponse> userEdit(@Body UserInfo userInfo);

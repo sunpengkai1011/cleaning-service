@@ -11,15 +11,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.List;
-
 import hottopic.mit.co.nz.cleaningservice.BaseActivity;
 import hottopic.mit.co.nz.cleaningservice.Constants;
 import hottopic.mit.co.nz.cleaningservice.R;
-import hottopic.mit.co.nz.cleaningservice.entities.network.ProductResponse;
+import hottopic.mit.co.nz.cleaningservice.entities.orders.ServiceTypes;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
 import hottopic.mit.co.nz.cleaningservice.presenter.user.UserPresenterImpl;
-import hottopic.mit.co.nz.cleaningservice.view.home.HomeActivity;
+import hottopic.mit.co.nz.cleaningservice.view.order.HomeActivity;
 import hottopic.mit.co.nz.cleaningservice.view.order.DiscountActivity;
 
 public class UserEditActivity extends BaseActivity implements IUserView {
@@ -178,9 +176,10 @@ public class UserEditActivity extends BaseActivity implements IUserView {
     }
 
     @Override
-    public void loginResult(UserInfo userInfo, List<ProductResponse> responses, String message) {
+    public void loginResult(UserInfo userInfo, ServiceTypes serviceTypes, String message) {
 
     }
+
 
     @Override
     public void userInfoEditResult(UserInfo userInfo, String message) {

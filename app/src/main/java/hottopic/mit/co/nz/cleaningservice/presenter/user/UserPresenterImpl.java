@@ -4,11 +4,12 @@ import android.content.Context;
 
 import hottopic.mit.co.nz.cleaningservice.Constants;
 import hottopic.mit.co.nz.cleaningservice.entities.network.LoginResponse;
-import hottopic.mit.co.nz.cleaningservice.entities.network.RegisterResponse;
+import hottopic.mit.co.nz.cleaningservice.entities.network.BooleanResponse;
 import hottopic.mit.co.nz.cleaningservice.entities.network.UserInfoEditResponse;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
 import hottopic.mit.co.nz.cleaningservice.model.user.IUser;
 import hottopic.mit.co.nz.cleaningservice.model.user.UserModel;
+import hottopic.mit.co.nz.cleaningservice.presenter.order.OrderPresenterImpl;
 import hottopic.mit.co.nz.cleaningservice.view.user.IUserView;
 
 public class UserPresenterImpl implements IUserPresenter {
@@ -45,7 +46,7 @@ public class UserPresenterImpl implements IUserPresenter {
             iUserView.loginResult(null, null,"Login failed");
         }else{
             if (Constants.RESPONSE_CODE_SUCCESSFUL == response.getCode()) {
-                iUserView.loginResult(response.getUserInfo().get(0), response.getServiceTypes(), response.getMessage());
+                iUserView.loginResult(response.getUserInfo().get(0), new OrderPresenterImpl(context).sortingTypeData(response.getServiceTypes()), response.getMessage());
             }else{
                 iUserView.loginResult(null, null, response.getMessage());
             }
@@ -53,7 +54,7 @@ public class UserPresenterImpl implements IUserPresenter {
     }
 
     @Override
-    public void registerResult(RegisterResponse response) {
+    public void registerResult(BooleanResponse response) {
         if (response == null){
             iUserView.registerResult(false, "Register failed");
         }else{

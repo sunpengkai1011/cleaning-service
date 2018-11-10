@@ -1,4 +1,4 @@
-package hottopic.mit.co.nz.cleaningservice.view.home;
+package hottopic.mit.co.nz.cleaningservice.view.order;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -26,15 +26,14 @@ import hottopic.mit.co.nz.cleaningservice.R;
 import hottopic.mit.co.nz.cleaningservice.adapter.ServiceAdapter;
 import hottopic.mit.co.nz.cleaningservice.adapter.ViewPagerAdapter;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.MainServiceType;
+import hottopic.mit.co.nz.cleaningservice.entities.orders.Order;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.ServiceTypes;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.SubServiceType;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.TitleModel;
-import hottopic.mit.co.nz.cleaningservice.presenter.home.HomePresenterImpl;
-import hottopic.mit.co.nz.cleaningservice.view.order.OrderBookingActivity;
-import hottopic.mit.co.nz.cleaningservice.view.order.OrdersActivity;
+import hottopic.mit.co.nz.cleaningservice.presenter.order.OrderPresenterImpl;
 import hottopic.mit.co.nz.cleaningservice.view.user.LoginActivity;
 
-public class HomeActivity extends BaseActivity implements IHomeView, RecyclerViewPager.OnPageChangedListener, ServiceAdapter.OnItemClickedListener {
+public class HomeActivity extends BaseActivity implements IOrderView, RecyclerViewPager.OnPageChangedListener, ServiceAdapter.OnItemClickedListener {
     private TextView tv_title, tv_page_number;
     private RecyclerView rv_cleaning;
     private ServiceAdapter cleaningAdapter;
@@ -42,7 +41,7 @@ public class HomeActivity extends BaseActivity implements IHomeView, RecyclerVie
     private RelativeLayout lyt_right;
     private RecyclerViewPager rvp_ad;
     private ServiceTypes serviceTypes;
-    private HomePresenterImpl homePresenter;
+    private OrderPresenterImpl homePresenter;
 
     private int totalPages = 1;
     private int autoPage = 0;
@@ -101,9 +100,9 @@ public class HomeActivity extends BaseActivity implements IHomeView, RecyclerVie
     public void initData() {
         tv_title.setText("HOME");
         lyt_right.setVisibility(View.VISIBLE);
-        iv_icon.setImageResource(R.drawable.icon_user);
+        iv_icon.setImageResource(R.drawable.icon_purchase);
         serviceTypes = (ServiceTypes) getIntent().getSerializableExtra(Constants.KEY_INTENT_SERVICETYPE);
-        homePresenter = new HomePresenterImpl(this, this);
+        homePresenter = new OrderPresenterImpl(this, this);
         if (serviceTypes == null){
             homePresenter.getServiceTypes();
         }else{
@@ -121,7 +120,6 @@ public class HomeActivity extends BaseActivity implements IHomeView, RecyclerVie
     @Override
     public void initListener() {
         rvp_ad.addOnPageChangedListener(this);
-        cleaningAdapter.setOnItemClickedListener(this);
         lyt_right.setOnClickListener(this);
     }
 
@@ -153,7 +151,7 @@ public class HomeActivity extends BaseActivity implements IHomeView, RecyclerVie
     }
 
     @Override
-    public void getSerivceError(String message) {
+    public void getServiceError(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
@@ -175,6 +173,7 @@ public class HomeActivity extends BaseActivity implements IHomeView, RecyclerVie
     private void initServiceAdapter(List dataList) {
         cleaningAdapter = new ServiceAdapter(this);
         cleaningAdapter.setData(dataList);
+        cleaningAdapter.setOnItemClickedListener(this);
         rv_cleaning.setAdapter(cleaningAdapter);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -207,5 +206,22 @@ public class HomeActivity extends BaseActivity implements IHomeView, RecyclerVie
         Intent intent = new Intent(HomeActivity.this, OrderBookingActivity.class);
         intent.putExtra(Constants.KEY_INTENT_SERVICETYPE, serviceType);
         startActivity(intent);
+    }
+
+
+    @Override
+    public void getOrdersResult(List<Order> orders, String message) {
+
+    }
+
+    @Override
+    public void orderStatusChangeResult(Order order, String message) {
+
+    }
+
+
+    @Override
+    public void bookingResult(boolean result, String message) {
+
     }
 }

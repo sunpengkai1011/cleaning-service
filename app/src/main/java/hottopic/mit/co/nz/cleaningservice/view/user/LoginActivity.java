@@ -13,21 +13,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import hottopic.mit.co.nz.cleaningservice.BaseActivity;
 import hottopic.mit.co.nz.cleaningservice.Constants;
 import hottopic.mit.co.nz.cleaningservice.R;
-import hottopic.mit.co.nz.cleaningservice.entities.network.ProductResponse;
-import hottopic.mit.co.nz.cleaningservice.entities.orders.MainServiceType;
-import hottopic.mit.co.nz.cleaningservice.entities.orders.ServiceProduct;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.ServiceTypes;
-import hottopic.mit.co.nz.cleaningservice.entities.orders.SubServiceType;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
 import hottopic.mit.co.nz.cleaningservice.presenter.user.UserPresenterImpl;
 import hottopic.mit.co.nz.cleaningservice.utils.GeneralUtil;
-import hottopic.mit.co.nz.cleaningservice.view.home.HomeActivity;
+import hottopic.mit.co.nz.cleaningservice.view.order.HomeActivity;
 
 public class LoginActivity extends BaseActivity implements IUserView {
     private TextView tv_title, tv_to_register;
@@ -62,6 +55,10 @@ public class LoginActivity extends BaseActivity implements IUserView {
         tv_title.setText(getResources().getString(R.string.title_login));
         tv_to_register.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         loginPresenterImpl = new UserPresenterImpl(this, this);
+        String username = GeneralUtil.getDataFromSP(this, Constants.SP_KEY_USERINFO);
+        if (!TextUtils.isEmpty(username)){
+            et_username.setText(username);
+        }
     }
 
     @Override
@@ -127,13 +124,14 @@ public class LoginActivity extends BaseActivity implements IUserView {
     }
 
     @Override
-    public void loginResult(UserInfo userInfo, List<ProductResponse> products, String message) {
+    public void loginResult(UserInfo userInfo, ServiceTypes serviceTypes, String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         if (userInfo != null) {
             Constants.userInfo = userInfo;
+            GeneralUtil.storDataBySP(this, Constants.SP_KEY_USERINFO, userInfo.getUsername());
             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-            if (products != null && products.size() > 0){
-                intent.putExtra(Constants.KEY_INTENT_SERVICETYPE, GeneralUtil.sortingTypeData(products));
+            if (serviceTypes != null && serviceTypes.getMainServiceTypes().size() > 0){
+                intent.putExtra(Constants.KEY_INTENT_SERVICETYPE, serviceTypes);
             }
             startActivity(intent);
             this.finish();

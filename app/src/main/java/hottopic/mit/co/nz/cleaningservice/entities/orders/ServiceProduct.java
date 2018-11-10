@@ -7,19 +7,30 @@ public class ServiceProduct implements Serializable {
     private int main_id;
     private int sub_id;
     private String product_name;
-    private int icon;
+    private String icon;
     private float unit_price;
     private String unit;
     private int quantity;
 
+    public ServiceProduct(int id, int main_id, int sub_id, String product_name, String icon, float unit_price, String unit, int quantity) {
+        this.id = id;
+        this.main_id = main_id;
+        this.sub_id = sub_id;
+        this.product_name = product_name;
+        this.icon = icon;
+        this.unit_price = unit_price;
+        this.unit = unit;
+        this.quantity = quantity;
+    }
 
-    public ServiceProduct(int id, int main_id, int sub_id, String product_name, float unit_price, String unit) {
+    public ServiceProduct(int id, int main_id, int sub_id, String product_name, float unit_price, String unit, String icon) {
         this.id = id;
         this.main_id = main_id;
         this.sub_id = sub_id;
         this.product_name = product_name;
         this.unit_price = unit_price;
         this.unit = unit;
+        this.icon = icon;
     }
 
     public int getId() {
@@ -62,11 +73,11 @@ public class ServiceProduct implements Serializable {
         this.unit_price = unit_price;
     }
 
-    public int getIcon() {
+    public String getIcon() {
         return icon;
     }
 
-    public void setIcon(int icon) {
+    public void setIcon(String icon) {
         this.icon = icon;
     }
 

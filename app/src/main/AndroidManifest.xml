@@ -35,7 +35,7 @@
 
         <activity android:name=".view.order.MapActivity"/>
         <activity
-            android:name=".view.home.HomeActivity"
+            android:name=".view.order.HomeActivity"
             android:launchMode="singleTask" />
         <activity android:name=".view.user.LoginActivity" />
         <activity android:name=".view.user.RegisterActivity" />

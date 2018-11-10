@@ -12,6 +12,8 @@ public class ProductResponse implements Serializable {
     private float unit_price;
     private String unit;
     private float bulk_discount;
+    private String icon;
+    private String product_icon;
 
     public int getId() {
         return id;
@@ -79,5 +81,21 @@ public class ProductResponse implements Serializable {
 
     public void setBulk_discount(float bulk_discount) {
         this.bulk_discount = bulk_discount;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public String getProduct_icon() {
+        return product_icon;
+    }
+
+    public void setProduct_icon(String product_icon) {
+        this.product_icon = product_icon;
     }
 }

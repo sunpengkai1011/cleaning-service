@@ -16,6 +16,9 @@ public class Constants {
 
     public static final int CLOSETYPE_LOGOUT = 1;
 
+    public static final int TYPE_GET_ORDERS_CUSTOMER = 1;
+    public static final int TYPE_GET_ORDERS_STAFF = 2;
+
     //Response code
     public static final int RESPONSE_CODE_SUCCESSFUL = 200;
     public static final int RESPONSE_CODE_FAIL = 101;
@@ -67,10 +70,10 @@ public class Constants {
     public static final int ID_CLOTHES_SCHOOL_UNIFORM = 403;
 
     //Order Status
-    public static final int STATUS_ORDER_BOOKED = 1;
-    public static final int STATUS_ORDER_STARTED = 2;
-    public static final int STATUS_ORDER_FINISHED = 3;
-    public static final int STATUS_ORDER_PAID = 4;
+    public static final int STATUS_ORDER_BOOKED = 0;
+    public static final int STATUS_ORDER_STARTED = 1;
+    public static final int STATUS_ORDER_FINISHED = 2;
+    public static final int STATUS_ORDER_PAID = 3;
 
     //User Role
     public static final int ROLE_CUSTOMER = 1;

@@ -1,6 +1,5 @@
 package hottopic.mit.co.nz.cleaningservice.adapter;
 
-import android.app.Service;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -14,7 +13,6 @@ import android.widget.TextView;
 
 import hottopic.mit.co.nz.cleaningservice.Constants;
 import hottopic.mit.co.nz.cleaningservice.R;
-import hottopic.mit.co.nz.cleaningservice.entities.orders.ClothesType;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.ServiceProduct;
 
 public class ClothesAdapter extends BaseAdapter<ServiceProduct, ClothesAdapter.ClothesViewHolder>{
@@ -49,7 +47,7 @@ public class ClothesAdapter extends BaseAdapter<ServiceProduct, ClothesAdapter.C
 
         @Override
         public void onBindViewHolder(ServiceProduct model, int position) {
-            iv_clothes_icon.setImageResource(model.getIcon());
+            iv_clothes_icon.setImageResource(context.getResources().getIdentifier(model.getIcon(), "drawable", context.getPackageName()));
             tv_clothes.setText(model.getProduct_name());
             tv_unit_price.setText(model.formatPrice());
             switch (type){

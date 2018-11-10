@@ -10,13 +10,14 @@ public class SubServiceType implements Serializable {
     private int main_id;
     private String type_name;
     private float bulk_discount;
-    private int icon;
+    private String icon;
     private List<ServiceProduct> products;
 
-    public SubServiceType(int id, int main_id, String type_name, float bulk_discount, List<ServiceProduct> products) {
+    public SubServiceType(int id, int main_id, String type_name, float bulk_discount, String icon, List<ServiceProduct> products) {
         this.id = id;
         this.main_id = main_id;
         this.type_name = type_name;
+        this.icon = icon;
         this.bulk_discount = bulk_discount;
         this.products = products;
     }
@@ -53,11 +54,11 @@ public class SubServiceType implements Serializable {
         this.bulk_discount = bulk_discount;
     }
 
-    public int getIcon() {
+    public String getIcon() {
         return icon;
     }
 
-    public void setIcon(int icon) {
+    public void setIcon(String icon) {
         this.icon = icon;
     }
 
