@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,7 +25,8 @@ import hottopic.mit.co.nz.cleaningservice.view.user.UserEditActivity;
 
 public class OrdersActivity extends BaseActivity implements IOrderView{
     private TextView tv_title, tv_username, tv_user_role;
-    private RelativeLayout lyt_back, lyt_header;
+    private RelativeLayout lyt_back, lyt_header, lyt_right;
+    private ImageView iv_icon;
     private RecyclerView rv_orders;
     private SwipeRefreshLayout srl_orders;
     private OrderAdapter orderAdapter;
@@ -41,12 +43,16 @@ public class OrdersActivity extends BaseActivity implements IOrderView{
         lyt_header = findViewById(R.id.lyt_header);
         rv_orders = findViewById(R.id.rv_orders);
         srl_orders = findViewById(R.id.srl_orders);
+        lyt_right = findViewById(R.id.lyt_right);
+        iv_icon = findViewById(R.id.iv_icon);
     }
 
     @Override
     public void initData() {
         tv_title.setText(getResources().getString(R.string.title_me));
         lyt_back.setVisibility(View.VISIBLE);
+        lyt_right.setVisibility(View.VISIBLE);
+        iv_icon.setImageResource(R.drawable.icon_user);
         setData(Constants.userInfo);
         orderPresenter = new OrderPresenterImpl(this, this);
         getOrderByRole();
@@ -56,6 +62,7 @@ public class OrdersActivity extends BaseActivity implements IOrderView{
     public void initListener() {
         lyt_back.setOnClickListener(this);
         lyt_header.setOnClickListener(this);
+        lyt_right.setOnClickListener(this);
         srl_orders.setOnRefreshListener(() -> {
             getOrderByRole();
         });
@@ -64,7 +71,8 @@ public class OrdersActivity extends BaseActivity implements IOrderView{
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.lyt_header:
+            case R.id.lyt_user:
+            case R.id.lyt_right:
                 Intent editIntent = new Intent(this, UserEditActivity.class);
                 startActivity(editIntent);
                 break;
@@ -118,7 +126,7 @@ public class OrdersActivity extends BaseActivity implements IOrderView{
                 }
             }
         }else{
-            Toast.makeText(this, "Get Orders Failed.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -133,7 +141,7 @@ public class OrdersActivity extends BaseActivity implements IOrderView{
     }
 
     @Override
-    public void orderStatusChangeResult(Order order, String message) {
+    public void orderStatusChangeResult(boolean result, String message) {
 
     }
 

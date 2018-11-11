@@ -39,7 +39,9 @@
             android:launchMode="singleTask" />
         <activity android:name=".view.user.LoginActivity" />
         <activity android:name=".view.user.RegisterActivity" />
-        <activity android:name=".view.user.UserEditActivity" />
+        <activity
+            android:name=".view.user.UserEditActivity"
+            android:launchMode="singleTask"/>
         <activity android:name=".view.order.DiscountActivity" />
         <activity android:name=".view.order.OrderBookingActivity" />
         <activity android:name=".view.order.OrderDetailActivity" />

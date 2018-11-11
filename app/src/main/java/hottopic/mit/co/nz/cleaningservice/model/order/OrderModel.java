@@ -9,6 +9,7 @@ import hottopic.mit.co.nz.cleaningservice.entities.network.OrderBooking;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.Order;
 import hottopic.mit.co.nz.cleaningservice.network.GetOrdersRequest;
 import hottopic.mit.co.nz.cleaningservice.network.OrderBookingRequest;
+import hottopic.mit.co.nz.cleaningservice.network.ServiceStatusChangedRequest;
 import hottopic.mit.co.nz.cleaningservice.network.ServiceTypesRequest;
 import hottopic.mit.co.nz.cleaningservice.presenter.order.IOrderPresenter;
 import hottopic.mit.co.nz.cleaningservice.presenter.order.OrderPresenterImpl;
@@ -43,6 +44,7 @@ public class OrderModel implements IOrder {
 
     @Override
     public void getOrdersByStaff() {
+        presenter = new OrderPresenterImpl(context, iOrderView);
         new GetOrdersRequest(context, Constants.TYPE_GET_ORDERS_STAFF).getData().subscribe(
                 getOrdersResponse -> presenter.getOrdersResult(getOrdersResponse),
                 e -> presenter.getOrdersResult(null)
@@ -50,11 +52,21 @@ public class OrderModel implements IOrder {
     }
 
     @Override
-    public void startedOrder(int orderId, String started) {
+    public void startedOrder(Order order) {
+        presenter = new OrderPresenterImpl(context, iOrderView);
+        new ServiceStatusChangedRequest(context, Constants.TYPE_SERVICE_STARTED, order).getData().subscribe(
+                booleanResponse -> presenter.orderStatusChangeResult(booleanResponse),
+                e -> presenter.orderStatusChangeResult(null)
+        );
     }
 
     @Override
-    public void finishedOrder(int orderId, String finished) {
+    public void finishedOrder(Order order) {
+        presenter = new OrderPresenterImpl(context, iOrderView);
+        new ServiceStatusChangedRequest(context, Constants.TYPE_SERVICE_FINISHED, order).getData().subscribe(
+                booleanResponse -> presenter.orderStatusChangeResult(booleanResponse),
+                e -> presenter.orderStatusChangeResult(null)
+        );
     }
 
     @Override

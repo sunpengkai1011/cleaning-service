@@ -4,10 +4,12 @@ import hottopic.mit.co.nz.cleaningservice.entities.network.BooleanResponse;
 import hottopic.mit.co.nz.cleaningservice.entities.network.OrderBooking;
 import hottopic.mit.co.nz.cleaningservice.entities.network.GetOrdersResponse;
 import hottopic.mit.co.nz.cleaningservice.entities.network.ServiceTypesResponse;
+import hottopic.mit.co.nz.cleaningservice.entities.orders.Order;
 import io.reactivex.Single;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface OrderService {
@@ -22,4 +24,10 @@ public interface OrderService {
 
     @GET("cleaning/order/staff")
     Single<GetOrdersResponse> getOrdersByStaff();
+
+    @PUT("cleaning/order/started")
+    Single<BooleanResponse> orderStarted(@Body Order order);
+
+    @PUT("cleaning/order/finished")
+    Single<BooleanResponse> orderfinished(@Body Order order);
 }

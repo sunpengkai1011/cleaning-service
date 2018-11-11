@@ -215,7 +215,7 @@ public class HomeActivity extends BaseActivity implements IOrderView, RecyclerVi
     }
 
     @Override
-    public void orderStatusChangeResult(Order order, String message) {
+    public void orderStatusChangeResult(boolean result, String message) {
 
     }
 

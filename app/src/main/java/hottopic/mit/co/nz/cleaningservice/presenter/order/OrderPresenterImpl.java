@@ -48,13 +48,13 @@ public class OrderPresenterImpl implements IOrderPresenter{
     }
 
     @Override
-    public void startedOrder(int orderId, String started) {
-        iOrder.startedOrder(orderId, started);
+    public void startedOrder(Order order) {
+        iOrder.startedOrder(order);
     }
 
     @Override
-    public void finishedOrder(int orderId, String finished) {
-        iOrder.finishedOrder(orderId, finished);
+    public void finishedOrder(Order order) {
+        iOrder.finishedOrder(order);
     }
 
     @Override
@@ -76,15 +76,11 @@ public class OrderPresenterImpl implements IOrderPresenter{
     }
 
     @Override
-    public void OrderStatusChangeResult(GetOrdersResponse response) {
+    public void orderStatusChangeResult(BooleanResponse response) {
         if (response == null){
-            iOrderView.orderStatusChangeResult(null, "Get orders failed");
+            iOrderView.orderStatusChangeResult(false, "Get orders failed");
         }else{
-            if (Constants.RESPONSE_CODE_SUCCESSFUL == response.getCode()) {
-                iOrderView.orderStatusChangeResult(sortingOrders(response.getOrderResponses()).get(0), response.getMessage());
-            }else{
-                iOrderView.orderStatusChangeResult(null, response.getMessage());
-            }
+            iOrderView.orderStatusChangeResult(response.getResult(), response.getMessage());
         }
     }
 

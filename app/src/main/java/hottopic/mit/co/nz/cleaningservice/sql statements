@@ -6,6 +6,9 @@ ALTER TABLE CT_USER ALTER COLUMN CITY TYPE VARCHAR(255) USING CITY::VARCHAR(255)
 ALTER TABLE CT_USER ALTER COLUMN SUBURB TYPE VARCHAR(255) USING SUBURB::VARCHAR(255);
 ALTER TABLE CT_USER ALTER COLUMN STREET TYPE VARCHAR(255) USING STREET::VARCHAR(255);
 
+INSERT INTO CT_USER (USERNAME, PASSWORD, CITY, SUBURB, STREET, PHONE, EMAIL, ROLE_ID) VALUES
+                    ('staff', '123456', 'Auckland', 'Manukau City', 'Manukau Library', '022987654321', 'staff@example.com', 2);
+
 2.	Create User Role table:
 CREATE TABLE CT_USERROLE(ID SERIAL PRIMARY KEY, ROLE_NAME VARCHAR(50) NOT NULL);
 
@@ -126,35 +129,6 @@ INSERT INTO CT_SUB_ORDER (ORDER_ID, \
 ALTER TABLE CT_SUB_ORDER ADD CONSTRAINT fk_type FOREIGN KEY (ORDER_ID) REFERENCES CT_ORDER (ID);
 ALTER TABLE CT_SUB_ORDER ADD CONSTRAINT fk_type1 FOREIGN KEY (PRODUCT_ID) REFERENCES CT_PRODUCT (ID);
 
-private int id;
-    private int user_id;
-    private String date;
-
-    private String sub_type_name;
-    private float bulk_discount;
-
-    private int product_id;
-    private int main_id;
-    private int sub_id;
-    private String product_name;
-    private String product_icon;
-    private float unit_price;
-    private String unit;
-    private int product_quantity;
-
-    private String phone;
-    private String city;
-    private String suburb;
-    private String street;
-    private int status;
-    private float amount;
-    private int duration;
-    private String start_time;
-    private String end_time;
-    private int quantity;
-    private String feedback;
-    private int rating;
-
 SELECT O.ID AS ID, \
        O.USER_ID AS USER_ID, \
        O.DATE AS DATE, \
@@ -183,3 +157,56 @@ SELECT O.ID AS ID, \
 FROM CT_ORDER AS O, CT_SUB_TYPE AS S, CT_PRODUCT AS P, CT_SUB_ORDER AS SO \
 WHERE SO.PRODUCT_ID = P.ID AND SO.ORDER_ID = O.ID AND O.SUB_ID = S.ID AND USER_ID = 2
 
+SELECT O.ID AS ID,
+       O.USER_ID AS USER_ID,
+       O.DATE AS DATE,
+       S.TYPE_NAME AS SUB_TYPE_NAME,
+       S.BULK_DISCOUNT AS BULK_DISCOUNT,
+       SO.ID AS PRODUCT_ID,
+       P.MAIN_ID AS MAIN_ID,
+       O.SUB_ID AS SUB_ID,
+       S.ICON AS SUB_ICON,
+       P.PRODUCT_NAME AS PRODUCT_NAME,
+       P.ICON AS PRODUCT_ICON,
+       P.UNIT_PRICE AS UNIT_PRICE,
+       P.UNIT AS UNIT,
+       SO.QUANTITY AS PRODUCT_QUANTITY,
+       O.PHONE AS PHONE,
+       O.CITY AS CITY,
+       O.SUBURB AS SUBURB,
+       O.STREET AS STREET,
+       O.STATUS AS STATUS,
+       O.AMOUNT AS AMOUNT,
+       O.DURATION AS DURATION,
+       O.START_TIME AS START_TIME,
+       O.END_TIME AS END_TIME,
+       O.QUANTITY AS QUANTITY,
+       O.FEEDBACK AS FEEDBACK,
+       O.RATING AS RATING
+  FROM CT_ORDER AS O, CT_SUB_TYPE AS S, CT_PRODUCT AS P, CT_SUB_ORDER AS SO
+ WHERE SO.PRODUCT_ID = P.ID AND
+       SO.ORDER_ID = O.ID AND
+       O.SUB_ID = S.ID AND
+       STATUS < 2
+       ORDER BY O.ID
+
+UPDATE CT_ORDER SET START_TIME = '', STATUS = 0 WHERE ID = 20;
+UPDATE CT_ORDER SET END_TIME = '', STATUS = 0, AMOUNT = 0, DURATION = 0 WHERE ID = 20;
+
+11. Create discount table
+
+CREATE TABLE CT_DISCOUNT (ID SERIAL PRIMARY KEY,
+                           BALANCE DECIMAL,
+                           PRICE DECIMAL);
+
+INSERT INTO CT_DISCOUNT (BALANCE, PRICE) VALUES (1000, 800);
+INSERT INTO CT_DISCOUNT (BALANCE, PRICE) VALUES (900, 750);
+INSERT INTO CT_DISCOUNT (BALANCE, PRICE) VALUES (800, 700);
+INSERT INTO CT_DISCOUNT (BALANCE, PRICE) VALUES (600, 550);
+INSERT INTO CT_DISCOUNT (BALANCE, PRICE) VALUES (500, 480);
+INSERT INTO CT_DISCOUNT (BALANCE, PRICE) VALUES (400, 390);
+
+SELECT * FROM CT_DISCOUNT ORDER BY ID DESC;
+
+UPDATE CT_ORDER SET STATUS = $1, FEEDBACK = $2, RATING = $3 WHERE ID = $4;
+UPDATE CT_USER SET BALANCE = $1 = WHERE ID = $2;

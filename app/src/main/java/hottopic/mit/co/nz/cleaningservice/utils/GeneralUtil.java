@@ -123,7 +123,7 @@ public class GeneralUtil {
     }
 
     public static String formatDiscount(float discount){
-        int dis = (int)((1 - discount) * 100);
+        int dis = (int) (100 - discount * 100);
         return "More than 20 pieces will enjoy the " + dis + "% discount.";
     }
 

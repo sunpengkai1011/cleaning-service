@@ -19,14 +19,15 @@ import java.util.List;
 import hottopic.mit.co.nz.cleaningservice.BaseActivity;
 import hottopic.mit.co.nz.cleaningservice.Constants;
 import hottopic.mit.co.nz.cleaningservice.R;
+import hottopic.mit.co.nz.cleaningservice.entities.network.PaymentParams;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.Discount;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.Order;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
-import hottopic.mit.co.nz.cleaningservice.presenter.order.DiscountPresenterImpl;
 import hottopic.mit.co.nz.cleaningservice.presenter.order.PaymentPresenterImpl;
 import hottopic.mit.co.nz.cleaningservice.utils.GeneralUtil;
+import hottopic.mit.co.nz.cleaningservice.view.user.UserEditActivity;
 
-public class PaymentActivity extends BaseActivity implements IPaymentView, IDiscountView, AdapterView.OnItemSelectedListener{
+public class PaymentActivity extends BaseActivity implements IPaymentView, AdapterView.OnItemSelectedListener {
     private TextView tv_title, tv_title_balance, tv_balance, tv_amount;
     private EditText et_card_no;
     private RelativeLayout lyt_back;
@@ -34,16 +35,14 @@ public class PaymentActivity extends BaseActivity implements IPaymentView, IDisc
     private Button btn_payment;
 
     private Order order;
-    private int position;
     private UserInfo userInfo;
-    private String feedback;
     private ArrayAdapter arrayAdapter;
     private int type_payment;
-    private int request;
+    private int orderRequest = 0;
     private Discount discount;
-    private DiscountPresenterImpl discountPresenter;
 
     private PaymentPresenterImpl paymentPresenter;
+
     @Override
     public void initView() {
         setContentView(R.layout.activity_payment);
@@ -64,50 +63,38 @@ public class PaymentActivity extends BaseActivity implements IPaymentView, IDisc
 
 
         userInfo = Constants.userInfo;
-        request = getIntent().getIntExtra(Constants.KEY_INTENT_TO_PAYMENT, 0);
+        orderRequest = getIntent().getIntExtra(Constants.KEY_INTENT_TO_PAYMENT, 0);
         paymentPresenter = new PaymentPresenterImpl(this, this);
-        discountPresenter = new DiscountPresenterImpl(this, this);
 
-        switch (request){
-            case Constants.INTENT_REQUEST_DETAIL_TO_PAYMENT:
-                order = (Order) getIntent().getSerializableExtra(Constants.KEY_INTENT_ORDER);
-                feedback = getIntent().getStringExtra(Constants.KEY_INTENT_FEEDBACK);
-                position = getIntent().getIntExtra(Constants.KEY_INTENT_ORDER_POSITION, 0);
-                tv_balance.setText(String.valueOf(userInfo.formatBalance()));
-                tv_amount.setText(order.formatAmount());
-                arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.payment_type))
-                {
-                    @Override
-                    public View getView(int position, View convertView, ViewGroup parent)
-                    {
-                        return setCentered(super.getView(position, convertView, parent));
-                    }
+        if (orderRequest != 0) {
+            order = (Order) getIntent().getSerializableExtra(Constants.KEY_INTENT_ORDER);
+            tv_balance.setText(String.valueOf(userInfo.formatBalance()));
+            tv_amount.setText(order.formatAmount());
+            arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.payment_type)) {
+                @Override
+                public View getView(int position, View convertView, ViewGroup parent) {
+                    return setCentered(super.getView(position, convertView, parent));
+                }
 
-                    @Override
-                    public View getDropDownView(int position, View convertView, ViewGroup parent)
-                    {
-                        return setCentered(super.getDropDownView(position, convertView, parent));
-                    }
+                @Override
+                public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                    return setCentered(super.getDropDownView(position, convertView, parent));
+                }
 
-                    private View setCentered(View view)
-                    {
-                        TextView textView = view.findViewById(android.R.id.text1);
-                        textView.setHeight(getResources().getDimensionPixelOffset(R.dimen.spinner_height));
-                        textView.setTextSize(GeneralUtil.px2sp(PaymentActivity.this, getResources().getDimensionPixelOffset(R.dimen.textSize_middle)));
-                        textView.setGravity(Gravity.CENTER_VERTICAL);
-                        return view;
-                    }
-                };
-                sp_payment_type.setAdapter(arrayAdapter);
-                break;
-            case Constants.INTENT_REQUEST_DICOUNT_TO_PAYMENT:
-                sp_payment_type.setVisibility(View.INVISIBLE);
-                discount = (Discount) getIntent().getSerializableExtra(Constants.KEY_INTENT_DISCOUNT);
-                tv_amount.setText(discount.formatPrice());
-                break;
+                private View setCentered(View view) {
+                    TextView textView = view.findViewById(android.R.id.text1);
+                    textView.setHeight(getResources().getDimensionPixelOffset(R.dimen.spinner_height));
+                    textView.setTextSize(GeneralUtil.px2sp(PaymentActivity.this, getResources().getDimensionPixelOffset(R.dimen.textSize_middle)));
+                    textView.setGravity(Gravity.CENTER_VERTICAL);
+                    return view;
+                }
+            };
+            sp_payment_type.setAdapter(arrayAdapter);
+        } else {
+            sp_payment_type.setVisibility(View.INVISIBLE);
+            discount = (Discount) getIntent().getSerializableExtra(Constants.KEY_INTENT_DISCOUNT);
+            tv_amount.setText(discount.formatPrice());
         }
-
-
     }
 
     @Override
@@ -119,31 +106,47 @@ public class PaymentActivity extends BaseActivity implements IPaymentView, IDisc
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btn_payment:
-                switch (request){
-                    case Constants.INTENT_REQUEST_DETAIL_TO_PAYMENT:
-                        switch (type_payment){
-                            case Constants.TYPE_PAYMENT_CARD:
-                                String card_no = et_card_no.getText().toString().trim();
-                                if (!TextUtils.isEmpty(card_no)) {
-//                                    paymentPresenter.paymentByCard(order.getAmount(), card_no, userInfo.getUserId(), position, feedback, order.getRating());
-                                }else{
-                                    Toast.makeText(this, getResources().getString(R.string.toast_card_no), Toast.LENGTH_SHORT).show();
-                                }
-                                break;
-                            case Constants.TYPE_PAYMENT_BALANCE:
-                                paymentPresenter.paymentByBalance(order.getAmount(), userInfo, position, feedback, order.getRating());
-                                break;
-                        }
-                        break;
-                    case Constants.INTENT_REQUEST_DICOUNT_TO_PAYMENT:
+                switch (type_payment) {
+                    case Constants.TYPE_PAYMENT_CARD:
                         String card_no = et_card_no.getText().toString().trim();
                         if (!TextUtils.isEmpty(card_no)) {
-                            discountPresenter.topUp(userInfo, discount);
-                        }else{
+                            PaymentParams paymentParams = new PaymentParams();
+                            if (orderRequest == 0) {
+                                discount = (Discount) getIntent().getSerializableExtra(Constants.KEY_INTENT_DISCOUNT);
+                                paymentParams.setOrder(false);
+                                paymentParams.setStatus(Constants.STATUS_ORDER_PAID);
+                                paymentParams.setBalance(userInfo.getBalance() + discount.getBalance());
+                                paymentParams.setUser_id(userInfo.getUserId());
+                                paymentPresenter.paymentByBalance(paymentParams);
+                            } else {
+                                paymentParams.setStatus(Constants.STATUS_ORDER_PAID);
+                                paymentParams.setOrder_id(order.getId());
+                                paymentParams.setFeedback(order.getFeedback());
+                                paymentParams.setRating(order.getRating());
+                                paymentPresenter.paymentByCard(paymentParams);
+                            }
+                        } else {
                             Toast.makeText(this, getResources().getString(R.string.toast_card_no), Toast.LENGTH_SHORT).show();
                         }
+                        break;
+                    case Constants.TYPE_PAYMENT_BALANCE:
+                        PaymentParams paymentParams = new PaymentParams();
+                        if (orderRequest != 0) {
+                            paymentParams.setStatus(Constants.STATUS_ORDER_PAID);
+                            paymentParams.setOrder(true);
+                            paymentParams.setOrder_id(order.getId());
+                            paymentParams.setFeedback(order.getFeedback());
+                            paymentParams.setRating(order.getRating());
+                            paymentParams.setBalance(userInfo.getBalance() - order.getAmount());
+                        } else {
+                            discount = (Discount) getIntent().getSerializableExtra(Constants.KEY_INTENT_DISCOUNT);
+                            paymentParams.setOrder(false);
+                            paymentParams.setBalance(userInfo.getBalance() + discount.getBalance());
+                        }
+                        paymentParams.setUser_id(userInfo.getUserId());
+                        paymentPresenter.paymentByBalance(paymentParams);
                         break;
                 }
                 break;
@@ -154,35 +157,38 @@ public class PaymentActivity extends BaseActivity implements IPaymentView, IDisc
     }
 
     @Override
-    public void getPaymentResult(int paymentType, int code) {
-        switch (paymentType){
-            case Constants.TYPE_PAYMENT_CARD:
-                if (Constants.RESPONSE_CODE_SUCCESSFUL == code){
-                    Toast.makeText(this, getResources().getString(R.string.toast_payment_success), Toast.LENGTH_SHORT).show();
-                    setResult(RESULT_OK);
-                    this.finish();
-                }else{
-                    Toast.makeText(this, getResources().getString(R.string.toast_payment_failed), Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case Constants.TYPE_PAYMENT_BALANCE:
-                if (Constants.RESPONSE_CODE_SUCCESSFUL == code){
-                    Toast.makeText(this, getResources().getString(R.string.toast_payment_success), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent();
-                    intent.putExtra(Constants.KEY_INTENT_TO_PAYMENT, Constants.TYPE_PAYMENT_BALANCE);
-                    setResult(RESULT_OK, intent);
-                    this.finish();
-                }else{
-                    Toast.makeText(this, getResources().getString(R.string.toast_payment_failed), Toast.LENGTH_SHORT).show();
-                }
-                break;
+    public void getDiscountsResult(List<Discount> discounts, String message) {
+
+    }
+
+    @Override
+    public void getPaymentBalanceResult(UserInfo userInfo, String message, int type) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        if (userInfo != null) {
+            Constants.userInfo = userInfo;
+            if (Constants.TYPE_PAYMENT_ORDER == type) {
+                setResult(RESULT_OK);
+            } else {
+                Intent intent = new Intent(this, UserEditActivity.class);
+                startActivity(intent);
+            }
+            this.finish();
+        }
+    }
+
+    @Override
+    public void getPaymentCardResult(boolean result, String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        if(result) {
+            setResult(RESULT_OK);
+            this.finish();
         }
     }
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         type_payment = i;
-        switch (i){
+        switch (i) {
             case Constants.TYPE_PAYMENT_CARD:
                 btn_payment.setEnabled(true);
                 et_card_no.setVisibility(View.VISIBLE);
@@ -190,9 +196,9 @@ public class PaymentActivity extends BaseActivity implements IPaymentView, IDisc
                 tv_balance.setVisibility(View.GONE);
                 break;
             case Constants.TYPE_PAYMENT_BALANCE:
-                if (userInfo.getBalance() < order.getAmount()){
+                if (userInfo.getBalance() < order.getAmount()) {
                     btn_payment.setEnabled(false);
-                }else {
+                } else {
                     btn_payment.setEnabled(true);
                 }
                 et_card_no.setVisibility(View.GONE);
@@ -205,20 +211,5 @@ public class PaymentActivity extends BaseActivity implements IPaymentView, IDisc
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
-    }
-
-    @Override
-    public void getDiscountResult(List<Discount> discounts, int code) {
-
-    }
-
-    @Override
-    public void getTopUpResult(UserInfo userInfo, int code) {
-        if (Constants.RESPONSE_CODE_SUCCESSFUL == code) {
-            Toast.makeText(this, getResources().getString(R.string.top_up_successful), Toast.LENGTH_SHORT).show();
-            finish();
-        } else {
-            Toast.makeText(this, getResources().getString(R.string.top_up_fail), Toast.LENGTH_SHORT).show();
-        }
     }
 }

@@ -7,7 +7,7 @@ public interface IOrder {
     void getServiceTypes();
     void getOrdersByCustomer(int userId);
     void getOrdersByStaff();
-    void startedOrder(int orderId, String started);
-    void finishedOrder(int orderId, String finished);
+    void startedOrder(Order order);
+    void finishedOrder(Order order);
     void orderBooking(OrderBooking orderBooking);
 }

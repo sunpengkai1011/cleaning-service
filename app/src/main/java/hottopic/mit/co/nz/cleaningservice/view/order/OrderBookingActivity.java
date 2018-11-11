@@ -160,7 +160,7 @@ public class OrderBookingActivity extends BaseActivity implements IOrderView{
     }
 
     @Override
-    public void orderStatusChangeResult(Order order, String message) {
+    public void orderStatusChangeResult(boolean result, String message) {
 
     }
 
@@ -318,7 +318,7 @@ public class OrderBookingActivity extends BaseActivity implements IOrderView{
                             if (total_pieces >= 20){
                                 amount = amount * serviceType.getBulk_discount();
                             }
-                            order = new Order(userInfo.getUserId(), date, serviceType, phone, city, suburb, street, 0, amount, total_pieces, 10);
+                            order = new Order(userInfo.getUserId(), date, serviceType, phone, city, suburb, street, 2, amount, total_pieces, 10);
                         }else{
                             Toast.makeText(this, "Please enter the clothes pieces.", Toast.LENGTH_SHORT).show();
                             return;

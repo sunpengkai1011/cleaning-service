@@ -18,6 +18,10 @@ public class Constants {
 
     public static final int TYPE_GET_ORDERS_CUSTOMER = 1;
     public static final int TYPE_GET_ORDERS_STAFF = 2;
+    public static final int TYPE_SERVICE_STARTED = 3;
+    public static final int TYPE_SERVICE_FINISHED = 4;
+    public static final int TYPE_PAYMENT_ORDER = 5;
+    public static final int TYPE_PAYMENT_TOP_UP = 6;
 
     //Response code
     public static final int RESPONSE_CODE_SUCCESSFUL = 200;

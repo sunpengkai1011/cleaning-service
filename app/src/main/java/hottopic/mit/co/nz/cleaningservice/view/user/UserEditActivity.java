@@ -31,6 +31,12 @@ public class UserEditActivity extends BaseActivity implements IUserView {
     private UserPresenterImpl presenter;
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setViewContent();
+    }
+
+    @Override
     public void initView() {
         setContentView(R.layout.activity_me_edit);
         tv_title = findViewById(R.id.tv_title);

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,7 +37,6 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
     private Order order;
     private RatingBar rb_stars;
     private int rating = 10;
-    private boolean isStatusChanged = false;
 
     private OrderPresenterImpl orderPresenter;
 
@@ -105,9 +103,6 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.lyt_back:
-                if (isStatusChanged){
-                    setResult(RESULT_OK);
-                }
                 this.finish();
                 break;
             case R.id.lyt_right:
@@ -121,13 +116,6 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
         }
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            lyt_back.performClick();
-        }
-        return false;
-    }
 
     @Override
     public void getOrdersResult(List<Order> orders, String message) {
@@ -135,12 +123,11 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
     }
 
     @Override
-    public void orderStatusChangeResult(Order order, String message) {
+    public void orderStatusChangeResult(boolean result, String message) {
         Toast.makeText(this,  message, Toast.LENGTH_SHORT).show();
-        if (order != null) {
-            isStatusChanged = true;
-            this.order = order;
-            viewLoad();
+        if (result) {
+            setResult(RESULT_OK);
+            this.finish();
         }
     }
 
@@ -171,7 +158,7 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
         }
     }
     private void viewVisibleByType(){
-        switch (order.getSubServiceType().getId()){
+        switch (order.getSubServiceType().getId()) {
             case Constants.ID_SERVICE_G_CLEANING:
             case Constants.ID_SERVICE_D_CLEANING:
                 timerCleaningOrder();
@@ -186,29 +173,14 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
                 ironingOrder();
                 break;
         }
-//        if (Constants.ROLE_CUSTOMER == userInfo.getUserRole().getRoleId()){
-//            btn_started.setVisibility(View.GONE);
-//            btn_finished.setVisibility(View.GONE);
-//        }else{
-//            btn_payment.setVisibility(View.GONE);
-//            et_feedback.setVisibility(View.GONE);
-//        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (RESULT_OK == resultCode){
-            if (Constants.INTENT_REQUEST_DETAIL_TO_PAYMENT == requestCode){
-                if (data != null){
-                    Intent intent = new Intent();
-                    intent.putExtra(Constants.KEY_INTENT_TO_PAYMENT, data.getIntExtra(Constants.KEY_INTENT_TO_PAYMENT, 1));
-                    setResult(RESULT_OK, intent);
-                }else {
-                    this.setResult(RESULT_OK);
-                }
-                finish();
-            }
+            this.setResult(RESULT_OK);
+            finish();
         }
     }
 
@@ -229,10 +201,14 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
 
                 tv_status.setText(getResources().getString(R.string.status_booked));
                 tv_status.setTextColor(getResources().getColor(R.color.status_other));
-                btn_commit.setText(getResources().getString(R.string.btn_started));
-                btn_commit.setOnClickListener(view -> {
-                    orderPresenter.startedOrder(order.getId(), GeneralUtil.getCurrentTime());
-                });
+                if (Constants.ROLE_CUSTOMER == Constants.userInfo.getRole_id()){
+                    btn_commit.setVisibility(View.GONE);
+                }else{
+                    btn_commit.setText(getResources().getString(R.string.btn_started));
+                    order.setStart_time(GeneralUtil.getCurrentTime());
+                    order.setStatus(Constants.STATUS_ORDER_STARTED);
+                    btn_commit.setOnClickListener(view -> orderPresenter.startedOrder(order));
+                }
                 break;
             case Constants.STATUS_ORDER_STARTED:
                 tv_start_time.setVisibility(View.VISIBLE);
@@ -245,11 +221,19 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
 
                 tv_status.setText(getResources().getString(R.string.status_started));
                 tv_status.setTextColor(getResources().getColor(R.color.status_other));
-                btn_commit.setText(getResources().getString(R.string.btn_finished));
                 tv_start_time.setText(order.getStart_time());
-                btn_commit.setOnClickListener(view -> {
-                    orderPresenter.finishedOrder(order.getId(), GeneralUtil.getCurrentTime());
-                });
+                if (Constants.ROLE_CUSTOMER == Constants.userInfo.getRole_id()){
+                    btn_commit.setVisibility(View.GONE);
+                }else{
+                    btn_commit.setText(getResources().getString(R.string.btn_finished));
+                    order.setEnd_time(GeneralUtil.getCurrentTime());
+                    order.setDuration(GeneralUtil.calculateDuration(order.getStart_time(), order.getEnd_time()));
+                    float amount = order.getSubServiceType().getProducts().get(0).getUnit_price() * order.getDuration();
+                    order.setAmount(amount);
+                    order.setStatus(Constants.STATUS_ORDER_FINISHED);
+                    btn_commit.setOnClickListener(view -> orderPresenter.finishedOrder(order));
+                }
+
                 break;
             case Constants.STATUS_ORDER_FINISHED:
                 tv_feedback.setVisibility(View.GONE);
@@ -263,36 +247,15 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
                 tv_duration.setText(order.formatDuration());
                 tv_amount.setText(order.formatAmount());
                 btn_commit.setOnClickListener(view -> {
-                    String feedback = et_feedback.getText().toString().trim();
-                    Intent intent = new Intent(OrderDetailActivity.this, PaymentActivity.class);
-                    if (!TextUtils.isEmpty(feedback)){
-                        intent.putExtra(Constants.KEY_INTENT_FEEDBACK, feedback);
-                    }else{
-                        intent.putExtra(Constants.KEY_INTENT_FEEDBACK, "");
-                    }
-                    intent.putExtra(Constants.KEY_INTENT_ORDER, order);
-                    intent.putExtra(Constants.KEY_INTENT_TO_PAYMENT, Constants.INTENT_REQUEST_DETAIL_TO_PAYMENT);
-                    startActivityForResult(intent, Constants.INTENT_REQUEST_DETAIL_TO_PAYMENT);
+                    finishedRequest();
                 });
                 break;
             case Constants.STATUS_ORDER_PAID:
-                et_feedback.setVisibility(View.GONE);
-                btn_commit.setVisibility(View.GONE);
-
-                tv_status.setText(getResources().getString(R.string.status_paid));
-                tv_status.setTextColor(getResources().getColor(R.color.status_payment));
                 tv_start_time.setText(order.getStart_time());
                 tv_finished_time.setText(order.getEnd_time());
                 tv_duration.setText(order.formatDuration());
                 tv_amount.setText(order.formatAmount());
-                float stars = (float)order.getRating() / 2;
-                rb_stars.setStar(stars);
-                rb_stars.setClickable(false);
-                if (!TextUtils.isEmpty(order.getFeedback())){
-                    tv_feedback.setText(order.getFeedback());
-                }else {
-                    lyt_feedback.setVisibility(View.GONE);
-                }
+                viewByPaid();
                 break;
         }
     }
@@ -310,6 +273,21 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
         switch (order.getStatus()){
             case Constants.STATUS_ORDER_BOOKED:
             case Constants.STATUS_ORDER_STARTED:
+                lyt_feedback.setVisibility(View.GONE);
+                lyt_rating.setVisibility(View.GONE);
+                btn_commit.setVisibility(View.VISIBLE);
+
+                tv_status.setText(getResources().getString(R.string.status_booked));
+                tv_status.setTextColor(getResources().getColor(R.color.status_other));
+                if (Constants.ROLE_CUSTOMER == Constants.userInfo.getRole_id()){
+                    btn_commit.setVisibility(View.GONE);
+                }else{
+                    btn_commit.setText(getResources().getString(R.string.btn_finished));
+                    order.setEnd_time(GeneralUtil.getCurrentTime());
+                    order.setStatus(Constants.STATUS_ORDER_FINISHED);
+                    btn_commit.setOnClickListener(view -> orderPresenter.finishedOrder(order));
+                }
+                break;
             case Constants.STATUS_ORDER_FINISHED:
                 tv_feedback.setVisibility(View.GONE);
                 btn_commit.setVisibility(View.VISIBLE);
@@ -319,32 +297,11 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
                 btn_commit.setText(getResources().getString(R.string.btn_payment));
 
                 btn_commit.setOnClickListener(view -> {
-                    String feedback = et_feedback.getText().toString().trim();
-                    Intent intent = new Intent(OrderDetailActivity.this, PaymentActivity.class);
-                    if (!TextUtils.isEmpty(feedback)){
-                        intent.putExtra(Constants.KEY_INTENT_FEEDBACK, feedback);
-                    }else{
-                        intent.putExtra(Constants.KEY_INTENT_FEEDBACK, "");
-                    }
-                    intent.putExtra(Constants.KEY_INTENT_ORDER, order);
-                    intent.putExtra(Constants.KEY_INTENT_TO_PAYMENT, Constants.INTENT_REQUEST_DETAIL_TO_PAYMENT);
-                    startActivityForResult(intent, Constants.INTENT_REQUEST_DETAIL_TO_PAYMENT);
+                    finishedRequest();
                 });
                 break;
             case Constants.STATUS_ORDER_PAID:
-                et_feedback.setVisibility(View.GONE);
-                btn_commit.setVisibility(View.GONE);
-
-                tv_status.setText(getResources().getString(R.string.status_paid));
-                tv_status.setTextColor(getResources().getColor(R.color.status_payment));
-                float stars = (float)order.getRating() / 2;
-                rb_stars.setStar(stars);
-                rb_stars.setClickable(false);
-                if (!TextUtils.isEmpty(order.getFeedback())){
-                    tv_feedback.setText(order.getFeedback());
-                }else {
-                    lyt_feedback.setVisibility(View.GONE);
-                }
+                viewByPaid();
                 break;
         }
     }
@@ -377,32 +334,41 @@ public class OrderDetailActivity extends BaseActivity implements IOrderView{
                 btn_commit.setText(getResources().getString(R.string.btn_payment));
 
                 btn_commit.setOnClickListener(view -> {
-                    String feedback = et_feedback.getText().toString().trim();
-                    Intent intent = new Intent(OrderDetailActivity.this, PaymentActivity.class);
-                    if (!TextUtils.isEmpty(feedback)){
-                        intent.putExtra(Constants.KEY_INTENT_FEEDBACK, feedback);
-                    }else{
-                        intent.putExtra(Constants.KEY_INTENT_FEEDBACK, "");
-                    }
-                    intent.putExtra(Constants.KEY_INTENT_ORDER, order);
-                    intent.putExtra(Constants.KEY_INTENT_TO_PAYMENT, Constants.INTENT_REQUEST_DETAIL_TO_PAYMENT);
-                    startActivityForResult(intent, Constants.INTENT_REQUEST_DETAIL_TO_PAYMENT);
+                    finishedRequest();
                 });
                 break;
             case Constants.STATUS_ORDER_PAID:
-                btn_commit.setVisibility(View.GONE);
-                et_feedback.setVisibility(View.GONE);
-                float stars = (float)order.getRating() / 2;
-                rb_stars.setStar(stars);
-                rb_stars.setClickable(false);
-                tv_status.setText(getResources().getString(R.string.status_paid));
-                tv_status.setTextColor(getResources().getColor(R.color.status_payment));
-                if (!TextUtils.isEmpty(order.getFeedback())){
-                    tv_feedback.setText(order.getFeedback());
-                }else {
-                    lyt_feedback.setVisibility(View.GONE);
-                }
+                viewByPaid();
                 break;
         }
+    }
+
+    private void viewByPaid() {
+        btn_commit.setVisibility(View.GONE);
+        et_feedback.setVisibility(View.GONE);
+        float stars = (float)order.getRating() / 2;
+        rb_stars.setStar(stars);
+        rb_stars.setClickable(false);
+        tv_status.setText(getResources().getString(R.string.status_paid));
+        tv_status.setTextColor(getResources().getColor(R.color.status_payment));
+        if (!TextUtils.isEmpty(order.getFeedback())){
+            tv_feedback.setText(order.getFeedback());
+        }else {
+            lyt_feedback.setVisibility(View.GONE);
+        }
+    }
+
+
+    private void finishedRequest(){
+        String feedback = et_feedback.getText().toString().trim();
+        Intent intent = new Intent(OrderDetailActivity.this, PaymentActivity.class);
+        if (!TextUtils.isEmpty(feedback)){
+            order.setFeedback(feedback);
+        }else{
+            order.setFeedback("");
+        }
+        intent.putExtra(Constants.KEY_INTENT_ORDER, order);
+        intent.putExtra(Constants.KEY_INTENT_TO_PAYMENT, Constants.INTENT_REQUEST_DETAIL_TO_PAYMENT);
+        startActivityForResult(intent, Constants.INTENT_REQUEST_DETAIL_TO_PAYMENT);
     }
 }
