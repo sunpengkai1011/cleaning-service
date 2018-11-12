@@ -55,6 +55,7 @@ public class LoginActivity extends BaseActivity implements IUserView {
         tv_title.setText(getResources().getString(R.string.title_login));
         tv_to_register.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         loginPresenterImpl = new UserPresenterImpl(this, this);
+
         String username = GeneralUtil.getDataFromSP(this, Constants.SP_KEY_USERINFO);
         if (!TextUtils.isEmpty(username)){
             et_username.setText(username);

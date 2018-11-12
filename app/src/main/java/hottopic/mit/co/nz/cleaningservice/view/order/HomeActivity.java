@@ -95,7 +95,6 @@ public class HomeActivity extends BaseActivity implements IOrderView, RecyclerVi
         lyt_right = findViewById(R.id.lyt_right);
         iv_icon = findViewById(R.id.iv_icon);
     }
-
     @Override
     public void initData() {
         tv_title.setText("HOME");
@@ -103,6 +102,7 @@ public class HomeActivity extends BaseActivity implements IOrderView, RecyclerVi
         iv_icon.setImageResource(R.drawable.icon_purchase);
         serviceTypes = (ServiceTypes) getIntent().getSerializableExtra(Constants.KEY_INTENT_SERVICETYPE);
         homePresenter = new OrderPresenterImpl(this, this);
+        cleaningAdapter = new ServiceAdapter(this);
         if (serviceTypes == null){
             homePresenter.getServiceTypes();
         }else{
@@ -110,7 +110,9 @@ public class HomeActivity extends BaseActivity implements IOrderView, RecyclerVi
         }
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);//LinearLayoutManager.HORIZONTAL 设置水平滚动
         rvp_ad.setLayoutManager(layoutManager);
-        rvp_ad.setAdapter(new ViewPagerAdapter(this, ad_list));
+        ViewPagerAdapter adapter = new ViewPagerAdapter(this);
+        adapter.setData(ad_list);
+        rvp_ad.setAdapter(adapter);
         totalPages = ad_list.length;
         tv_page_number.setText("1/" + totalPages);
         //Start the automatic page turning
@@ -171,7 +173,6 @@ public class HomeActivity extends BaseActivity implements IOrderView, RecyclerVi
     }
 
     private void initServiceAdapter(List dataList) {
-        cleaningAdapter = new ServiceAdapter(this);
         cleaningAdapter.setData(dataList);
         cleaningAdapter.setOnItemClickedListener(this);
         rv_cleaning.setAdapter(cleaningAdapter);
