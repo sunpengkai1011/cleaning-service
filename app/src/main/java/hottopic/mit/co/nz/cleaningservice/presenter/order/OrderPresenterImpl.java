@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hottopic.mit.co.nz.cleaningservice.Constants;
-import hottopic.mit.co.nz.cleaningservice.entities.network.BooleanResponse;
-import hottopic.mit.co.nz.cleaningservice.entities.network.GetOrdersResponse;
-import hottopic.mit.co.nz.cleaningservice.entities.network.OrderBooking;
-import hottopic.mit.co.nz.cleaningservice.entities.network.OrderResponse;
-import hottopic.mit.co.nz.cleaningservice.entities.network.ProductResponse;
-import hottopic.mit.co.nz.cleaningservice.entities.network.ServiceTypesResponse;
+import hottopic.mit.co.nz.cleaningservice.entities.network.response.BooleanResponse;
+import hottopic.mit.co.nz.cleaningservice.entities.network.response.GetOrdersResponse;
+import hottopic.mit.co.nz.cleaningservice.entities.network.params.OrderBookingParams;
+import hottopic.mit.co.nz.cleaningservice.entities.network.response.OrderResponse;
+import hottopic.mit.co.nz.cleaningservice.entities.network.response.ProductResponse;
+import hottopic.mit.co.nz.cleaningservice.entities.network.response.ServiceTypesResponse;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.MainServiceType;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.Order;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.ServiceProduct;
@@ -58,8 +58,8 @@ public class OrderPresenterImpl implements IOrderPresenter{
     }
 
     @Override
-    public void orderBooking(OrderBooking orderBooking) {
-        iOrder.orderBooking(orderBooking);
+    public void orderBooking(OrderBookingParams orderBookingParams) {
+        iOrder.orderBooking(orderBookingParams);
     }
 
     @Override

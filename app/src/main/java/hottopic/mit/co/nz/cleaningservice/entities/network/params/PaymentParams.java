@@ -1,4 +1,4 @@
-package hottopic.mit.co.nz.cleaningservice.entities.network;
+package hottopic.mit.co.nz.cleaningservice.entities.network.params;
 
 public class PaymentParams {
     private int user_id;

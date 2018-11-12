@@ -3,9 +3,9 @@ package hottopic.mit.co.nz.cleaningservice.presenter.user;
 import android.content.Context;
 
 import hottopic.mit.co.nz.cleaningservice.Constants;
-import hottopic.mit.co.nz.cleaningservice.entities.network.LoginResponse;
-import hottopic.mit.co.nz.cleaningservice.entities.network.BooleanResponse;
-import hottopic.mit.co.nz.cleaningservice.entities.network.UserInfoEditResponse;
+import hottopic.mit.co.nz.cleaningservice.entities.network.response.LoginResponse;
+import hottopic.mit.co.nz.cleaningservice.entities.network.response.BooleanResponse;
+import hottopic.mit.co.nz.cleaningservice.entities.network.response.UserInfoEditResponse;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
 import hottopic.mit.co.nz.cleaningservice.model.user.IUser;
 import hottopic.mit.co.nz.cleaningservice.model.user.UserModel;

@@ -19,7 +19,7 @@ import java.util.List;
 import hottopic.mit.co.nz.cleaningservice.BaseActivity;
 import hottopic.mit.co.nz.cleaningservice.Constants;
 import hottopic.mit.co.nz.cleaningservice.R;
-import hottopic.mit.co.nz.cleaningservice.entities.network.PaymentParams;
+import hottopic.mit.co.nz.cleaningservice.entities.network.params.PaymentParams;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.Discount;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.Order;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;

@@ -1,9 +1,9 @@
 package hottopic.mit.co.nz.cleaningservice.presenter.order;
 
-import hottopic.mit.co.nz.cleaningservice.entities.network.BooleanResponse;
-import hottopic.mit.co.nz.cleaningservice.entities.network.DiscountsResponse;
-import hottopic.mit.co.nz.cleaningservice.entities.network.PaymentParams;
-import hottopic.mit.co.nz.cleaningservice.entities.network.UserInfoResponse;
+import hottopic.mit.co.nz.cleaningservice.entities.network.response.BooleanResponse;
+import hottopic.mit.co.nz.cleaningservice.entities.network.response.DiscountsResponse;
+import hottopic.mit.co.nz.cleaningservice.entities.network.params.PaymentParams;
+import hottopic.mit.co.nz.cleaningservice.entities.network.response.UserInfoResponse;
 
 public interface IPaymentPresenter {
     void getDiscounts();

@@ -1,11 +1,11 @@
-package hottopic.mit.co.nz.cleaningservice.entities.network;
+package hottopic.mit.co.nz.cleaningservice.entities.network.params;
 
 import java.util.List;
 
 import hottopic.mit.co.nz.cleaningservice.entities.orders.Order;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.ServiceProduct;
 
-public class OrderBooking {
+public class OrderBookingParams {
     private Order order;
     private List<ServiceProduct> products;
 

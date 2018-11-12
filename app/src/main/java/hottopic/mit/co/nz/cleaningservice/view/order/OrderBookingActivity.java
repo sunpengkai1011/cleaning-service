@@ -26,7 +26,7 @@ import hottopic.mit.co.nz.cleaningservice.BaseActivity;
 import hottopic.mit.co.nz.cleaningservice.Constants;
 import hottopic.mit.co.nz.cleaningservice.R;
 import hottopic.mit.co.nz.cleaningservice.adapter.ClothesAdapter;
-import hottopic.mit.co.nz.cleaningservice.entities.network.OrderBooking;
+import hottopic.mit.co.nz.cleaningservice.entities.network.params.OrderBookingParams;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.Order;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.ServiceProduct;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.ServiceTypes;
@@ -327,11 +327,11 @@ public class OrderBookingActivity extends BaseActivity implements IOrderView{
                 }
             }
             if (order != null) {
-                OrderBooking orderBooking = new OrderBooking();
-                orderBooking.setOrder(order);
-                orderBooking.getProducts();
-                orderBooking.setProducts(order.getSubServiceType().getProducts());
-                orderPresenter.orderBooking(orderBooking);
+                OrderBookingParams orderBookingParams = new OrderBookingParams();
+                orderBookingParams.setOrder(order);
+                orderBookingParams.getProducts();
+                orderBookingParams.setProducts(order.getSubServiceType().getProducts());
+                orderPresenter.orderBooking(orderBookingParams);
             }
         }else {
             if (TextUtils.isEmpty(city)){

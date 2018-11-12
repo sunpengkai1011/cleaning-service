@@ -5,8 +5,7 @@ import android.content.Context;
 import java.util.Map;
 
 import hottopic.mit.co.nz.cleaningservice.Constants;
-import hottopic.mit.co.nz.cleaningservice.entities.network.GetOrdersResponse;
-import hottopic.mit.co.nz.cleaningservice.entities.orders.Order;
+import hottopic.mit.co.nz.cleaningservice.entities.network.response.GetOrdersResponse;
 import hottopic.mit.co.nz.cleaningservice.network.service.OrderService;
 import io.reactivex.Single;
 

@@ -26,7 +26,7 @@ import com.google.android.gms.maps.model.LatLng;
 import hottopic.mit.co.nz.cleaningservice.BaseActivity;
 import hottopic.mit.co.nz.cleaningservice.Constants;
 import hottopic.mit.co.nz.cleaningservice.R;
-import hottopic.mit.co.nz.cleaningservice.entities.network.PlaceResponse;
+import hottopic.mit.co.nz.cleaningservice.entities.network.response.PlaceResponse;
 import hottopic.mit.co.nz.cleaningservice.presenter.order.MapPresenterImpl;
 import hottopic.mit.co.nz.cleaningservice.utils.MapUtil;
 import hottopic.mit.co.nz.cleaningservice.utils.PermissionUtil;

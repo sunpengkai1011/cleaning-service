@@ -1,8 +1,8 @@
 package hottopic.mit.co.nz.cleaningservice.network.service;
 
-import hottopic.mit.co.nz.cleaningservice.entities.network.LoginResponse;
-import hottopic.mit.co.nz.cleaningservice.entities.network.BooleanResponse;
-import hottopic.mit.co.nz.cleaningservice.entities.network.UserInfoEditResponse;
+import hottopic.mit.co.nz.cleaningservice.entities.network.response.LoginResponse;
+import hottopic.mit.co.nz.cleaningservice.entities.network.response.BooleanResponse;
+import hottopic.mit.co.nz.cleaningservice.entities.network.response.UserInfoEditResponse;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
 import io.reactivex.Single;
 import retrofit2.http.Body;

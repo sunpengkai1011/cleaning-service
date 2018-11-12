@@ -1,9 +1,6 @@
 package hottopic.mit.co.nz.cleaningservice.utils;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Application;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.DisplayMetrics;
@@ -15,20 +12,10 @@ import com.google.gson.GsonBuilder;
 import java.lang.reflect.Type;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 import hottopic.mit.co.nz.cleaningservice.Constants;
-import hottopic.mit.co.nz.cleaningservice.R;
-import hottopic.mit.co.nz.cleaningservice.entities.network.ProductResponse;
-import hottopic.mit.co.nz.cleaningservice.entities.orders.MainServiceType;
-import hottopic.mit.co.nz.cleaningservice.entities.orders.ServiceProduct;
-import hottopic.mit.co.nz.cleaningservice.entities.orders.ServiceTypes;
-import hottopic.mit.co.nz.cleaningservice.entities.orders.SubServiceType;
-import io.reactivex.Observable;
-import io.reactivex.Single;
 
 public class GeneralUtil {
 

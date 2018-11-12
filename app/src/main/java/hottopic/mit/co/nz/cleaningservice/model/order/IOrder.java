@@ -1,6 +1,6 @@
 package hottopic.mit.co.nz.cleaningservice.model.order;
 
-import hottopic.mit.co.nz.cleaningservice.entities.network.OrderBooking;
+import hottopic.mit.co.nz.cleaningservice.entities.network.params.OrderBookingParams;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.Order;
 
 public interface IOrder {
@@ -9,5 +9,5 @@ public interface IOrder {
     void getOrdersByStaff();
     void startedOrder(Order order);
     void finishedOrder(Order order);
-    void orderBooking(OrderBooking orderBooking);
+    void orderBooking(OrderBookingParams orderBookingParams);
 }

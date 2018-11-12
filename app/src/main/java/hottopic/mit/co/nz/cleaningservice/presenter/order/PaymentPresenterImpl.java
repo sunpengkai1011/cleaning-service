@@ -3,11 +3,10 @@ package hottopic.mit.co.nz.cleaningservice.presenter.order;
 import android.content.Context;
 
 import hottopic.mit.co.nz.cleaningservice.Constants;
-import hottopic.mit.co.nz.cleaningservice.entities.network.BooleanResponse;
-import hottopic.mit.co.nz.cleaningservice.entities.network.DiscountsResponse;
-import hottopic.mit.co.nz.cleaningservice.entities.network.PaymentParams;
-import hottopic.mit.co.nz.cleaningservice.entities.network.UserInfoResponse;
-import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
+import hottopic.mit.co.nz.cleaningservice.entities.network.response.BooleanResponse;
+import hottopic.mit.co.nz.cleaningservice.entities.network.response.DiscountsResponse;
+import hottopic.mit.co.nz.cleaningservice.entities.network.params.PaymentParams;
+import hottopic.mit.co.nz.cleaningservice.entities.network.response.UserInfoResponse;
 import hottopic.mit.co.nz.cleaningservice.model.payment.IPayment;
 import hottopic.mit.co.nz.cleaningservice.model.payment.PaymentModel;
 import hottopic.mit.co.nz.cleaningservice.view.order.IPaymentView;

@@ -5,7 +5,7 @@ import android.content.Context;
 import com.android.tu.loadingdialog.LoadingDialog;
 
 import hottopic.mit.co.nz.cleaningservice.Constants;
-import hottopic.mit.co.nz.cleaningservice.entities.network.PlaceResponse;
+import hottopic.mit.co.nz.cleaningservice.entities.network.response.PlaceResponse;
 import hottopic.mit.co.nz.cleaningservice.network.service.PlaceService;
 import hottopic.mit.co.nz.cleaningservice.utils.GeneralUtil;
 import retrofit2.Call;

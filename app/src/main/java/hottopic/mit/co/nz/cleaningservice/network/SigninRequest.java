@@ -6,7 +6,7 @@ import android.util.Base64;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
-import hottopic.mit.co.nz.cleaningservice.entities.network.LoginResponse;
+import hottopic.mit.co.nz.cleaningservice.entities.network.response.LoginResponse;
 import hottopic.mit.co.nz.cleaningservice.network.service.UserService;
 import io.reactivex.Single;
 

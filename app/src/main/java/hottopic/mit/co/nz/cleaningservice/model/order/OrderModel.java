@@ -3,9 +3,7 @@ package hottopic.mit.co.nz.cleaningservice.model.order;
 import android.content.Context;
 
 import hottopic.mit.co.nz.cleaningservice.Constants;
-import hottopic.mit.co.nz.cleaningservice.entities.network.BooleanResponse;
-import hottopic.mit.co.nz.cleaningservice.entities.network.GetOrdersResponse;
-import hottopic.mit.co.nz.cleaningservice.entities.network.OrderBooking;
+import hottopic.mit.co.nz.cleaningservice.entities.network.params.OrderBookingParams;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.Order;
 import hottopic.mit.co.nz.cleaningservice.network.GetOrdersRequest;
 import hottopic.mit.co.nz.cleaningservice.network.OrderBookingRequest;
@@ -70,9 +68,9 @@ public class OrderModel implements IOrder {
     }
 
     @Override
-    public void orderBooking(OrderBooking orderBooking) {
+    public void orderBooking(OrderBookingParams orderBookingParams) {
         presenter = new OrderPresenterImpl(context, iOrderView);
-        new OrderBookingRequest(context, orderBooking).getData().subscribe(
+        new OrderBookingRequest(context, orderBookingParams).getData().subscribe(
                 booleanResponse -> presenter.orderBookingResult(booleanResponse),
                 e -> presenter.orderBookingResult(null)
         );
