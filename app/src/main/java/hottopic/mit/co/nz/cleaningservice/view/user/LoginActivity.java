@@ -21,6 +21,7 @@ import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
 import hottopic.mit.co.nz.cleaningservice.presenter.user.UserPresenterImpl;
 import hottopic.mit.co.nz.cleaningservice.utils.GeneralUtil;
 import hottopic.mit.co.nz.cleaningservice.view.order.HomeActivity;
+import hottopic.mit.co.nz.cleaningservice.view.order.OrdersActivity;
 
 public class LoginActivity extends BaseActivity implements IUserView {
     private TextView tv_title, tv_to_register;
@@ -126,16 +127,22 @@ public class LoginActivity extends BaseActivity implements IUserView {
 
     @Override
     public void loginResult(UserInfo userInfo, ServiceTypes serviceTypes, String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         if (userInfo != null) {
             Constants.userInfo = userInfo;
+            Intent intent;
             GeneralUtil.storDataBySP(this, Constants.SP_KEY_USERINFO, userInfo.getUsername());
-            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-            if (serviceTypes != null && serviceTypes.getMainServiceTypes().size() > 0){
-                intent.putExtra(Constants.KEY_INTENT_SERVICETYPE, serviceTypes);
+            if (Constants.ROLE_CUSTOMER == userInfo.getRole_id()) {
+                intent = new Intent(LoginActivity.this, HomeActivity.class);
+                if (serviceTypes != null && serviceTypes.getMainServiceTypes().size() > 0) {
+                    intent.putExtra(Constants.KEY_INTENT_SERVICETYPE, serviceTypes);
+                }
+            }else{
+                intent = new Intent(this, OrdersActivity.class);
             }
             startActivity(intent);
             this.finish();
+        }else{
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         }
     }
 

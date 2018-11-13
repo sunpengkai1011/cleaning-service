@@ -25,7 +25,7 @@ public class Constants {
 
     //Response code
     public static final int RESPONSE_CODE_SUCCESSFUL = 200;
-    public static final int RESPONSE_CODE_FAIL = 101;
+    public static final int RESPONSE_CODE_NONE = 401;
 
     //SharedPreference
     public static final String SP_KEY = "CLEANING_SERVICE";

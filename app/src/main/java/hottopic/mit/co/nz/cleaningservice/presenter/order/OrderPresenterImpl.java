@@ -70,7 +70,11 @@ public class OrderPresenterImpl implements IOrderPresenter{
             if (Constants.RESPONSE_CODE_SUCCESSFUL == response.getCode()) {
                 iOrderView.getOrdersResult(sortingOrders(response.getOrderResponses()), response.getMessage());
             }else{
-                iOrderView.getOrdersResult(null, response.getMessage());
+                if (Constants.RESPONSE_CODE_NONE == response.getCode()){
+                    iOrderView.getOrdersResult(new ArrayList<>(), response.getMessage());
+                }else {
+                    iOrderView.getOrdersResult(null, response.getMessage());
+                }
             }
         }
     }

@@ -58,11 +58,7 @@ public class UserPresenterImpl implements IUserPresenter {
         if (response == null){
             iUserView.registerResult(false, "Register failed");
         }else{
-            if (Constants.RESPONSE_CODE_SUCCESSFUL == response.getCode()) {
-                iUserView.registerResult(response.getResult(), response.getMessage());
-            }else{
-                iUserView.registerResult(false, response.getMessage());
-            }
+            iUserView.registerResult(response.getResult(), response.getMessage());
         }
     }
 

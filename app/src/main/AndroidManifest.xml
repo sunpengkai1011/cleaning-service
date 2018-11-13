@@ -46,7 +46,9 @@
         <activity android:name=".view.order.OrderBookingActivity" />
         <activity android:name=".view.order.OrderDetailActivity" />
         <activity android:name=".view.order.PaymentActivity" />
-        <activity android:name=".view.order.OrdersActivity" />
+        <activity
+            android:name=".view.order.OrdersActivity"
+            android:launchMode="singleTask"/>
     </application>
 
 

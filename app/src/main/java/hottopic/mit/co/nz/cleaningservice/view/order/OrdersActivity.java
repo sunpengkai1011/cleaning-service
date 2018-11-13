@@ -1,6 +1,9 @@
 package hottopic.mit.co.nz.cleaningservice.view.order;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,9 +24,10 @@ import hottopic.mit.co.nz.cleaningservice.entities.orders.Order;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.ServiceTypes;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
 import hottopic.mit.co.nz.cleaningservice.presenter.order.OrderPresenterImpl;
+import hottopic.mit.co.nz.cleaningservice.view.user.LoginActivity;
 import hottopic.mit.co.nz.cleaningservice.view.user.UserEditActivity;
 
-public class OrdersActivity extends BaseActivity implements IOrderView{
+public class OrdersActivity extends BaseActivity implements IOrderView {
     private TextView tv_title, tv_username, tv_user_role;
     private RelativeLayout lyt_back, lyt_header, lyt_right;
     private ImageView iv_icon;
@@ -32,6 +36,28 @@ public class OrdersActivity extends BaseActivity implements IOrderView{
     private OrderAdapter orderAdapter;
 
     private OrderPresenterImpl orderPresenter;
+    private boolean isQuit = false;
+
+    @SuppressLint("HandlerLeak")
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            isQuit = false;
+        }
+    };
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        int statusType = intent.getIntExtra(Constants.KEY_INTENT_CLOSETYPE, 0);
+        if (Constants.CLOSETYPE_LOGOUT == statusType){
+            //open login page
+            Intent login = new Intent(this, LoginActivity.class);
+            startActivity(login);
+            finish();
+        }
+    }
 
     @Override
     public void initView() {
@@ -50,7 +76,9 @@ public class OrdersActivity extends BaseActivity implements IOrderView{
     @Override
     public void initData() {
         tv_title.setText(getResources().getString(R.string.title_me));
-        lyt_back.setVisibility(View.VISIBLE);
+        if (Constants.ROLE_CUSTOMER == Constants.userInfo.getRole_id()) {
+            lyt_back.setVisibility(View.VISIBLE);
+        }
         lyt_right.setVisibility(View.VISIBLE);
         iv_icon.setImageResource(R.drawable.icon_user);
         setData(Constants.userInfo);
@@ -70,7 +98,7 @@ public class OrdersActivity extends BaseActivity implements IOrderView{
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.lyt_user:
             case R.id.lyt_right:
                 Intent editIntent = new Intent(this, UserEditActivity.class);
@@ -84,30 +112,39 @@ public class OrdersActivity extends BaseActivity implements IOrderView{
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (KeyEvent.KEYCODE_BACK == keyCode){
-            lyt_back.performClick();
+        if (KeyEvent.KEYCODE_BACK == keyCode) {
+            if (Constants.ROLE_CUSTOMER == Constants.userInfo.getRole_id()) {
+                lyt_back.performClick();
+            } else {
+                //If click the Back key twice in 2 seconds, the program exits
+                if (!isQuit) {
+                    isQuit = true;
+                    Toast.makeText(getApplicationContext(), "Press the return key again to exit the program!",
+                            Toast.LENGTH_SHORT).show();
+                    handler.sendEmptyMessageDelayed(Constants.WHAT_EXIT, 2000);
+                } else {
+                    finish();
+                    System.exit(0);
+                }
+            }
         }
         return false;
     }
 
-    private void setData(UserInfo userInfo){
-        if (userInfo != null){
+    private void setData(UserInfo userInfo) {
+        if (userInfo != null) {
             tv_username.setText(userInfo.getUsername());
-            if (userInfo.getRole_id() == Constants.ROLE_CUSTOMER){
-                tv_user_role.setText(this.getResources().getString(R.string.role_customer));
-            }else {
-                tv_user_role.setText(this.getResources().getString(R.string.role_staff));
-            }
+            tv_user_role.setText(userInfo.getRole_name());
         }
     }
 
 
     @Override
     public void getOrdersResult(List<Order> orders, String message) {
-        if (srl_orders.isRefreshing()){
+        if (srl_orders.isRefreshing()) {
             srl_orders.setRefreshing(false);
         }
-        if (orders != null){
+        if (orders != null) {
             if (orderAdapter == null) {
                 orderAdapter = new OrderAdapter(this);
                 orderAdapter.setData(orders);
@@ -118,14 +155,14 @@ public class OrdersActivity extends BaseActivity implements IOrderView{
                 });
                 rv_orders.setLayoutManager(new LinearLayoutManager(this));
                 rv_orders.setAdapter(orderAdapter);
-            }else{
+            } else {
                 orderAdapter.setData(orders);
                 orderAdapter.notifyDataSetChanged();
-                if (srl_orders.isRefreshing()){
+                if (srl_orders.isRefreshing()) {
                     srl_orders.setRefreshing(false);
                 }
             }
-        }else{
+        } else {
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         }
     }
@@ -133,8 +170,8 @@ public class OrdersActivity extends BaseActivity implements IOrderView{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (RESULT_OK == resultCode){
-            if (Constants.INTENT_REQUEST_ORDER_TO_DETAIL == requestCode){
+        if (RESULT_OK == resultCode) {
+            if (Constants.INTENT_REQUEST_ORDER_TO_DETAIL == requestCode) {
                 getOrderByRole();
             }
         }
@@ -160,10 +197,10 @@ public class OrdersActivity extends BaseActivity implements IOrderView{
 
     }
 
-    private void getOrderByRole(){
-        if (Constants.ROLE_CUSTOMER == Constants.userInfo.getRole_id()){
+    private void getOrderByRole() {
+        if (Constants.ROLE_CUSTOMER == Constants.userInfo.getRole_id()) {
             orderPresenter.getOrdersByCustomer(Constants.userInfo.getUserId());
-        }else {
+        } else {
             orderPresenter.getOrdersByStaff();
         }
     }
