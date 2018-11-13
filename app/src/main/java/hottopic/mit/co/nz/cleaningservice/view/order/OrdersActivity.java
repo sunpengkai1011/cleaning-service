@@ -99,7 +99,7 @@ public class OrdersActivity extends BaseActivity implements IOrderView {
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.lyt_user:
+            case R.id.lyt_header:
             case R.id.lyt_right:
                 Intent editIntent = new Intent(this, UserEditActivity.class);
                 startActivity(editIntent);
