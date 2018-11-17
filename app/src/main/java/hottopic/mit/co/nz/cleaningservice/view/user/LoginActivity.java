@@ -24,6 +24,7 @@ import hottopic.mit.co.nz.cleaningservice.view.order.HomeActivity;
 import hottopic.mit.co.nz.cleaningservice.view.order.OrdersActivity;
 
 public class LoginActivity extends BaseActivity implements IUserView {
+    private static final int MAX_SIGNIN_DURATION = 60 * 60 * 24; // Remain login for 24 hours
     private TextView tv_title, tv_to_register;
     private EditText et_username, et_password;
     private Button btn_login;
@@ -57,9 +58,28 @@ public class LoginActivity extends BaseActivity implements IUserView {
         tv_to_register.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         loginPresenterImpl = new UserPresenterImpl(this, this);
 
-        String username = GeneralUtil.getDataFromSP(this, Constants.SP_KEY_USERINFO);
-        if (!TextUtils.isEmpty(username)){
-            et_username.setText(username);
+        String storeUserInfo = GeneralUtil.getDataFromSP(this, Constants.SP_KEY_USERINFO);
+        if (!TextUtils.isEmpty(storeUserInfo)) {
+            UserInfo userInfo = GeneralUtil.fromJson(storeUserInfo, UserInfo.class);
+            et_username.setText(userInfo.getUsername());
+
+            int lastLoginTimestamp = GeneralUtil.getIntFromSP(this, Constants.SP_KEY_LAST_LOGIN_TIMESTAMP);
+            // Check last login timestamp, if less than 1 day, do not ask for login
+            if ((int) System.currentTimeMillis() / 1000 - lastLoginTimestamp < MAX_SIGNIN_DURATION) {
+                Constants.userInfo = userInfo;
+                ServiceTypes serviceTypes = GeneralUtil.fromJson(GeneralUtil.getDataFromSP(this, Constants.SP_KEY_SERVICE_TYPE), ServiceTypes.class);
+                Intent intent;
+                if (Constants.ROLE_CUSTOMER == userInfo.getRole_id()) {
+                    intent = new Intent(LoginActivity.this, HomeActivity.class);
+                    if (serviceTypes != null && serviceTypes.getMainServiceTypes().size() > 0) {
+                        intent.putExtra(Constants.KEY_INTENT_SERVICETYPE, serviceTypes);
+                    }
+                } else {
+                    intent = new Intent(this, OrdersActivity.class);
+                }
+                startActivity(intent);
+                this.finish();
+            }
         }
     }
 
@@ -71,16 +91,16 @@ public class LoginActivity extends BaseActivity implements IUserView {
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btn_login:
                 String username = et_username.getText().toString().trim();
                 String password = et_password.getText().toString().trim();
-                if (!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)){
+                if (!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)) {
                     loginPresenterImpl.doLogin(username, password);
-                }else{
-                    if (TextUtils.isEmpty(username)){
+                } else {
+                    if (TextUtils.isEmpty(username)) {
                         Toast.makeText(this, getResources().getString(R.string.toast_empty_username), Toast.LENGTH_SHORT).show();
-                    }else {
+                    } else {
                         Toast.makeText(this, getResources().getString(R.string.toast_empty_password), Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -130,18 +150,20 @@ public class LoginActivity extends BaseActivity implements IUserView {
         if (userInfo != null) {
             Constants.userInfo = userInfo;
             Intent intent;
-            GeneralUtil.storDataBySP(this, Constants.SP_KEY_USERINFO, userInfo.getUsername());
+            GeneralUtil.storDataBySP(this, Constants.SP_KEY_USERINFO, GeneralUtil.toJson(userInfo, UserInfo.class));
+            GeneralUtil.storDataBySP(this, Constants.SP_KEY_SERVICE_TYPE, GeneralUtil.toJson(serviceTypes, ServiceTypes.class));
+            GeneralUtil.storeIntIntoSP(this, Constants.SP_KEY_LAST_LOGIN_TIMESTAMP, (int) (System.currentTimeMillis() / 1000));
             if (Constants.ROLE_CUSTOMER == userInfo.getRole_id()) {
                 intent = new Intent(LoginActivity.this, HomeActivity.class);
                 if (serviceTypes != null && serviceTypes.getMainServiceTypes().size() > 0) {
                     intent.putExtra(Constants.KEY_INTENT_SERVICETYPE, serviceTypes);
                 }
-            }else{
+            } else {
                 intent = new Intent(this, OrdersActivity.class);
             }
             startActivity(intent);
             this.finish();
-        }else{
+        } else {
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         }
     }

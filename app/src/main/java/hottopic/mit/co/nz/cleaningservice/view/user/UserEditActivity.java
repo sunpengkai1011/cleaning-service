@@ -17,6 +17,7 @@ import hottopic.mit.co.nz.cleaningservice.R;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.ServiceTypes;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
 import hottopic.mit.co.nz.cleaningservice.presenter.user.UserPresenterImpl;
+import hottopic.mit.co.nz.cleaningservice.utils.GeneralUtil;
 import hottopic.mit.co.nz.cleaningservice.view.order.HomeActivity;
 import hottopic.mit.co.nz.cleaningservice.view.order.DiscountActivity;
 import hottopic.mit.co.nz.cleaningservice.view.order.OrdersActivity;
@@ -88,6 +89,7 @@ public class UserEditActivity extends BaseActivity implements IUserView {
         switch (view.getId()){
             case R.id.btn_commit:
                 if (isEdit) {
+                    GeneralUtil.storeIntIntoSP(this, Constants.SP_KEY_LAST_LOGIN_TIMESTAMP, 0);
                     //Logout
                     Intent intent;
                     if (Constants.ROLE_CUSTOMER == Constants.userInfo.getRole_id()) {

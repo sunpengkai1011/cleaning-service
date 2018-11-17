@@ -144,7 +144,7 @@ public class OrdersActivity extends BaseActivity implements IOrderView {
         if (srl_orders.isRefreshing()) {
             srl_orders.setRefreshing(false);
         }
-        if (orders != null) {
+        if (orders != null && orders.size() > 0) {
             if (orderAdapter == null) {
                 orderAdapter = new OrderAdapter(this);
                 orderAdapter.setData(orders);
@@ -158,9 +158,6 @@ public class OrdersActivity extends BaseActivity implements IOrderView {
             } else {
                 orderAdapter.setData(orders);
                 orderAdapter.notifyDataSetChanged();
-                if (srl_orders.isRefreshing()) {
-                    srl_orders.setRefreshing(false);
-                }
             }
         } else {
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show();

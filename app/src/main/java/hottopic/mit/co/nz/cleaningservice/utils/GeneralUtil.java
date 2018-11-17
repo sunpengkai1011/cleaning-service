@@ -80,6 +80,30 @@ public class GeneralUtil {
         preferences.edit().putString(key, data).commit();
     }
 
+    /**
+     * Get the data from local by SharedPreferences.
+     * @param context
+     * @param key store key
+     * @return data
+     */
+    public static int getIntFromSP(Context context, String key){
+        SharedPreferences preferences = context.getSharedPreferences(Constants.SP_KEY, Context.MODE_PRIVATE);
+        return preferences.getInt(key, 0);
+    }
+
+
+    /**
+     * Storing the data in local by SharedPreferences.
+     *
+     * @param context
+     * @param key     store key
+     * @param data
+     */
+    public static void storeIntIntoSP(Context context, String key, int data) {
+        SharedPreferences preferences = context.getSharedPreferences(Constants.SP_KEY, Context.MODE_PRIVATE);
+        preferences.edit().putInt(key, data).apply();
+    }
+
     public static String getDataFromSP(Context context, String key){
         SharedPreferences preferences = context.getSharedPreferences(Constants.SP_KEY, Context.MODE_PRIVATE);
         return preferences.getString(key, "");

@@ -23,6 +23,9 @@ public class Constants {
     public static final int TYPE_PAYMENT_ORDER = 5;
     public static final int TYPE_PAYMENT_TOP_UP = 6;
 
+
+    public static final String SP_KEY_LAST_LOGIN_TIMESTAMP = "last_login_time_timestamp";
+
     //Response code
     public static final int RESPONSE_CODE_SUCCESSFUL = 200;
     public static final int RESPONSE_CODE_NONE = 401;
@@ -30,6 +33,7 @@ public class Constants {
     //SharedPreference
     public static final String SP_KEY = "CLEANING_SERVICE";
     public static final String SP_KEY_USERINFO = "USER_INFO";
+    public static final String SP_KEY_SERVICE_TYPE = "service_type";
     public static final String SP_KEY_ORDERS = "ORDERS";
 
     //Intent
