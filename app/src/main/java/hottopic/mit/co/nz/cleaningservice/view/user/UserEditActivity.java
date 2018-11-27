@@ -203,6 +203,7 @@ public class UserEditActivity extends BaseActivity implements IUserView {
         if (userInfo != null){
             Constants.userInfo = userInfo;
             setViewContent();
+            isEdit = true;
         }
     }
 }
