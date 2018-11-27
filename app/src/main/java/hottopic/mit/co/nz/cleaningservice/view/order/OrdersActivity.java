@@ -144,7 +144,7 @@ public class OrdersActivity extends BaseActivity implements IOrderView {
         if (srl_orders.isRefreshing()) {
             srl_orders.setRefreshing(false);
         }
-        if (orders != null && orders.size() > 0) {
+        if (orders != null) {
             if (orderAdapter == null) {
                 orderAdapter = new OrderAdapter(this);
                 orderAdapter.setData(orders);
