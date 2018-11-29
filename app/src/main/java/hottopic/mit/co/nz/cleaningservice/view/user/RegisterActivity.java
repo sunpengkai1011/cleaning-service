@@ -49,7 +49,7 @@ public class RegisterActivity extends BaseActivity implements IUserView {
         tv_title.setText(R.string.title_register);
         lyt_back.setVisibility(View.VISIBLE);
         presenter = new UserPresenterImpl(this, this);
-        textData();
+        //textData();//For demonstration
     }
 
     @Override
