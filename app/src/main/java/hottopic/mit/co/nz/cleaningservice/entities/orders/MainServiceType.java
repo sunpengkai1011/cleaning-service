@@ -1,17 +1,17 @@
 package hottopic.mit.co.nz.cleaningservice.entities.orders;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainServiceType implements Serializable {
     private int id;
     private String type_name;
-    private List<SubServiceType> subServiceTypes;
+    private List<SubServiceType> subServiceTypes = new ArrayList<>();
 
-    public MainServiceType(int id, String type_name, List<SubServiceType> subServiceTypes) {
+    public MainServiceType(int id, String type_name) {
         this.id = id;
         this.type_name = type_name;
-        this.subServiceTypes = subServiceTypes;
     }
 
     public int getId() {
@@ -36,5 +36,9 @@ public class MainServiceType implements Serializable {
 
     public void setSubServiceTypes(List<SubServiceType> subServiceTypes) {
         this.subServiceTypes = subServiceTypes;
+    }
+
+    public void addSubServiceType(SubServiceType subServiceType) {
+        this.subServiceTypes.add(subServiceType);
     }
 }

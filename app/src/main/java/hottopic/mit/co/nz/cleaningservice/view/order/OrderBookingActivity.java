@@ -17,8 +17,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.analytics.ecommerce.Product;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;

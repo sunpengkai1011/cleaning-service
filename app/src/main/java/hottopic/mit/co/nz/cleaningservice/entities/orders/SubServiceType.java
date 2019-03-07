@@ -1,6 +1,7 @@
 package hottopic.mit.co.nz.cleaningservice.entities.orders;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import hottopic.mit.co.nz.cleaningservice.utils.GeneralUtil;
@@ -11,14 +12,13 @@ public class SubServiceType implements Serializable {
     private String type_name;
     private float bulk_discount;
     private int icon;
-    private List<ServiceProduct> products;
+    private List<ServiceProduct> products = new ArrayList<>();
 
-    public SubServiceType(int id, int main_id, String type_name, float bulk_discount, List<ServiceProduct> products) {
+    public SubServiceType(int id, int main_id, String type_name, float bulk_discount) {
         this.id = id;
         this.main_id = main_id;
         this.type_name = type_name;
         this.bulk_discount = bulk_discount;
-        this.products = products;
     }
 
     public int getId() {
@@ -63,6 +63,10 @@ public class SubServiceType implements Serializable {
 
     public List<ServiceProduct> getProducts() {
         return products;
+    }
+
+    public void addProduct(ServiceProduct serviceProduct) {
+        products.add(serviceProduct);
     }
 
     public void setProducts(List<ServiceProduct> products) {

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "557064909526",
+    "firebase_url": "https://delivery-c7d83.firebaseio.com",
+    "project_id": "delivery-c7d83",
+    "storage_bucket": "delivery-c7d83.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:557064909526:android:8b9d5a3f03a8ee01",
+        "android_client_info": {
+          "package_name": "hottopic.mit.co.nz.cleaningservice"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "557064909526-r3ker16dffsq7l7jlqvp62jgd5os4vn7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAc4zl2b5LxU49hfXK2fUTQrbYol21-TsI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

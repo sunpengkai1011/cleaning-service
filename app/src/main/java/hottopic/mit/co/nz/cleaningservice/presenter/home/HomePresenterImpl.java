@@ -17,6 +17,8 @@ import hottopic.mit.co.nz.cleaningservice.model.user.IUser;
 import hottopic.mit.co.nz.cleaningservice.model.user.UserModel;
 import hottopic.mit.co.nz.cleaningservice.utils.GeneralUtil;
 import hottopic.mit.co.nz.cleaningservice.view.home.IHomeView;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class HomePresenterImpl implements IHomePresenter {
     private Context context;
@@ -40,7 +42,10 @@ public class HomePresenterImpl implements IHomePresenter {
             iHomeView.getSerivceError(response.getMessage());
         }else{
             if (Constants.RESPONSE_CODE_SUCCESSFUL == response.getCode()){
-                iHomeView.getServiceTypes(GeneralUtil.sortingTypeData(response.getServiceTypes()));
+                GeneralUtil.sortingTypeData(response.getServiceTypes())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(mainServiceType -> iHomeView.getServiceTypes(mainServiceType));
             }else{
                 iHomeView.getSerivceError(response.getMessage());
             }

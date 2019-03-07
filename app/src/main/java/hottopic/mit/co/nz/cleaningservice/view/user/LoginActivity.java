@@ -28,6 +28,8 @@ import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
 import hottopic.mit.co.nz.cleaningservice.presenter.user.UserPresenterImpl;
 import hottopic.mit.co.nz.cleaningservice.utils.GeneralUtil;
 import hottopic.mit.co.nz.cleaningservice.view.home.HomeActivity;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class LoginActivity extends BaseActivity implements IUserView {
     private TextView tv_title, tv_to_register;
@@ -72,16 +74,16 @@ public class LoginActivity extends BaseActivity implements IUserView {
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btn_login:
                 String username = et_username.getText().toString().trim();
                 String password = et_password.getText().toString().trim();
-                if (!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)){
+                if (!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)) {
                     loginPresenterImpl.doLogin(username, password);
-                }else{
-                    if (TextUtils.isEmpty(username)){
+                } else {
+                    if (TextUtils.isEmpty(username)) {
                         Toast.makeText(this, getResources().getString(R.string.toast_empty_username), Toast.LENGTH_SHORT).show();
-                    }else {
+                    } else {
                         Toast.makeText(this, getResources().getString(R.string.toast_empty_password), Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -131,12 +133,19 @@ public class LoginActivity extends BaseActivity implements IUserView {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         if (userInfo != null) {
             Constants.userInfo = userInfo;
-            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-            if (products != null && products.size() > 0){
-                intent.putExtra(Constants.KEY_INTENT_SERVICETYPE, GeneralUtil.sortingTypeData(products));
+            if (products != null && products.size() > 0) {
+                GeneralUtil.sortingTypeData(products)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(mainServiceType -> {
+                                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                    intent.putExtra(Constants.KEY_INTENT_SERVICETYPE, mainServiceType);
+                                    startActivity(intent);
+                                    this.finish();
+                                }
+                        );
+
             }
-            startActivity(intent);
-            this.finish();
         }
     }
 
