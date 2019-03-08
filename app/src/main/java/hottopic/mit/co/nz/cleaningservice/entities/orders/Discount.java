@@ -3,25 +3,25 @@ package hottopic.mit.co.nz.cleaningservice.entities.orders;
 import java.io.Serializable;
 
 public class Discount implements Serializable {
-    private int discountId;
+    private int id;
     private float balance;
     private float price;
 
     public Discount() {
     }
 
-    public Discount(int discountId, float balance, float price) {
-        this.discountId = discountId;
+    public Discount(int id, float balance, float price) {
+        this.id = id;
         this.balance = balance;
         this.price = price;
     }
 
-    public int getDiscountId() {
-        return discountId;
+    public int getId() {
+        return id;
     }
 
-    public void setDiscountId(int discountId) {
-        this.discountId = discountId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public float getBalance() {

@@ -1,6 +1,6 @@
 package hottopic.mit.co.nz.cleaningservice.network.service;
 
-import hottopic.mit.co.nz.cleaningservice.entities.network.PlaceResponse;
+import hottopic.mit.co.nz.cleaningservice.entities.network.response.PlaceResponse;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;

@@ -3,7 +3,7 @@ package hottopic.mit.co.nz.cleaningservice.presenter.order;
 
 import android.content.Context;
 
-import hottopic.mit.co.nz.cleaningservice.entities.network.PlaceResponse;
+import hottopic.mit.co.nz.cleaningservice.entities.network.response.PlaceResponse;
 import hottopic.mit.co.nz.cleaningservice.model.order.IMap;
 import hottopic.mit.co.nz.cleaningservice.model.order.MapModel;
 import hottopic.mit.co.nz.cleaningservice.network.RequestCallBack;

@@ -1,54 +1,49 @@
 package hottopic.mit.co.nz.cleaningservice.model.payment;
 
 import android.content.Context;
-import android.text.TextUtils;
 
-import com.google.gson.reflect.TypeToken;
-
-import java.util.List;
-
-import hottopic.mit.co.nz.cleaningservice.Constants;
-import hottopic.mit.co.nz.cleaningservice.entities.orders.Order;
-import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
-import hottopic.mit.co.nz.cleaningservice.utils.GeneralUtil;
+import hottopic.mit.co.nz.cleaningservice.entities.network.params.PaymentParams;
+import hottopic.mit.co.nz.cleaningservice.network.DiscountsRequest;
+import hottopic.mit.co.nz.cleaningservice.network.PaymentByBalanceRequest;
+import hottopic.mit.co.nz.cleaningservice.network.PaymentByCardRequest;
+import hottopic.mit.co.nz.cleaningservice.presenter.order.IPaymentPresenter;
+import hottopic.mit.co.nz.cleaningservice.presenter.order.PaymentPresenterImpl;
+import hottopic.mit.co.nz.cleaningservice.view.order.IPaymentView;
 
 public class PaymentModel implements IPayment {
     private Context context;
-
-    public PaymentModel(Context context) {
+    private IPaymentPresenter presenter;
+    private IPaymentView iPaymentView;
+    public PaymentModel(Context context, IPaymentView iPaymentView) {
         this.context = context;
+        this.iPaymentView = iPaymentView;
     }
 
     @Override
-    public boolean paymentByCard(float amount, String cardNo, String userId, int orderId, String feedback, int rating) {
-        if (!TextUtils.isEmpty(cardNo)){
-            List<Order> orders = GeneralUtil.fromJson(GeneralUtil.getDataFromSP(context, userId), new TypeToken<List<Order>>(){}.getType());
-            if (!TextUtils.isEmpty(feedback)){
-                orders.get(orderId).setFeedback(feedback);
-            }
-            orders.get(orderId).setStatus(Constants.STATUS_ORDER_PAID);
-            orders.get(orderId).setRating(rating);
-            GeneralUtil.storDataBySP(context, userId, GeneralUtil.toJson(orders, new TypeToken<List<Order>>(){}.getType()));
-            return true;
-        }
-        return false;
+    public void getDiscounts() {
+        presenter = new PaymentPresenterImpl(context, iPaymentView);
+        new DiscountsRequest(context).getData().subscribe(
+                discountsResponse -> presenter.getDiscoutsResult(discountsResponse),
+                e -> presenter.getDiscoutsResult(null)
+        );
     }
 
     @Override
-    public boolean paymentByBalance(float amount, UserInfo userInfo, int orderId, String feedback, int rating) {
-        if (userInfo != null){
-//            List<Order> orders = GeneralUtil.fromJson(GeneralUtil.getDataFromSP(context, userInfo.getUserId()), new TypeToken<List<Order>>(){}.getType());
-//            if (!TextUtils.isEmpty(feedback)){
-//                orders.get(orderId).setFeedback(feedback);
-//            }
-//            orders.get(orderId).setStatus(Constants.STATUS_ORDER_PAID);
-//            orders.get(orderId).setRating(rating);
-//            float balance = userInfo.getBalance() - amount;
-//            userInfo.setBalance(balance);
-//         GeneralUtil.storDataBySP(context, userInfo.getUserId(), GeneralUtil.toJson(orders, new TypeToken<List<Order>>(){}.getType()));
-//            GeneralUtil.storDataBySP(context, userInfo.getUserName(), GeneralUtil.toJson(userInfo, UserInfo.class));
-            return true;
-        }
-        return false;
+    public void paymentByCard(PaymentParams paymentParams) {
+        presenter = new PaymentPresenterImpl(context, iPaymentView);
+        new PaymentByCardRequest(context, paymentParams).getData().subscribe(
+                booleanResponse -> presenter.getPaymentCardResult(booleanResponse),
+                e -> presenter.getPaymentCardResult(null)
+        );
     }
+
+    @Override
+    public void paymentByBalance(PaymentParams paymentParams) {
+        presenter = new PaymentPresenterImpl(context, iPaymentView);
+        new PaymentByBalanceRequest(context, paymentParams).getData().subscribe(
+                userInfoResponse -> presenter.getPaymentBalanceResult(userInfoResponse),
+                e -> presenter.getPaymentBalanceResult(null)
+        );
+    }
+
 }

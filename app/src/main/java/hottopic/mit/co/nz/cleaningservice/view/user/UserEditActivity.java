@@ -11,26 +11,32 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.List;
-
 import hottopic.mit.co.nz.cleaningservice.BaseActivity;
 import hottopic.mit.co.nz.cleaningservice.Constants;
 import hottopic.mit.co.nz.cleaningservice.R;
-import hottopic.mit.co.nz.cleaningservice.entities.network.ProductResponse;
+import hottopic.mit.co.nz.cleaningservice.entities.orders.ServiceTypes;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
 import hottopic.mit.co.nz.cleaningservice.presenter.user.UserPresenterImpl;
-import hottopic.mit.co.nz.cleaningservice.view.home.HomeActivity;
+import hottopic.mit.co.nz.cleaningservice.utils.GeneralUtil;
+import hottopic.mit.co.nz.cleaningservice.view.order.HomeActivity;
 import hottopic.mit.co.nz.cleaningservice.view.order.DiscountActivity;
+import hottopic.mit.co.nz.cleaningservice.view.order.OrdersActivity;
 
 public class UserEditActivity extends BaseActivity implements IUserView {
     private TextView tv_title, tv_username, tv_user_role, tv_phone_number, tv_email, tv_address, tv_balance;
     private EditText et_phone_number, et_email, et_city, et_suburb, et_street;
     private Button btn_commit;
     private ImageView iv_icon, iv_top_up;
-    private RelativeLayout lyt_back, lyt_right, lyt_user, lyt_edit;
+    private RelativeLayout lyt_back, lyt_right, lyt_user, lyt_edit, lyt_balance;
 
     private boolean isEdit = true;
     private UserPresenterImpl presenter;
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setViewContent();
+    }
 
     @Override
     public void initView() {
@@ -55,6 +61,7 @@ public class UserEditActivity extends BaseActivity implements IUserView {
         iv_icon = findViewById(R.id.iv_icon);
         lyt_user = findViewById(R.id.lyt_user);
         lyt_edit = findViewById(R.id.lyt_edit);
+        lyt_balance = findViewById(R.id.lyt_balance);
     }
 
     @Override
@@ -82,8 +89,14 @@ public class UserEditActivity extends BaseActivity implements IUserView {
         switch (view.getId()){
             case R.id.btn_commit:
                 if (isEdit) {
+                    GeneralUtil.storeIntIntoSP(this, Constants.SP_KEY_LAST_LOGIN_TIMESTAMP, 0);
                     //Logout
-                    Intent intent = new Intent(UserEditActivity.this, HomeActivity.class);
+                    Intent intent;
+                    if (Constants.ROLE_CUSTOMER == Constants.userInfo.getRole_id()) {
+                        intent = new Intent(UserEditActivity.this, HomeActivity.class);
+                    }else{
+                        intent = new Intent(UserEditActivity.this, OrdersActivity.class);
+                    }
                     intent.putExtra(Constants.KEY_INTENT_CLOSETYPE, Constants.CLOSETYPE_LOGOUT);
                     startActivity(intent);
                 }else {
@@ -125,10 +138,11 @@ public class UserEditActivity extends BaseActivity implements IUserView {
         tv_title.setText(getResources().getString(R.string.title_info));
         btn_commit.setBackgroundColor(getResources().getColor(R.color.background_logout));
         tv_username.setText(userInfo.getUsername());
+        tv_user_role.setText(userInfo.getRole_name());
         if (userInfo.getRole_id() == Constants.ROLE_CUSTOMER){
-            tv_user_role.setText(getResources().getString(R.string.role_customer));
+            lyt_balance.setVisibility(View.VISIBLE);
         }else {
-            tv_user_role.setText(getResources().getString(R.string.role_staff));
+            lyt_balance.setVisibility(View.GONE);
         }
         tv_phone_number.setText(userInfo.getPhone());
         tv_address.setText(userInfo.getAddress());
@@ -178,9 +192,10 @@ public class UserEditActivity extends BaseActivity implements IUserView {
     }
 
     @Override
-    public void loginResult(UserInfo userInfo, List<ProductResponse> responses, String message) {
+    public void loginResult(UserInfo userInfo, ServiceTypes serviceTypes, String message) {
 
     }
+
 
     @Override
     public void userInfoEditResult(UserInfo userInfo, String message) {
@@ -188,6 +203,7 @@ public class UserEditActivity extends BaseActivity implements IUserView {
         if (userInfo != null){
             Constants.userInfo = userInfo;
             setViewContent();
+            isEdit = true;
         }
     }
 }

@@ -16,13 +16,24 @@ public class Constants {
 
     public static final int CLOSETYPE_LOGOUT = 1;
 
+    public static final int TYPE_GET_ORDERS_CUSTOMER = 1;
+    public static final int TYPE_GET_ORDERS_STAFF = 2;
+    public static final int TYPE_SERVICE_STARTED = 3;
+    public static final int TYPE_SERVICE_FINISHED = 4;
+    public static final int TYPE_PAYMENT_ORDER = 5;
+    public static final int TYPE_PAYMENT_TOP_UP = 6;
+
+
+    public static final String SP_KEY_LAST_LOGIN_TIMESTAMP = "last_login_time_timestamp";
+
     //Response code
     public static final int RESPONSE_CODE_SUCCESSFUL = 200;
-    public static final int RESPONSE_CODE_FAIL = 101;
+    public static final int RESPONSE_CODE_NONE = 401;
 
     //SharedPreference
     public static final String SP_KEY = "CLEANING_SERVICE";
     public static final String SP_KEY_USERINFO = "USER_INFO";
+    public static final String SP_KEY_SERVICE_TYPE = "service_type";
     public static final String SP_KEY_ORDERS = "ORDERS";
 
     //Intent
@@ -67,10 +78,10 @@ public class Constants {
     public static final int ID_CLOTHES_SCHOOL_UNIFORM = 403;
 
     //Order Status
-    public static final int STATUS_ORDER_BOOKED = 1;
-    public static final int STATUS_ORDER_STARTED = 2;
-    public static final int STATUS_ORDER_FINISHED = 3;
-    public static final int STATUS_ORDER_PAID = 4;
+    public static final int STATUS_ORDER_BOOKED = 0;
+    public static final int STATUS_ORDER_STARTED = 1;
+    public static final int STATUS_ORDER_FINISHED = 2;
+    public static final int STATUS_ORDER_PAID = 3;
 
     //User Role
     public static final int ROLE_CUSTOMER = 1;

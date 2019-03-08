@@ -1,6 +1,9 @@
 package hottopic.mit.co.nz.cleaningservice.utils;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Application;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.DisplayMetrics;
@@ -17,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 import hottopic.mit.co.nz.cleaningservice.Constants;
@@ -28,12 +32,13 @@ import hottopic.mit.co.nz.cleaningservice.entities.orders.ServiceTypes;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.SubServiceType;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
-import io.reactivex.Observer;
+import io.reactivex.Single;
+import io.reactivex.SingleSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
-import io.reactivex.internal.operators.observable.ObservableError;
-import io.reactivex.internal.schedulers.SchedulerWhen;
+import io.reactivex.observables.GroupedObservable;
 import io.reactivex.schedulers.Schedulers;
 
 public class GeneralUtil {
@@ -144,49 +149,6 @@ public class GeneralUtil {
 
     public static Observable<ServiceTypes> sortingTypeData(List<ProductResponse> products) {
         ServiceTypes serviceTypes = new ServiceTypes();
-//        return Observable.fromIterable(products).groupBy(ProductResponse::getMain_id).flatMapSingle(Observable::toList)
-//                .flatMap((Function<List<ProductResponse>, ObservableSource<MainServiceType>>) mainProductResponses -> {
-//                    ProductResponse mainProductResponse = mainProductResponses.get(0);
-//                    MainServiceType mainServiceType = new MainServiceType(mainProductResponse.getMain_id(), mainProductResponse.getMain_type_name());
-//                    List<SubServiceType> subServiceTypes = new ArrayList<>();
-//                    Observable.fromIterable(mainProductResponses).groupBy(ProductResponse::getSub_id).flatMapSingle(Observable::toList)
-//                            .flatMap((Function<List<ProductResponse>, ObservableSource<SubServiceType>>) subProductResponses -> {
-//                                ProductResponse subProductResponse = subProductResponses.get(0);
-//                                List<ServiceProduct> serviceProducts = new ArrayList<>();
-//                                SubServiceType subServiceType = new SubServiceType(subProductResponse.getSub_id(), subProductResponse.getMain_id(),
-//                                        subProductResponse.getSub_type_name(), subProductResponse.getBulk_discount());
-//                                Observable.fromIterable(subProductResponses).flatMap((Function<ProductResponse, ObservableSource<ServiceProduct>>) productResponse -> {
-//                                    ServiceProduct serviceProduct = new ServiceProduct(productResponse.getId(),
-//                                            productResponse.getMain_id(), productResponse.getSub_id(), productResponse.getProduct_name(),
-//                                            productResponse.getUnit_price(), productResponse.getUnit());
-//                                    if (Constants.TYPE_G_T_SHIRT == productResponse.getId() || Constants.TYPE_S_T_SHIRT == productResponse.getId()) {
-//                                        serviceProduct.setIcon(R.drawable.icon_shirt);
-//                                    }
-//                                    if (Constants.TYPE_G_LONG_DRESS == productResponse.getId() || Constants.TYPE_S_LONG_DRESS == productResponse.getId()) {
-//                                        serviceProduct.setIcon(R.drawable.icon_long_dress);
-//                                    }
-//                                    if (Constants.TYPE_G_JACKET == productResponse.getId() || Constants.TYPE_S_JACKET == productResponse.getId()) {
-//                                        serviceProduct.setIcon(R.drawable.icon_jacket);
-//                                    }
-//                                    if (Constants.TYPE_G_SCHOOL_UNIFORM == productResponse.getId() || Constants.TYPE_S_SCHOOL_UNIFORM == productResponse.getId()) {
-//                                        serviceProduct.setIcon(R.drawable.icon_uniform);
-//                                    }
-//                                    return Observable.just(serviceProduct);
-//                                }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(serviceProduct -> {
-//                                    serviceProducts.add(serviceProduct);
-//                                });
-//                                subServiceType.setProducts(serviceProducts);
-//                                return Observable.just(subServiceType);
-//                            }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(subServiceType -> {
-//                                subServiceTypes.add(subServiceType);
-//                            });
-//                    mainServiceType.setSubServiceTypes(subServiceTypes);
-//                    return Observable.just(mainServiceType);
-//                }).flatMap((Function<MainServiceType, Observable<ServiceTypes>>) mainServiceType -> {
-//                    serviceTypes.addMainServiceTypes(mainServiceType);
-//                    return Observable.just(serviceTypes);
-//                });
-
 //        return Observable.fromIterable(products)
 //                // 按照main_id分组
 //                .groupBy(ProductResponse::getMain_id)
@@ -198,7 +160,7 @@ public class GeneralUtil {
 //                    Log.e("DDD", mainProductResponse.getMain_type_name() + "------");
 //                    MainServiceType mainServiceType = new MainServiceType(mainProductResponse.getMain_id(), mainProductResponse.getMain_type_name());
 //                    // 二次分组
-//                    return Observable.fromIterable(mainProductResponses)
+//                   return Observable.fromIterable(mainProductResponses)
 //                            .groupBy(ProductResponse::getSub_id)
 //                            .flatMapSingle(Observable::toList)
 //                            .flatMap(productResponses -> {
@@ -296,20 +258,17 @@ public class GeneralUtil {
                     if (main_id != products.get(i).getMain_id()){
                         main_id = products.get(i).getMain_id();
                         main_position ++;
-                        MainServiceType mainServiceType = new MainServiceType(products.get(i).getMain_id(), products.get(i).getMain_type_name());
-                        mainServiceType.setSubServiceTypes(new ArrayList<>());
+                        MainServiceType mainServiceType = new MainServiceType(products.get(i).getMain_id(), products.get(i).getMain_type_name(), new ArrayList<>());
                         mainServiceTypes.add(mainServiceType);
                         sub_position = 0;
                         sub_id = products.get(i).getSub_id();
                         subServiceType = new SubServiceType(products.get(i).getSub_id(), products.get(i).getMain_id(),
-                                products.get(i).getSub_type_name(), products.get(i).getBulk_discount());
-                        subServiceType.setProducts(new ArrayList<>());
+                                products.get(i).getSub_type_name(), products.get(i).getBulk_discount(), new ArrayList<>());
                         mainServiceTypes.get(main_position).getSubServiceTypes().add(subServiceType);
                     }else {
                         sub_id = products.get(i).getSub_id();
                         subServiceType = new SubServiceType(products.get(i).getSub_id(), products.get(i).getMain_id(),
-                                products.get(i).getSub_type_name(), products.get(i).getBulk_discount());
-                        subServiceType.setProducts(new ArrayList<>());
+                                products.get(i).getSub_type_name(), products.get(i).getBulk_discount(), new ArrayList<>());
                         mainServiceTypes.get(main_position).getSubServiceTypes().add(subServiceType);
                         sub_position++;
                     }
@@ -320,29 +279,29 @@ public class GeneralUtil {
         }
         serviceTypes.setMainServiceTypes(mainServiceTypes);
 //        ServiceTypes serviceTypes = new ServiceTypes();
-        return Observable.just(serviceTypes);
+        return serviceTypes;
     }
 
-    private static SubServiceType setIcon(int sub_id, SubServiceType subServiceType) {
-        if (Constants.TYPE_D_CLEANING == sub_id) {
+    private static SubServiceType setIcon(int sub_id, SubServiceType subServiceType){
+        if (Constants.TYPE_D_CLEANING == sub_id){
             subServiceType.setIcon(R.drawable.icon_d_cleaning);
         }
-        if (Constants.TYPE_G_CLEANING == sub_id) {
+        if (Constants.TYPE_G_CLEANING == sub_id){
             subServiceType.setIcon(R.drawable.icon_g_cleaning);
         }
-        if (Constants.TYPE_BUFFERING == sub_id) {
+        if (Constants.TYPE_BUFFERING == sub_id){
             subServiceType.setIcon(R.drawable.icon_buffering);
         }
-        if (Constants.TYPE_CARPET_WASHING == sub_id) {
+        if (Constants.TYPE_CARPET_WASHING == sub_id){
             subServiceType.setIcon(R.drawable.icon_carpet_wash);
         }
-        if (Constants.TYPE_WATER_BLASTING == sub_id) {
+        if (Constants.TYPE_WATER_BLASTING == sub_id){
             subServiceType.setIcon(R.drawable.icon_water_blast);
         }
-        if (Constants.TYPE_G_IRONING == sub_id) {
+        if (Constants.TYPE_G_IRONING == sub_id){
             subServiceType.setIcon(R.drawable.icon_iron);
         }
-        if (Constants.TYPE_S_IRONING == sub_id) {
+        if (Constants.TYPE_S_IRONING == sub_id){
             subServiceType.setIcon(R.drawable.icon_steam);
         }
         return subServiceType;

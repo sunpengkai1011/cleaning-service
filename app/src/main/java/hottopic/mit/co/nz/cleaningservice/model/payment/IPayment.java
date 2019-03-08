@@ -1,8 +1,9 @@
 package hottopic.mit.co.nz.cleaningservice.model.payment;
 
-import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
+import hottopic.mit.co.nz.cleaningservice.entities.network.params.PaymentParams;
 
 public interface IPayment {
-    boolean paymentByCard(float amount, String cardNo, String userId, int orderId, String feedback, int rating);
-    boolean paymentByBalance(float amount, UserInfo userInfo, int orderId, String feedback, int rating);
+    void getDiscounts();
+    void paymentByCard(PaymentParams paymentParams);
+    void paymentByBalance(PaymentParams paymentParams);
 }

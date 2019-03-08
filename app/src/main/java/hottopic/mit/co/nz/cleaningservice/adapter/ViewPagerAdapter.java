@@ -19,12 +19,15 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.CarP
     private LayoutInflater inflate;
     private ImageView imageView;
 
-    public ViewPagerAdapter(Context context, int[] viewList) {
-        this.viewList = viewList;
+    public ViewPagerAdapter(Context context) {
         mContext = context;
         inflate = LayoutInflater.from(mContext);
 
     }
+    public void setData(int[] viewList) {
+        this.viewList = viewList;
+    }
+
 
     @Override
     public CarPhotoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

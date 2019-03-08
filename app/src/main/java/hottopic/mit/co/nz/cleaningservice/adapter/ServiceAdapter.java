@@ -6,7 +6,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import hottopic.mit.co.nz.cleaningservice.R;
-import hottopic.mit.co.nz.cleaningservice.entities.orders.ServiceType;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.SubServiceType;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.TitleModel;
 
@@ -59,7 +58,7 @@ public class ServiceAdapter extends BaseAdapter<Object, BaseViewHolder> {
         @Override
         public void onBindViewHolder(SubServiceType model, int position) {
             tv_service.setText(model.getType_name());
-            iv_icon.setImageResource(model.getIcon());
+            iv_icon.setImageResource(context.getResources().getIdentifier(model.getIcon(), "drawable", context.getPackageName()));
             itemView.setOnClickListener(v -> {
                 if (onItemClickedListener != null) {
                     onItemClickedListener.OnItemClicked(model);

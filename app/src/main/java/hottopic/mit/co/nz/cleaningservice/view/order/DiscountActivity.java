@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -16,18 +17,15 @@ import hottopic.mit.co.nz.cleaningservice.R;
 import hottopic.mit.co.nz.cleaningservice.adapter.DiscountAdapter;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.Discount;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
-import hottopic.mit.co.nz.cleaningservice.presenter.order.DiscountPresenterImpl;
-import hottopic.mit.co.nz.cleaningservice.view.user.UserEditActivity;
+import hottopic.mit.co.nz.cleaningservice.presenter.order.PaymentPresenterImpl;
 
-public class DiscountActivity extends BaseActivity implements IDiscountView {
+public class DiscountActivity extends BaseActivity implements IPaymentView {
     private TextView tv_title;
     private RelativeLayout lyt_back;
     private RecyclerView rv_discount;
     private DiscountAdapter discountAdapter;
 
-    private DiscountPresenterImpl discountPresenter;
-    private List<Discount> discounts;
-    private UserInfo userInfo;
+    private PaymentPresenterImpl discountPresenter;
 
     @Override
     public void initView() {
@@ -43,10 +41,8 @@ public class DiscountActivity extends BaseActivity implements IDiscountView {
         tv_title.setText(getResources().getString(R.string.title_discount));
         lyt_back.setVisibility(View.VISIBLE);
 
-        discountPresenter = new DiscountPresenterImpl(this, this);
-        discountPresenter.requestDiscouts();
-
-        userInfo = Constants.userInfo;
+        discountPresenter = new PaymentPresenterImpl(this, this);
+        discountPresenter.getDiscounts();
     }
 
     @Override
@@ -64,18 +60,16 @@ public class DiscountActivity extends BaseActivity implements IDiscountView {
     }
 
     @Override
-    public void getDiscountResult(List<Discount> discounts, int code) {
-        this.discounts = discounts;
-        if (Constants.RESPONSE_CODE_SUCCESSFUL == code) {
+    public void getDiscountsResult(List<Discount> discounts, String message) {
+        if (discounts != null) {
             discountAdapter = new DiscountAdapter(this);
             discountAdapter.setData(discounts);
             discountAdapter.setOnItemClickListener(discount -> {
                 new AlertDialog.Builder(this).setMessage(getResources().getString(R.string.top_up_message))
                         .setPositiveButton(getResources().getString(R.string.sure), (dialogInterface, i) -> {
                             Intent intent = new Intent(DiscountActivity.this, PaymentActivity.class);
-                            intent.putExtra(Constants.KEY_INTENT_TO_PAYMENT, Constants.INTENT_REQUEST_DICOUNT_TO_PAYMENT);
                             intent.putExtra(Constants.KEY_INTENT_DISCOUNT, discount);
-                            startActivityForResult(intent, Constants.INTENT_REQUEST_DICOUNT_TO_PAYMENT);
+                            startActivity(intent);
                         }).
                         setNegativeButton(getResources().getString(R.string.cancel), (dialogInterface, i) -> {
                         }).show();
@@ -83,12 +77,18 @@ public class DiscountActivity extends BaseActivity implements IDiscountView {
             rv_discount.setLayoutManager(new LinearLayoutManager(this));
             rv_discount.setAdapter(discountAdapter);
             rv_discount.setVisibility(View.VISIBLE);
-        } else {
-            rv_discount.setVisibility(View.GONE);
+        }else{
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
-    public void getTopUpResult(UserInfo userInfo, int code) {
+    public void getPaymentBalanceResult(UserInfo userInfo, String message, int type) {
+
+    }
+
+    @Override
+    public void getPaymentCardResult(boolean result, String message) {
+
     }
 }

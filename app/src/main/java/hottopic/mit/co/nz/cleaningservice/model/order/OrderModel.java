@@ -2,81 +2,77 @@ package hottopic.mit.co.nz.cleaningservice.model.order;
 
 import android.content.Context;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import hottopic.mit.co.nz.cleaningservice.Constants;
+import hottopic.mit.co.nz.cleaningservice.entities.network.params.OrderBookingParams;
 import hottopic.mit.co.nz.cleaningservice.entities.orders.Order;
+import hottopic.mit.co.nz.cleaningservice.network.GetOrdersRequest;
+import hottopic.mit.co.nz.cleaningservice.network.OrderBookingRequest;
+import hottopic.mit.co.nz.cleaningservice.network.ServiceStatusChangedRequest;
 import hottopic.mit.co.nz.cleaningservice.network.ServiceTypesRequest;
-import hottopic.mit.co.nz.cleaningservice.presenter.home.HomePresenterImpl;
-import hottopic.mit.co.nz.cleaningservice.presenter.home.IHomePresenter;
-import hottopic.mit.co.nz.cleaningservice.utils.GeneralUtil;
-import hottopic.mit.co.nz.cleaningservice.view.home.IHomeView;
+import hottopic.mit.co.nz.cleaningservice.presenter.order.IOrderPresenter;
+import hottopic.mit.co.nz.cleaningservice.presenter.order.OrderPresenterImpl;
+import hottopic.mit.co.nz.cleaningservice.view.order.IOrderView;
 
 public class OrderModel implements IOrder {
-    private List<Order> orders;
     private Context context;
-    private IHomePresenter presenter;
+    private IOrderView iOrderView;
+    private IOrderPresenter presenter;
 
-    public OrderModel(Context context){
+    public OrderModel(Context context, IOrderView iOrderView) {
         this.context = context;
-    }
-
-    public OrderModel(Context context, IHomeView iHomeView) {
-        this.context = context;
-        presenter = new HomePresenterImpl(context, iHomeView);
+        this.iOrderView = iOrderView;
     }
 
     @Override
     public void getServiceTypes() {
+        presenter = new OrderPresenterImpl(context, iOrderView);
         new ServiceTypesRequest(context).getData().subscribe(
                 serviceTypesResponse -> presenter.serviceTypesResult(serviceTypesResponse),
                 e -> presenter.serviceTypesResult(null));
     }
 
     @Override
-    public void getOrders(int userId) {
+    public void getOrdersByCustomer(int userId) {
+        presenter = new OrderPresenterImpl(context, iOrderView);
+        new GetOrdersRequest(context, userId, Constants.TYPE_GET_ORDERS_CUSTOMER).getData().subscribe(
+                getOrdersResponse -> presenter.getOrdersResult(getOrdersResponse),
+                e -> presenter.getOrdersResult(null)
+        );
     }
 
     @Override
-    public boolean startedOrder(int userId, int position, String started) {
-        if (orders.size() > position) {
-            orders.get(position).setStartTime(started);
-            orders.get(position).setStatus(Constants.STATUS_ORDER_STARTED);
-            return true;
-        }
-        return false;
+    public void getOrdersByStaff() {
+        presenter = new OrderPresenterImpl(context, iOrderView);
+        new GetOrdersRequest(context, Constants.TYPE_GET_ORDERS_STAFF).getData().subscribe(
+                getOrdersResponse -> presenter.getOrdersResult(getOrdersResponse),
+                e -> presenter.getOrdersResult(null)
+        );
     }
 
     @Override
-    public boolean finishedOrder(int userId, int position, String finished) {
-        if (orders.size() > position) {
-            Order order = orders.get(position);
-            switch (orders.get(position).getServiceType().getId()){
-                case Constants.ID_SERVICE_G_CLEANING:
-                case Constants.ID_SERVICE_D_CLEANING:
-                    order.setEndTime(finished);
-                    int duration = GeneralUtil.calculateDuration(order.getStartTime(), orders.get(position).getEndTime());
-                    float amount = order.getSubOption().getUnit_price() * duration;
-                    order.setDuration(duration);
-                    order.setAmount(amount);
-                    break;
-            }
-            order.setStatus(Constants.STATUS_ORDER_FINISHED);
-            return true;
-        }
-        return false;
+    public void startedOrder(Order order) {
+        presenter = new OrderPresenterImpl(context, iOrderView);
+        new ServiceStatusChangedRequest(context, Constants.TYPE_SERVICE_STARTED, order).getData().subscribe(
+                booleanResponse -> presenter.orderStatusChangeResult(booleanResponse),
+                e -> presenter.orderStatusChangeResult(null)
+        );
     }
 
     @Override
-    public boolean orderBooking(Order order, int userId) {
-        if (orders == null){
-            orders = new ArrayList<>();
-        }
-        if (order != null) {
-            orders.add(order);
-            return true;
-        }
-        return false;
+    public void finishedOrder(Order order) {
+        presenter = new OrderPresenterImpl(context, iOrderView);
+        new ServiceStatusChangedRequest(context, Constants.TYPE_SERVICE_FINISHED, order).getData().subscribe(
+                booleanResponse -> presenter.orderStatusChangeResult(booleanResponse),
+                e -> presenter.orderStatusChangeResult(null)
+        );
+    }
+
+    @Override
+    public void orderBooking(OrderBookingParams orderBookingParams) {
+        presenter = new OrderPresenterImpl(context, iOrderView);
+        new OrderBookingRequest(context, orderBookingParams).getData().subscribe(
+                booleanResponse -> presenter.orderBookingResult(booleanResponse),
+                e -> presenter.orderBookingResult(null)
+        );
     }
 }

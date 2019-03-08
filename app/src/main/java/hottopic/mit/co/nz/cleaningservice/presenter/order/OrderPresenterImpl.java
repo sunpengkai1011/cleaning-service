@@ -123,10 +123,9 @@ public class OrderPresenterImpl implements IOrderPresenter{
         int main_position = 0;
         int main_id = products.get(0).getMain_id();
         int sub_id = products.get(0).getSub_id();
-        MainServiceType initMain = new MainServiceType(products.get(0).getMain_id(), products.get(0).getMain_type_name());
-        initMain.setSubServiceTypes(, new ArrayList<>());
+        MainServiceType initMain = new MainServiceType(products.get(0).getMain_id(), products.get(0).getMain_type_name(), new ArrayList<>());
         SubServiceType initSub = new SubServiceType(products.get(0).getSub_id(), products.get(0).getMain_id(),
-                products.get(0).getSub_type_name(), products.get(0).getBulk_discount());
+                products.get(0).getSub_type_name(), products.get(0).getBulk_discount(), products.get(0).getIcon(), new ArrayList<>());
         mainServiceTypes.add(initMain);
         mainServiceTypes.get(main_position).getSubServiceTypes().add(initSub);
         for(int i = 0; i < products.size(); i++){
@@ -138,8 +137,7 @@ public class OrderPresenterImpl implements IOrderPresenter{
                 if (main_id != products.get(i).getMain_id()){
                     main_id = products.get(i).getMain_id();
                     main_position ++;
-                    MainServiceType mainServiceType = new MainServiceType(products.get(i).getMain_id(), products.get(i).getMain_type_name());
-                    mainServiceType.setSubServiceTypes(new ArrayList<>());
+                    MainServiceType mainServiceType = new MainServiceType(products.get(i).getMain_id(), products.get(i).getMain_type_name(), new ArrayList<>());
                     mainServiceTypes.add(mainServiceType);
                     sub_position = 0;
                 }else {
@@ -147,7 +145,7 @@ public class OrderPresenterImpl implements IOrderPresenter{
                 }
                 sub_id = products.get(i).getSub_id();
                 subServiceType = new SubServiceType(products.get(i).getSub_id(), products.get(i).getMain_id(),
-                        products.get(i).getSub_type_name(), products.get(i).getBulk_discount());
+                        products.get(i).getSub_type_name(), products.get(i).getBulk_discount(), products.get(i).getIcon(),new ArrayList<>());
                 mainServiceTypes.get(main_position).getSubServiceTypes().add(subServiceType);
 
             }
@@ -164,8 +162,9 @@ public class OrderPresenterImpl implements IOrderPresenter{
         SubServiceType initSubType = new SubServiceType(orderResponses.get(0).getSub_id(),
                                                         orderResponses.get(0).getMain_id(),
                                                         orderResponses.get(0).getSub_type_name(),
-                                                        orderResponses.get(0).getBulk_discount()
-        );
+                                                        orderResponses.get(0).getBulk_discount(),
+                                                        orderResponses.get(0).getSub_icon(),
+                                                        new ArrayList<>());
         Order initOrder = new Order(id,
                                     orderResponses.get(0).getUser_id(),
                                     orderResponses.get(0).getDate(),
@@ -198,8 +197,9 @@ public class OrderPresenterImpl implements IOrderPresenter{
                 SubServiceType subServiceType = new SubServiceType(orderResponses.get(i).getSub_id(),
                         orderResponses.get(i).getMain_id(),
                         orderResponses.get(i).getSub_type_name(),
-                        orderResponses.get(i).getBulk_discount()
-                );
+                        orderResponses.get(i).getBulk_discount(),
+                        orderResponses.get(i).getSub_icon(),
+                        new ArrayList<>());
                 Order order = new Order(id,
                         orderResponses.get(i).getUser_id(),
                         orderResponses.get(i).getDate(),

@@ -1,8 +1,15 @@
 package hottopic.mit.co.nz.cleaningservice.presenter.order;
 
-import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
+import hottopic.mit.co.nz.cleaningservice.entities.network.response.BooleanResponse;
+import hottopic.mit.co.nz.cleaningservice.entities.network.response.DiscountsResponse;
+import hottopic.mit.co.nz.cleaningservice.entities.network.params.PaymentParams;
+import hottopic.mit.co.nz.cleaningservice.entities.network.response.UserInfoResponse;
 
 public interface IPaymentPresenter {
-    void paymentByCard(float amount, String cardNo, String userId, int orderId, String feedback, int rating);
-    void paymentByBalance(float amount, UserInfo userInfo, int orderId, String feedback, int rating);
+    void getDiscounts();
+    void getDiscoutsResult(DiscountsResponse response);
+    void paymentByCard(PaymentParams paymentParams);
+    void paymentByBalance(PaymentParams paymentParams);
+    void getPaymentBalanceResult(UserInfoResponse response);
+    void getPaymentCardResult(BooleanResponse response);
 }

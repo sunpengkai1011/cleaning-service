@@ -4,7 +4,7 @@ import android.content.Context;
 
 import java.util.Map;
 
-import hottopic.mit.co.nz.cleaningservice.entities.network.RegisterResponse;
+import hottopic.mit.co.nz.cleaningservice.entities.network.response.BooleanResponse;
 import hottopic.mit.co.nz.cleaningservice.entities.users.UserInfo;
 import hottopic.mit.co.nz.cleaningservice.network.service.UserService;
 import io.reactivex.Single;
@@ -12,7 +12,7 @@ import io.reactivex.Single;
 /**
  * The request of registration.
  */
-public class RegisterRequest extends BaseRequest<UserService, RegisterResponse, RegisterResponse> {
+public class RegisterRequest extends BaseRequest<UserService, BooleanResponse, BooleanResponse> {
     private UserInfo userInfo;
 
     public RegisterRequest(Context context, UserInfo userInfo) {
@@ -31,12 +31,12 @@ public class RegisterRequest extends BaseRequest<UserService, RegisterResponse, 
     }
 
     @Override
-    protected Single<RegisterResponse> getEndpoint(UserService endpoint) {
+    protected Single<BooleanResponse> getEndpoint(UserService endpoint) {
         return endpoint.register(userInfo);
     }
 
     @Override
-    protected RegisterResponse dealWithResponse(RegisterResponse response) {
+    protected BooleanResponse dealWithResponse(BooleanResponse response) {
         return response;
     }
 }
