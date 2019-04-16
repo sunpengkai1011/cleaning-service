@@ -20,7 +20,7 @@ public class ServiceAdapter extends BaseAdapter<Object, BaseViewHolder> {
     }
 
     public interface OnItemClickedListener {
-        void OnItemClicked(SubServiceType serviceType);
+        void onItemClicked(SubServiceType serviceType);
     }
 
     public void setOnItemClickedListener(OnItemClickedListener onItemClickedListener) {
@@ -49,7 +49,7 @@ public class ServiceAdapter extends BaseAdapter<Object, BaseViewHolder> {
         private TextView tv_service;
         private ImageView iv_icon;
 
-        public ServiceViewHolder(Context context) {
+        ServiceViewHolder(Context context) {
             super(context, R.layout.item_service_type);
             tv_service = itemView.findViewById(R.id.tv_service);
             iv_icon = itemView.findViewById(R.id.iv_icon);
@@ -61,7 +61,7 @@ public class ServiceAdapter extends BaseAdapter<Object, BaseViewHolder> {
             iv_icon.setImageResource(context.getResources().getIdentifier(model.getIcon(), "drawable", context.getPackageName()));
             itemView.setOnClickListener(v -> {
                 if (onItemClickedListener != null) {
-                    onItemClickedListener.OnItemClicked(model);
+                    onItemClickedListener.onItemClicked(model);
                 }
             });
         }
@@ -70,7 +70,7 @@ public class ServiceAdapter extends BaseAdapter<Object, BaseViewHolder> {
     private class TitleViewHolder extends BaseViewHolder<TitleModel> {
         private TextView tv_service;
 
-        public TitleViewHolder(Context context) {
+        TitleViewHolder(Context context) {
             super(context, R.layout.item_title);
             tv_service = itemView.findViewById(R.id.tv_service);
         }

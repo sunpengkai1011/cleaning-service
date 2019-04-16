@@ -4,38 +4,38 @@
     android:layout_height="match_parent">
 
     <include
-        android:id="@+id/view_title_bar"
+        android:id="@+id/viewTitleBar"
         layout="@layout/view_title_bar"/>
 
     <EditText
-        android:id="@+id/et_username"
+        android:id="@+id/etUsername"
         style="@style/et_login"
-        android:layout_below="@id/view_title_bar"
+        android:layout_below="@id/viewTitleBar"
         android:layout_marginTop="50dp"
         android:hint="@string/hint_username"/>
 
     <EditText
-        android:id="@+id/et_password"
+        android:id="@+id/etPassword"
         style="@style/et_login"
-        android:layout_below="@id/et_username"
+        android:layout_below="@id/etUsername"
         android:layout_marginTop="20dp"
         android:hint="@string/hint_password"
         android:inputType="textPassword"/>
 
     <Button
-        android:id="@+id/btn_login"
+        android:id="@+id/btnLogin"
         style="@style/general_button"
-        android:layout_below="@+id/et_password"
+        android:layout_below="@+id/etPassword"
         android:layout_marginTop="60dp"
         android:text="@string/btn_login" />
 
     <TextView
-        android:id="@+id/tv_to_register"
+        android:id="@+id/tvToRegister"
         style="@style/general_button"
         android:gravity="center"
         android:background="@color/transparent"
         android:textColor="@color/register_blue"
-        android:layout_below="@+id/btn_login"
+        android:layout_below="@+id/btnLogin"
         android:layout_marginTop="20dp"
         android:text="@string/btn_to_login" />
 

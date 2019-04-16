@@ -27,7 +27,7 @@ public class PlaceRequest {
         this.intput = input;
         this.inputtype = "textquery";
         this.fields = "formatted_address,name,geometry";
-        this.dialog = GeneralUtil.getWaitDialog(context, "Waiting...");
+        this.dialog = GeneralUtil.INSTANCE.getWaitDialog(context, "Waiting...");
     }
 
     public void getRequest(){
@@ -35,7 +35,7 @@ public class PlaceRequest {
         Retrofit retrofit = new Retrofit.Builder().baseUrl(Constants.GoogleMap_BASE_URL).addConverterFactory(GsonConverterFactory.create()).build();
 
         PlaceService request = retrofit.create(PlaceService.class);
-        Call<PlaceResponse> call = request.getPlaceInfo(intput, inputtype, fields, Constants.APIKEY);
+        Call<PlaceResponse> call = request.getPlaceInfo(intput, inputtype, fields, Constants.API_KEY);
         call.enqueue(new Callback<PlaceResponse>() {
             @Override
             public void onResponse(Call<PlaceResponse> call, Response<PlaceResponse> response) {

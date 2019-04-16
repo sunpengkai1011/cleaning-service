@@ -33,21 +33,21 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".view.order.MapActivity"/>
+        <activity android:name=".view.order.implementation.MapActivity"/>
         <activity
-            android:name=".view.order.HomeActivity"
+            android:name=".view.order.implementation.HomeActivity"
             android:launchMode="singleTask" />
-        <activity android:name=".view.user.LoginActivity" />
-        <activity android:name=".view.user.RegisterActivity" />
+        <activity android:name=".view.user.implementation.LoginActivity" />
+        <activity android:name=".view.user.implementation.RegisterActivity" />
         <activity
-            android:name=".view.user.UserEditActivity"
+            android:name=".view.user.implementation.UserEditActivity"
             android:launchMode="singleTask"/>
-        <activity android:name=".view.order.DiscountActivity" />
-        <activity android:name=".view.order.OrderBookingActivity" />
-        <activity android:name=".view.order.OrderDetailActivity" />
-        <activity android:name=".view.order.PaymentActivity" />
+        <activity android:name=".view.order.implementation.DiscountActivity" />
+        <activity android:name=".view.order.implementation.OrderBookingActivity" />
+        <activity android:name=".view.order.implementation.OrderDetailActivity" />
+        <activity android:name=".view.order.implementation.PaymentActivity" />
         <activity
-            android:name=".view.order.OrdersActivity"
+            android:name=".view.order.implementation.OrdersActivity"
             android:launchMode="singleTask"/>
     </application>
 
