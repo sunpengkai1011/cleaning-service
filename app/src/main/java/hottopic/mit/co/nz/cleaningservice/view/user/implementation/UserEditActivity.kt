@@ -83,20 +83,23 @@ class UserEditActivity : BaseActivity(), IUserEditView {
     }
 
     override fun navigateToEdit() {
-        if (isEdit) {
-            lyt_user.visibility = View.GONE
-            lyt_edit.visibility = View.VISIBLE
-            btn_commit.text = resources.getString(R.string.btn_edit)
-            tvTitle.text = resources.getString(R.string.title_edit)
-            btn_commit.setBackgroundColor(ContextCompat.getColor(this, R.color.background_title_bar))
-            isEdit = false
-        } else {
-            lyt_user.visibility = View.VISIBLE
-            lyt_edit.visibility = View.GONE
-            btn_commit.text = resources.getString(R.string.btn_logout)
-            tvTitle.text = resources.getString(R.string.title_info)
-            btn_commit.setBackgroundColor(ContextCompat.getColor(this, R.color.background_logout))
-            isEdit = true
+        when{
+            isEdit -> {
+                lyt_user.visibility = View.GONE
+                lyt_edit.visibility = View.VISIBLE
+                btn_commit.text = resources.getString(R.string.btn_edit)
+                tvTitle.text = resources.getString(R.string.title_edit)
+                btn_commit.setBackgroundColor(ContextCompat.getColor(this, R.color.background_title_bar))
+                isEdit = false
+            }
+            !isEdit -> {
+                lyt_user.visibility = View.VISIBLE
+                lyt_edit.visibility = View.GONE
+                btn_commit.text = resources.getString(R.string.btn_logout)
+                tvTitle.text = resources.getString(R.string.title_info)
+                btn_commit.setBackgroundColor(ContextCompat.getColor(this, R.color.background_logout))
+                isEdit = true
+            }
         }
     }
 
@@ -142,22 +145,21 @@ class UserEditActivity : BaseActivity(), IUserEditView {
         val suburb = et_suburb.text.toString().trim { it <= ' ' }
         val street = et_street.text.toString().trim { it <= ' ' }
 
-        if (!TextUtils.isEmpty(phoneNumber) && !TextUtils.isEmpty(email) && !TextUtils.isEmpty(city) &&
-                !TextUtils.isEmpty(suburb) && !TextUtils.isEmpty(street)) {
-            userInfo.phone = phoneNumber
-            userInfo.email = email
-            userInfo.city = city
-            userInfo.city = suburb
-            userInfo.city = street
-            presenter.editUserInfo(userInfo)
-        } else {
-            when {
-                TextUtils.isEmpty(phoneNumber) -> Toast.makeText(this, resources.getString(R.string.toast_phone_number), Toast.LENGTH_SHORT).show()
-                TextUtils.isEmpty(email) -> Toast.makeText(this, resources.getString(R.string.toast_email), Toast.LENGTH_SHORT).show()
-                TextUtils.isEmpty(city) -> Toast.makeText(this, resources.getString(R.string.toast_city), Toast.LENGTH_SHORT).show()
-                TextUtils.isEmpty(suburb) -> Toast.makeText(this, resources.getString(R.string.toast_suburb), Toast.LENGTH_SHORT).show()
-                TextUtils.isEmpty(street) -> Toast.makeText(this, resources.getString(R.string.toast_street), Toast.LENGTH_SHORT).show()
+        when {
+            TextUtils.isEmpty(phoneNumber) -> showMessage(resources.getString(R.string.toast_phone_number))
+            TextUtils.isEmpty(email) -> showMessage(resources.getString(R.string.toast_email))
+            TextUtils.isEmpty(city) -> showMessage(resources.getString(R.string.toast_city))
+            TextUtils.isEmpty(suburb) -> showMessage(resources.getString(R.string.toast_suburb))
+            TextUtils.isEmpty(street) -> showMessage(resources.getString(R.string.toast_street))
+            else -> {
+                userInfo.phone = phoneNumber
+                userInfo.email = email
+                userInfo.city = city
+                userInfo.city = suburb
+                userInfo.city = street
+                presenter.editUserInfo(userInfo)
             }
         }
+
     }
 }

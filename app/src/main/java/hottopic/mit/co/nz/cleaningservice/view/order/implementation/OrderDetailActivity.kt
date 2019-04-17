@@ -12,17 +12,16 @@ import hottopic.mit.co.nz.cleaningservice.Constants
 import hottopic.mit.co.nz.cleaningservice.R
 import hottopic.mit.co.nz.cleaningservice.adapter.ClothesAdapter
 import hottopic.mit.co.nz.cleaningservice.entities.orders.Order
-import hottopic.mit.co.nz.cleaningservice.entities.orders.ServiceTypes
-import hottopic.mit.co.nz.cleaningservice.presenter.order.implementation.OrderPresenterImpl
+import hottopic.mit.co.nz.cleaningservice.presenter.order.implementation.OrderDetailPresenterImpl
 import hottopic.mit.co.nz.cleaningservice.utils.GeneralUtil
-import hottopic.mit.co.nz.cleaningservice.view.order.inter.IOrderView
+import hottopic.mit.co.nz.cleaningservice.view.order.inter.IOrderDetailView
 import kotlinx.android.synthetic.main.activity_order_detail.*
 import kotlinx.android.synthetic.main.view_title_bar.*
 
-class OrderDetailActivity : BaseActivity(), IOrderView {
+class OrderDetailActivity : BaseActivity(), IOrderDetailView {
     private var rating = 10
     private lateinit var order: Order
-    private lateinit var orderPresenter: OrderPresenterImpl
+    private lateinit var orderDetailPresenter: OrderDetailPresenterImpl
 
     override fun initView() {
         setContentView(R.layout.activity_order_detail)
@@ -34,7 +33,7 @@ class OrderDetailActivity : BaseActivity(), IOrderView {
         lytRight.visibility = View.VISIBLE
         lytBack.visibility = View.VISIBLE
         ivIcon.setImageResource(R.drawable.icon_location)
-        orderPresenter = OrderPresenterImpl(this, this)
+        orderDetailPresenter = OrderDetailPresenterImpl(this, this)
         viewLoad()
     }
 
@@ -61,42 +60,7 @@ class OrderDetailActivity : BaseActivity(), IOrderView {
         }
     }
 
-
-    override fun getOrdersResult(orders: List<Order>, message: String) {
-
-    }
-
-    override fun orderStatusChangeResult(result: Boolean, message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-        if (result) {
-            setResult(Activity.RESULT_OK)
-            this.finish()
-        }
-    }
-
-    override fun bookingResult(result: Boolean, message: String) {
-
-    }
-
-    override fun getServiceError(message: String) {
-
-    }
-
-    override fun getServiceTypes(serviceTypes: ServiceTypes) {
-
-    }
-
-    private fun viewLoad() {
-        tv_service_type.text = order.subServiceType?.type_name
-        tv_date.text = order.date
-        tv_address.text = order.address
-        if (!TextUtils.isEmpty(order.phone)) {
-            tv_phone.text = order.phone
-        }
-        viewVisibleByType()
-    }
-
-    private fun viewVisibleByType() {
+    override fun showOrderDetail() {
         when (order.subServiceType?.id) {
             Constants.ID_SERVICE_G_CLEANING, Constants.ID_SERVICE_D_CLEANING -> timerCleaningOrder()
             Constants.ID_SERVICE_BUFFERING, Constants.ID_SERVICE_WATERBLASTING, Constants.ID_SERVICE_CARPETWASH -> areaCleaningOrder()
@@ -104,7 +68,26 @@ class OrderDetailActivity : BaseActivity(), IOrderView {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun showMessage(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun success() {
+        setResult(Activity.RESULT_OK)
+        this.finish()
+    }
+
+    private fun viewLoad() {
+        tv_service_type.text = order.subServiceType?.type_name
+        tv_date.text = order.date
+        tv_address.text = order.address
+        if (!order.phone.isNullOrEmpty()) {
+            tv_phone.text = order.phone
+        }
+        showOrderDetail()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (Activity.RESULT_OK == resultCode) {
             this.setResult(Activity.RESULT_OK)
@@ -135,7 +118,7 @@ class OrderDetailActivity : BaseActivity(), IOrderView {
                     btn_commit.text = resources.getString(R.string.btn_started)
                     order.start_time = GeneralUtil.currentTime
                     order.status = Constants.STATUS_ORDER_STARTED
-                    btn_commit.setOnClickListener { orderPresenter.startedOrder(order) }
+                    btn_commit.setOnClickListener { orderDetailPresenter.orderStarted(order) }
                 }
             }
             Constants.STATUS_ORDER_STARTED -> {
@@ -159,7 +142,7 @@ class OrderDetailActivity : BaseActivity(), IOrderView {
                     val amount = order.subServiceType?.products?.get(0)?.unit_price!!.times(order.duration)
                     order.amount = amount
                     order.status = Constants.STATUS_ORDER_FINISHED
-                    btn_commit.setOnClickListener { orderPresenter.finishedOrder(order) }
+                    btn_commit.setOnClickListener { orderDetailPresenter.orderFinished(order) }
                 }
             }
             Constants.STATUS_ORDER_FINISHED -> {
@@ -209,7 +192,7 @@ class OrderDetailActivity : BaseActivity(), IOrderView {
                     btn_commit.text = resources.getString(R.string.btn_finished)
                     order.end_time = GeneralUtil.currentTime
                     order.status = Constants.STATUS_ORDER_FINISHED
-                    btn_commit.setOnClickListener { orderPresenter.finishedOrder(order) }
+                    btn_commit.setOnClickListener { orderDetailPresenter.orderFinished(order) }
                 }
             }
             Constants.STATUS_ORDER_FINISHED -> {
@@ -276,7 +259,7 @@ class OrderDetailActivity : BaseActivity(), IOrderView {
     private fun finishedRequest() {
         val feedback = et_feedback.text.toString().trim { it <= ' ' }
         val intent = Intent(this@OrderDetailActivity, PaymentActivity::class.java)
-        if (!TextUtils.isEmpty(feedback)) {
+        if (feedback.isNotEmpty()) {
             order.feedback = feedback
         } else {
             order.feedback = ""

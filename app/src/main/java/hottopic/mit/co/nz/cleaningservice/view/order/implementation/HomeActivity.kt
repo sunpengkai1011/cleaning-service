@@ -17,7 +17,6 @@ import hottopic.mit.co.nz.cleaningservice.adapter.ViewPagerAdapter
 import hottopic.mit.co.nz.cleaningservice.entities.orders.ServiceTypes
 import hottopic.mit.co.nz.cleaningservice.entities.orders.SubServiceType
 import hottopic.mit.co.nz.cleaningservice.entities.orders.TitleModel
-import hottopic.mit.co.nz.cleaningservice.presenter.order.implementation.OrderPresenterImpl
 import hottopic.mit.co.nz.cleaningservice.view.order.inter.IHomeView
 import hottopic.mit.co.nz.cleaningservice.view.user.implementation.LoginActivity
 import io.reactivex.Observable

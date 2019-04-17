@@ -1,5 +1,5 @@
 package hottopic.mit.co.nz.cleaningservice.listener
 
-interface OnRegisterListener: OnBaseListener {
+interface OnBooleanRepListener: OnBaseListener {
     fun onSuccess(result: Boolean, message: String)
 }

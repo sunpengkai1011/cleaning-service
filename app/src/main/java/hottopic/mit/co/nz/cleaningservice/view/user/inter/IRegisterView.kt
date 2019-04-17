@@ -1,6 +1,7 @@
 package hottopic.mit.co.nz.cleaningservice.view.user.inter
 
-interface IRegisterView {
-    fun showMessage(message: String)
+import hottopic.mit.co.nz.cleaningservice.view.IBaseView
+
+interface IRegisterView: IBaseView {
     fun returnLogin()
 }
